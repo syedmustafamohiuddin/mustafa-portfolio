@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syed Mustafa Mohiuddin | Mechatronics Systems Engineer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            /* Theme Colors: Deep Blue, Cool Grey, Off-White */
+            --deep-blue: #0A1428;
+            --card-blue: #112240;
+            --cool-grey: #8892B0;
+            --off-white: #F8F9FA;
+            --accent-blue: #4A90E2; /* Subtle accent for charts and hovers */
+            
+            --glass: rgba(248, 249, 250, 0.05);
+            --glass-border: rgba(248, 249, 250, 0.1);
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--deep-blue);
+            color: var(--off-white);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            background-image: radial-gradient(circle at 15% 50%, rgba(74, 144, 226, 0.05), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(136, 146, 176, 0.05), transparent 25%);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--deep-blue); }
+        ::-webkit-scrollbar-thumb { background: var(--cool-grey); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--off-white); }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(10, 20, 40, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .nav-content {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            color: var(--off-white);
+        }
+
+        .logo span {
+            color: var(--accent-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--cool-grey);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--accent-blue);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--off-white);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero / About */
+        header {
+            padding: 180px 10% 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 80vh;
+            justify-content: center;
+        }
+
+        .profile-container {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            margin-bottom: 30px;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--cool-grey));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .profile-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--deep-blue);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--off-white);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .about-summary {
+            max-width: 800px;
+            font-size: 1.15rem;
+            color: var(--cool-grey);
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        /* Sections General */
+        section {
+            padding: 100px 10%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: var(--off-white);
+            font-weight: 600;
+        }
+
+        .section-title::after {
+            content: '';
+            height: 1px;
+            flex-grow: 1;
+            background: linear-gradient(90deg, var(--cool-grey), transparent);
+            opacity: 0.3;
+        }
+
+        /* Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Experience Cards */
+        .card {
+            background: var(--card-blue);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .company-info h3 {
+            color: var(--off-white);
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .company-info .role-title {
+            color: var(--accent-blue);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .date-location {
+            color: var(--cool-grey);
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        .company-logo {
+            height: 35px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+            object-fit: contain;
+            opacity: 0.9;
+        }
+
+        .bullet-points {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .bullet-points li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 25px;
+            color: var(--cool-grey);
+        }
+
+        .bullet-points li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--off-white);
+            font-size: 1.2rem;
+            line-height: 1.2;
+        }
+
+        /* Image Grids */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+
+        .image-grid img:hover {
+            transform: scale(1.03);
+            border-color: var(--off-white);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Charts */
+        .chart-container {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+            height: 260px;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Projects */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .project-card {
+            background: var(--card-blue);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .project-card:hover {
+            border-color: var(--off-white);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .project-card h4 {
+            color: var(--off-white);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        /* Skills Chips */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .skill-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .skill-group h4 {
+            color: var(--off-white);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 10px;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .chip {
+            background: var(--deep-blue);
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--cool-grey);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .chip:hover {
+            border-color: var(--accent-blue);
+            color: var(--off-white);
+            background: rgba(74, 144, 226, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .chip i { color: var(--off-white); transition: var(--transition); }
+        .chip:hover i { color: var(--accent-blue); }
+
+        /* Certifications & Awards */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .award-card {
+            background: var(--card-blue);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .award-card:hover {
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+        }
+
+        .award-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .award-card h4 {
+            color: var(--off-white);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .award-card p {
+            font-size: 0.9rem;
+            color: var(--cool-grey);
+        }
+
+        /* Contact */
+        #contact {
+            text-align: center;
+            background: var(--card-blue);
+            border-radius: 24px;
+            margin: 50px 10%;
+            padding: 80px 40px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .contact-item {
+            padding: 20px;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            background: rgba(255,255,255,0.03);
+            transform: translateY(-5px);
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            color: var(--off-white);
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .contact-item:hover i { color: var(--accent-blue); transform: scale(1.1); }
+        .contact-item p { font-size: 1rem; color: var(--cool-grey); }
+
+        footer {
+            padding: 40px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--cool-grey);
+            border-top: 1px solid var(--glass-border);
+            background: var(--deep-blue);
+        }
+
+        @media (max-width: 768px) {
+            header { padding-top: 140px; }
+            h1 { font-size: 2.2rem; }
+            .card-header { flex-direction: column; }
+            .date-location { text-align: left; margin-top: 10px; }
+            .nav-links { display: none; }
+            section { padding: 60px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <div class="logo">MOHIUDDIN<span>.</span></div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#experience">Experience</a>
+                <a href="#projects">Projects</a>
+                <a href="#skills">Skills</a>
+                <a href="#certifications">Certifications</a>
+                <a href="#awards">Awards</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="about" class="reveal">
+        <div class="profile-container">
+            <img src="IMG_5169.png" alt="Syed Mustafa Mohiuddin">
+        </div>
+        <h1>Syed Mustafa Mohiuddin</h1>
+        <div class="about-summary">
+            Systems Engineer with comprehensive expertise in electrotechnical systems development, specializing in medical device development and system integration. Proven track record in methodical hypothesis derivation, validation, and implementation through systematic data analysis and testing. Experienced in cross-functional collaboration with mechanical, electronic, software, and quality assurance teams. Strong competency in systems engineering methodologies, regulatory compliance, and practical laboratory integration of prototypes and functional models.
+        </div>
+    </header>
+
+    <section id="experience">
+        <div class="section-title reveal">Mechatronics Systems Engineer</div>
+
+        <div class="card reveal">
+            <img src="SHL.DE_BIG-f02b9f6c.png" alt="Siemens Healthineers" class="company-logo">
+            <div class="card-header">
+                <div class="company-info">
+                    <h3>Siemens Healthineers AG</h3>
+                    <div class="role-title">Working Student – Systems Engineering & Force Limitation</div>
+                </div>
+                <div class="date-location">March 2025 – Present<br>Kemnath, Germany</div>
+            </div>
+            <ul class="bullet-points">
+                <li>Multi-model implementation of force limitation algorithms across CT patient table series.</li>
+                <li>Advanced system diagnostics using Drive Manager and TCB for motor current optimization.</li>
+                <li>Iterative safety mechanism refinement using structured field-test data evaluation.</li>
+                <li>Cross-functional PLM collaboration across Mechanical, Electrical, and Software teams.</li>
+                <li>Risk evaluation & safety compliance support.</li>
+                <li>Developed integration and lab test validation strategies for dynamic motion systems.</li>
+            </ul>
+            <div class="image-grid">
+                <img src="IMG_0149.jpg" alt="Lab Setup">
+                <img src="ew2.png" alt="Diagnostics Interface">
+                <img src="aca.png" alt="Algorithm Visualization">
+                <img src="zzq.png" alt="Force Limitation Data">
+            </div>
+            <div class="chart-container">
+                <canvas id="siemensImpactChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card reveal">
+            <img src="SHL.DE_BIG-f02b9f6c.png" alt="Siemens Healthineers" class="company-logo">
+            <div class="card-header">
+                <div class="company-info">
+                    <h3>Siemens Healthineers AG</h3>
+                    <div class="role-title">Bachelor Thesis – Intelligent Dynamic Force Limitation</div>
+                </div>
+                <div class="date-location">Oct 2024 – Feb 2025<br>Kemnath, Germany</div>
+            </div>
+            <ul class="bullet-points">
+                <li>Engineered real-time torque-controlled force limitation system enabling “Single Click Activation.”</li>
+                <li>Built electromechanical validation test rigs for dynamic load scenarios.</li>
+                <li>Developed simulation models for collision vs normal motion threshold optimization.</li>
+                <li>Applied ISO 15066 and IEC 60601-2-44 safety frameworks.</li>
+                <li>Conducted empirical hypothesis validation using systems engineering methodology.</li>
+                <li>Authored certification-ready compliance documentation.</li>
+            </ul>
+            <div class="image-grid">
+                <img src="ew.png" alt="System Model">
+                <img src="Picture2.jpg" alt="Prototype Testing">
+                <img src="IMG_0126 (1).jpg" alt="Test Rig">
+                <img src="IMG_9684 (1).jpg" alt="Laboratory Integration">
+            </div>
+            <div class="chart-container">
+                <canvas id="safetyEfficiencyChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card reveal">
+            <img src="SHL.DE_BIG-f02b9f6c.png" alt="Siemens Healthineers" class="company-logo">
+            <div class="card-header">
+                <div class="company-info">
+                    <h3>Siemens Healthineers AG</h3>
+                    <div class="role-title">Mechatronics Products Intern</div>
+                </div>
+                <div class="date-location">Apr 2024 – Feb 2025<br>Kemnath, Germany</div>
+            </div>
+            <ul class="bullet-points">
+                <li>Developed LiDAR-based collision avoidance system for Nexaris Angio CT.</li>
+                <li>Integrated sensor logic into sliding gantry architecture.</li>
+                <li>Improved obstacle detection reliability and reduced false alarms.</li>
+                <li>Created structured engineering documentation supporting PLM lifecycle.</li>
+            </ul>
+            <div class="image-grid">
+                <img src="vsa.png" alt="Sensor Setup">
+                <img src="vs.png" alt="Collision Logic">
+                <img src="Screenshot 2026-02-26 150319.png" alt="Validation Interface">
+                <img src="Screenshot 2026-02-26 011728.png" alt="System Architecture">
+            </div>
+        </div>
+
+        <div class="card reveal">
+            <img src="Kraken_Robotics_Logo-2025-Black-Horizontal.png" alt="Kraken Robotics" class="company-logo">
+            <div class="card-header">
+                <div class="company-info">
+                    <h3>Kraken Robotics</h3>
+                    <div class="role-title">Electrical Engineering Intern</div>
+                </div>
+                <div class="date-location">Oct 2023 – Mar 2024<br>Rostock, Germany</div>
+            </div>
+            <ul class="bullet-points">
+                <li>Analyzed battery discharge profiles using MATLAB, improving AUV uptime by 8%.</li>
+                <li>Built advanced MATLAB visualizations for telemetry trend analysis.</li>
+                <li>Conducted environmental stress testing for marine battery systems.</li>
+                <li>Performed FMEA on power distribution units.</li>
+                <li>Integrated battery containers into pressure-resistant hulls.</li>
+                <li>Troubleshot harnesses under extreme marine conditions.</li>
+                <li>Derived failure pattern insights from telemetry datasets.</li>
+            </ul>
+            <div class="image-grid">
+                <img src="Screenshot 2026-02-26 145216.png" alt="Data Telemetry">
+                <img src="servcalibmedener2.jpg" alt="Sensor Calibration">
+                <img src="Pictureq1.png" alt="Battery Integration">
+            </div>
+            <div class="chart-container">
+                <canvas id="uptimeGrowthChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card reveal">
+            <img src="logo_profile.png" alt="Aqua Tech" class="company-logo" style="filter: none;">
+            <div class="card-header">
+                <div class="company-info">
+                    <h3>Aqua Tech GmbH</h3>
+                    <div class="role-title">Mechanical Design & Production Engineer</div>
+                </div>
+                <div class="date-location">Mar 2024 – Aug 2024</div>
+            </div>
+            <ul class="bullet-points">
+                <li>Managed end-to-end production control for mechanical assemblies.</li>
+                <li>Designed structural CAD models for load-bearing components.</li>
+                <li>Reduced bottlenecks by 10% via WIP optimization.</li>
+                <li>Designed custom jigs and electromechanical tooling.</li>
+                <li>Improved manufacturability via tolerance analysis.</li>
+                <li>Conducted throughput simulation for layout optimization.</li>
+            </ul>
+            <div class="image-grid">
+                <img src="vsae.png" alt="Production Model">
+            </div>
+            <div class="chart-container">
+                <canvas id="bottleneckReductionChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="section-title reveal">Technical Projects</div>
+        <div class="project-grid">
+            <div class="project-card reveal">
+                <h4>HIL-Based Cable Routing & Motion Simulation</h4>
+                <ul class="bullet-points">
+                    <li>Dynamic cable stress simulation utilizing Siemens NX.</li>
+                    <li>Routing optimization for multi-axis gantry movement.</li>
+                    <li>Verified insulation coordination and EMC shielding limits.</li>
+                    <li>Virtual life-cycle abrasion testing and mechanical wear analysis.</li>
+                </ul>
+            </div>
+            <div class="project-card reveal">
+                <h4>Automated Collision Avoidance for Mobile CT Units</h4>
+                <ul class="bullet-points">
+                    <li>SICK LiDAR integration combined with safety-rated control logic.</li>
+                    <li>Real-time C/C++ embedded implementation on microcontrollers.</li>
+                    <li>Fail-safe braking sequences tailored for medical environments.</li>
+                    <li>Refinement of detection algorithms to eliminate false triggers.</li>
+                </ul>
+            </div>
+            <div class="project-card reveal">
+                <h4>Digital Twin Simulation of CT Patient Table Dynamics</h4>
+                <ul class="bullet-points">
+                    <li>High-fidelity MATLAB and Simulink system modeling.</li>
+                    <li>Simulated load-dependent motor torque profiles across axes.</li>
+                    <li>Validation of virtual models against empirical force sensors.</li>
+                    <li>PID control loop tuning for seamless operational motion.</li>
+                </ul>
+            </div>
+            <div class="project-card reveal">
+                <h4>Embedded Motor Control Optimization Platform</h4>
+                <ul class="bullet-points">
+                    <li>STM32 and Arduino based interfaces for hardware control.</li>
+                    <li>PWM-based adjustment strategies for dynamic torque scaling.</li>
+                    <li>Efficiency testing of power electronics under varied load cycles.</li>
+                    <li>Real-time sensor feedback integration and processing.</li>
+                </ul>
+            </div>
+            <div class="project-card reveal">
+                <h4>Smart Mechatronic Test Bench with Real-Time Feedback</h4>
+                <ul class="bullet-points">
+                    <li>Custom test bench architecture with real-time feedback loops.</li>
+                    <li>Automated data logging and performance visualization.</li>
+                    <li>Hardware-in-the-loop validation configurations.</li>
+                    <li>Integration of complex electromechanical test variables.</li>
+                </ul>
+            </div>
+            <div class="project-card reveal">
+                <h4>3D Printed Adaptive Sensor Mounting System</h4>
+                <ul class="bullet-points">
+                    <li>Rapid prototyping of modular mounting systems.</li>
+                    <li>Siemens NX CAD modeling for structural integrity.</li>
+                    <li>Tolerance optimization for precise sensor alignment.</li>
+                    <li>Iterative design focusing on manufacturability.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="section-title reveal">Technical Skills</div>
+        <div class="skills-container reveal">
+            <div class="skill-group">
+                <h4>Mechanical</h4>
+                <div class="chips">
+                    <div class="chip"><i class="fas fa-cube"></i> Siemens NX</div>
+                    <div class="chip"><i class="fas fa-drafting-table"></i> SolidWorks</div>
+                    <div class="chip"><i class="fas fa-draw-polygon"></i> Creo</div>
+                    <div class="chip"><i class="fas fa-microchip"></i> CAD Modeling</div>
+                    <div class="chip"><i class="fas fa-layer-group"></i> Sheet Metal Design</div>
+                    <div class="chip"><i class="fas fa-tools"></i> Tolerance Analysis</div>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>Electrical</h4>
+                <div class="chips">
+                    <div class="chip"><i class="fas fa-cogs"></i> Motor Control</div>
+                    <div class="chip"><i class="fas fa-bolt"></i> Power Electronics</div>
+                    <div class="chip"><i class="fas fa-server"></i> Electrical Cabinets</div>
+                    <div class="chip"><i class="fas fa-shield-virus"></i> EMC & Grounding</div>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>Software</h4>
+                <div class="chips">
+                    <div class="chip"><i class="fas fa-square-root-alt"></i> MATLAB</div>
+                    <div class="chip"><i class="fas fa-wave-square"></i> Simulink</div>
+                    <div class="chip"><i class="fas fa-code"></i> C/C++</div>
+                    <div class="chip"><i class="fab fa-python"></i> Python</div>
+                    <div class="chip"><i class="fas fa-microchip"></i> Embedded Systems</div>
+                    <div class="chip"><i class="fas fa-network-wired"></i> PLC</div>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>Systems</h4>
+                <div class="chips">
+                    <div class="chip"><i class="fas fa-check-double"></i> ISO 15066</div>
+                    <div class="chip"><i class="fas fa-file-medical"></i> IEC 60601</div>
+                    <div class="chip"><i class="fas fa-exclamation-triangle"></i> FMEA</div>
+                    <div class="chip"><i class="fas fa-laptop-code"></i> HIL Testing</div>
+                    <div class="chip"><i class="fas fa-clone"></i> Digital Twin Simulation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certifications">
+        <div class="section-title reveal">Certifications</div>
+        <div class="grid-layout">
+            <div class="award-card reveal">
+                <img src="1769856219125.jpg" alt="Operations Industrial Engineer">
+                <h4>Operations Industrial Engineer</h4>
+                <p>Siemens Mobility</p>
+            </div>
+            <div class="award-card reveal">
+                <img src="vsw.png" alt="Google Analytics">
+                <h4>Google Analytics Certification</h4>
+                <p>Data interpretation and performance optimization</p>
+            </div>
+            <div class="award-card reveal">
+                <img src="df399590-690d-447e-b496-98e1b90503e5.JPG" alt="Research & Development">
+                <h4>Research & Development Program</h4>
+                <p>Advanced Innovation Methodologies</p>
+            </div>
+            <div class="award-card reveal">
+                <img src="Screenshot 2026-02-26 195042.png" alt="Siemens NX">
+                <h4>Siemens NX Certification</h4>
+                <p>Professional CAD Modeling</p>
+            </div>
+            <div class="award-card reveal">
+                <img src="Screenshot 2026-02-26 195231.png" alt="AWS IoT">
+                <h4>AWS IoT Microcontroller</h4>
+                <p>Cloud and Embedded Integration</p>
+            </div>
+            <div class="award-card reveal">
+                <img src="Screenshot 2026-02-26 195250.png" alt="Energy Resource Systems">
+                <h4>Energy Resource Systems</h4>
+                <p>Technical Frameworks</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="awards">
+        <div class="section-title reveal">Awards</div>
+        <div class="grid-layout">
+            <div class="award-card reveal">
+                <img src="db8da812-17b6-41ad-b804-a84df993561c.jpg" alt="Innovation Think Tank">
+                <h4>Innovation Think Tank Recognition</h4>
+            </div>
+            <div class="award-card reveal">
+                <img src="vwe.jpg" alt="Innovation Think Tank 2">
+                <h4>Innovation Think Tank Recognition</h4>
+            </div>
+            <div class="award-card reveal">
+                <img src="ct2.PNG" alt="Harvard Model UN">
+                <h4>Best Delegation</h4>
+                <p>Harvard Model UN</p>
+            </div>
+            <div class="award-card reveal">
+                <img src="gds.PNG" alt="Engineering Excellence">
+                <h4>Engineering Excellence Recognition</h4>
+            </div>
+            <div class="award-card reveal">
+                <img src="IMG_9608.jpg" alt="Engineering Excellence 2">
+                <h4>Engineering Excellence Recognition</h4>
+            </div>
+            <div class="award-card reveal">
+                <img src="IMG_9605.jpg" alt="Engineering Excellence 3">
+                <h4>Engineering Excellence Recognition</h4>
+            </div>
+            <div class="award-card reveal">
+                <img src="IMG_2450.jpg" alt="Engineering Excellence 4">
+                <h4>Engineering Excellence Recognition</h4>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="reveal">
+        <h2 style="color: var(--off-white); margin-bottom: 20px;">Contact</h2>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <p>mustafa91syed@gmail.com</p>
+            </div>
+            <div class="contact-item">
+                <i class="fab fa-linkedin"></i>
+                <p>linkedin.com/in/syed-mustafa-mohiuddin</p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <p>+49 176 73553547</p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>Bayreuth, Germany</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Syed Mustafa Mohiuddin | Mechatronics Systems Engineer</p>
+    </footer>
+
+    <script>
+        // Scroll Animation Logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+
+        // Chart.js Global Config for Deep Blue / Cool Grey Theme
+        Chart.defaults.color = '#8892B0';
+        Chart.defaults.font.family = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+
+        const chartDefaults = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { grid: { color: 'rgba(248, 249, 250, 0.05)' }, ticks: { color: '#8892B0' } },
+                x: { grid: { display: false }, ticks: { color: '#8892B0' } }
+            }
+        };
+
+        // Innovation Impact Chart (Siemens A)
+        new Chart(document.getElementById('siemensImpactChart'), {
+            type: 'line',
+            data: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                datasets: [{
+                    label: 'Innovation Impact',
+                    data: [20, 45, 75, 95],
+                    borderColor: '#4A90E2', // Accent Blue
+                    pointBackgroundColor: '#F8F9FA', // Off-White
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(74, 144, 226, 0.15)'
+                }]
+            },
+            options: chartDefaults
+        });
+
+        // Safety Efficiency Chart (Siemens B)
+        new Chart(document.getElementById('safetyEfficiencyChart'), {
+            type: 'line',
+            data: {
+                labels: ['Concept', 'Design', 'Test', 'Final'],
+                datasets: [{
+                    data: [30, 50, 80, 95],
+                    borderColor: '#F8F9FA', // Off-White
+                    borderWidth: 3,
+                    tension: 0.3
+                }]
+            },
+            options: chartDefaults
+        });
+
+        // Uptime Growth Chart (Kraken)
+        new Chart(document.getElementById('uptimeGrowthChart'), {
+            type: 'line',
+            data: {
+                labels: ['Baseline', 'Month 1', 'Month 3', 'Optimized'],
+                datasets: [{
+                    data: [82, 84, 87, 90],
+                    borderColor: '#4A90E2', // Accent Blue
+                    borderWidth: 3,
+                    fill: false
+                }]
+            },
+            options: chartDefaults
+        });
+
+        // Bottleneck Reduction Chart (Aqua Tech)
+        new Chart(document.getElementById('bottleneckReductionChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Pre-Optimization', 'Post-Optimization'],
+                datasets: [{
+                    data: [100, 90],
+                    backgroundColor: ['#8892B0', '#4A90E2'], // Cool Grey to Accent Blue
+                    borderRadius: 6
+                }]
+            },
+            options: chartDefaults
+        });
+    </script>
+</body>
+</html>
