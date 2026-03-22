@@ -1,972 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Syed Mustafa Mohiuddin | Mechatronics Systems Engineer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
-    <style>
-        :root {
-            /* Apple-inspired Tech Color Scheme */
-            --bg-primary: #000000;
-            --bg-secondary: #111111;
-            --bg-glass: rgba(255, 255, 255, 0.03);
-            --text-primary: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.75);
-            --text-muted: rgba(255, 255, 255, 0.5);
-            --accent-primary: #007AFF;
-            --accent-secondary: #34C759;
-            --accent-gradient: linear-gradient(135deg, #007AFF 0%, #5856D6 50%, #FF9500 100%);
-            --border-glass: rgba(255, 255, 255, 0.1);
-            --shadow-1: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            --shadow-2: 0 0 0 1px rgba(255, 255, 255, 0.05);
-            --radius: 20px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.5;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(var(--accent-primary), var(--accent-secondary));
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover { 
-            background: var(--accent-primary);
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.3);
-        }
-
-        /* Navigation - Apple Style */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 80px;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            z-index: 1000;
-            border-bottom: 1px solid var(--border-glass);
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            height: 70px;
-            backdrop-filter: blur(30px);
-        }
-
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 5%;
-            height: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            padding: 8px 0;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background: var(--accent-primary);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform: translateX(-50%);
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section - Apple Style */
-        header {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 5% 100px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 122, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(52, 199, 89, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(88, 86, 214, 0.06) 0%, transparent 50%);
-            z-index: -1;
-        }
-
-        .profile-container {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            margin-bottom: 40px;
-            position: relative;
-            padding: 6px;
-            background: var(--accent-gradient);
-            box-shadow: var(--shadow-1), var(--shadow-2);
-        }
-
-        .profile-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: var(--bg-primary);
-            z-index: 1;
-        }
-
-        .profile-container img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            position: relative;
-            z-index: 2;
-            border: 4px solid var(--bg-primary);
-        }
-
-        h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
-            font-weight: 600;
-            letter-spacing: -1px;
-            margin-bottom: 24px;
-            line-height: 1.1;
-        }
-
-        .about-summary {
-            max-width: 700px;
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            font-weight: 400;
-            line-height: 1.7;
-            margin: 0 auto;
-        }
-
-        /* Sections */
-        section {
-            padding: 120px 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 600;
-            margin-bottom: 80px;
-            position: relative;
-            letter-spacing: -0.5px;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--accent-gradient);
-            border-radius: 2px;
-        }
-
-        /* Advanced Cards */
-        .card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius);
-            padding: 60px;
-            margin-bottom: 40px;
-            border: 1px solid var(--border-glass);
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: var(--accent-gradient);
-            transform: scaleX(0);
-            transition: transform 0.5s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow-1), 0 0 40px rgba(0, 122, 255, 0.2);
-        }
-
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 32px;
-            gap: 20px;
-        }
-
-        .company-info h3 {
-            font-size: 1.75rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .role-title {
-            color: var(--accent-primary);
-            font-weight: 500;
-            font-size: 1.125rem;
-        }
-
-        .date-location {
-            color: var(--text-muted);
-            font-size: 1rem;
-            text-align: right;
-            font-weight: 400;
-        }
-
-        .company-logo {
-            height: 48px;
-            filter: brightness(0) invert(1);
-            opacity: 0.9;
-            transition: all 0.3s ease;
-        }
-
-        .card:hover .company-logo {
-            filter: brightness(1) invert(0.9);
-            transform: scale(1.1);
-        }
-
-        .bullet-points {
-            list-style: none;
-            margin-bottom: 40px;
-        }
-
-        .bullet-points li {
-            margin-bottom: 16px;
-            padding-left: 32px;
-            color: var(--text-secondary);
-            position: relative;
-            font-size: 1.05rem;
-        }
-
-        .bullet-points li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 8px;
-            width: 8px;
-            height: 8px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-        }
-
-        /* Image Grid */
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-            margin: 40px 0;
-        }
-
-        .image-grid img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 16px;
-            border: 1px solid var(--border-glass);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            cursor: pointer;
-        }
-
-        .image-grid img:hover {
-            transform: scale(1.05) rotate(1deg);
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow-1), 0 0 30px rgba(0, 122, 255, 0.3);
-        }
-
-        /* Project Grid */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 32px;
-        }
-
-        .project-card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            padding: 48px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border-glass);
-            height: 100%;
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .project-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow-1);
-        }
-
-        .project-card h4 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-            color: var(--text-primary);
-        }
-
-        /* Skills */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-
-        .skill-group h4 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-            color: var(--text-primary);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .chip {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px 24px;
-            border-radius: 50pxHere's your advanced portfolio with Apple-inspired design, enhanced animations, techy color scheme, and UX inspired by the rajesh-portfolio:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Syed Mustafa Mohiuddin | Mechatronics Systems Engineer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
-    <style>
-        :root {
-            /* Apple-inspired Tech Color Scheme */
-            --bg-primary: #000000;
-            --bg-secondary: #111111;
-            --bg-glass: rgba(255, 255, 255, 0.03);
-            --text-primary: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.75);
-            --text-muted: rgba(255, 255, 255, 0.5);
-            --accent-primary: #007AFF;
-            --accent-secondary: #34C759;
-            --accent-gradient: linear-gradient(135deg, #007AFF 0%, #5856D6 50%, #FF9500 100%);
-            --border-glass: rgba(255, 255, 255, 0.1);
-            --shadow-1: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            --shadow-2: 0 0 0 1px rgba(255, 255, 255, 0.05);
-            --radius: 20px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.5;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(var(--accent-primary), var(--accent-secondary));
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover { 
-            background: var(--accent-primary);
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.3);
-        }
-
-        /* Navigation - Apple Style */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 80px;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            z-index: 1000;
-            border-bottom: 1px solid var(--border-glass);
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            height: 70px;
-            backdrop-filter: blur(30px);
-        }
-
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 5%;
-            height: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            padding: 8px 0;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background: var(--accent-primary);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform: translateX(-50%);
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section - Apple Style */
-        header {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 5% 100px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 122, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(52, 199, 89, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(88, 86, 214, 0.06) 0%, transparent 50%);
-            z-index: -1;
-        }
-
-        .profile-container {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            margin-bottom: 40px;
-            position: relative;
-            padding: 6px;
-            background: var(--accent-gradient);
-            box-shadow: var(--shadow-1), var(--shadow-2);
-        }
-
-        .profile-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: var(--bg-primary);
-            z-index: 1;
-        }
-
-        .profile-container img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            position: relative;
-            z-index: 2;
-            border: 4px solid var(--bg-primary);
-        }
-
-        h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
-            font-weight: 600;
-            letter-spacing: -1px;
-            margin-bottom: 24px;
-            line-height: 1.1;
-        }
-
-        .about-summary {
-            max-width: 700px;
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            font-weight: 400;
-            line-height: 1.7;
-            margin: 0 auto;
-        }
-
-        /* Sections */
-        section {
-            padding: 120px 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 600;
-            margin-bottom: 80px;
-            position: relative;
-            letter-spacing: -0.5px;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--accent-gradient);
-            border-radius: 2px;
-        }
-
-        /* Advanced Cards */
-        .card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius);
-            padding: 60px;
-            margin-bottom: 40px;
-            border: 1px solid var(--border-glass);
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: var(--accent-gradient);
-            transform: scaleX(0);
-            transition: transform 0.5s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow-1), 0 0 40px rgba(0, 122, 255, 0.2);
-        }
-
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 32px;
-            gap: 20px;
-        }
-
-        .company-info h3 {
-            font-size: 1.75rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .role-title {
-            color: var(--accent-primary);
-            font-weight: 500;
-            font-size: 1.125rem;
-        }
-
-        .date-location {
-            color: var(--text-muted);
-            font-size: 1rem;
-            text-align: right;
-            font-weight: 400;
-        }
-
-        .company-logo {
-            height: 48px;
-            filter: brightness(0) invert(1);
-            opacity: 0.9;
-            transition: all 0.3s ease;
-        }
-
-        .card:hover .company-logo {
-            filter: brightness(1) invert(0.9);
-            transform: scale(1.1);
-        }
-
-        .bullet-points {
-            list-style: none;
-            margin-bottom: 40px;
-        }
-
-        .bullet-points li {
-            margin-bottom: 16px;
-            padding-left: 32px;
-            color: var(--text-secondary);
-            position: relative;
-            font-size: 1.05rem;
-        }
-
-        .bullet-points li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 8px;
-            width: 8px;
-            height: 8px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-        }
-
-        /* Image Grid */
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
-            margin: 40px 0;
-        }
-
-        .image-grid img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 16px;
-            border: 1px solid var(--border-glass);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            cursor: pointer;
-        }
-
-        .image-grid img:hover {
-            transform: scale(1.05) rotate(1deg);
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow-1), 0 0 30px rgba(0, 122, 255, 0.3);
-        }
-
-        /* Project Grid */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 32px;
-        }
-
-        .project-card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            padding: 48px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border-glass);
-            height: 100%;
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .project-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow-1);
-        }
-
-        .project-card h4 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-            color: var(--text-primary);
-        }
-
-        /* Skills */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-
-        .skill-group h4 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-            color: var(--text-primary);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .chip {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-glass);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .chip:hover {
-            background: rgba(0, 122, 255, 0.15);
-            border-color: var(--accent-primary);
-            color: var(--text-primary);
-            transform: translateY(-4px) scale(1.05);
-        }
-
-        /* Grid Layout */
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 32px;
-        }
-
-        .award-card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius);
-            padding: 32px;
-            border: 1px solid var(--border-glass);
-            transition: all 0.4s ease;
-            overflow: hidden;
-        }
-
-        .award-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow-1);
-        }
-
-        .award-card img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            transition: transform 0.4s ease;
-        }
-
-        .award-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .award-card h4 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        /* Contact */
-        #contact {
-            text-align: center;
-            background: var(--bg-glass);
-            backdrop-filter: blur(40px);
-            border-radius: 40px;
-            margin: 100px 5%;
-            padding: 120px 60px;
-            border: 1px solid var(--border-glass);
-            box-shadow: var(--shadow-1);
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 48px;
-            margin-top: 60px;
-        }
-
-        .contact-item {
-            padding: 32px;
-            border-radius: 24px;
-            transition: all 0.4s ease;
-            cursor: pointer;
-        }
-
-        .contact-item:hover {
-            background: rgba(0, 122, 255, 0.1);
-            transform: translateY(-8px) scale(1.02);
-            border: 1px solid var(--accent-primary);
-        }
-
-        .contact-item i {
-            font-size: 2.5rem;
-            color: var(--accent-primary);
-            margin-bottom: 24px;
-            display: block;
-        }
-
-        .contact-item p {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-        }
-
-        footer {
-            padding: 60px 5%;
-            text-align: center;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-glass);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links { gap: 20px; }
-            .card-header { flex-direction: column; text-align: center; }
-            .date-location { text-align: center; margin-top: 16px; }
-            section { padding: 80px 5%; }
-            #contact { margin: 60px 5%; padding: 80px 40px; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Syed Mustafa Mohiuddin — Mechatronics Systems Engineer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
+      --mono: "SF Mono", "Fira Code", "Cascadia Code", "Roboto Mono", monospace;
+      --black:   #0A1428;
+      --void:    #080a0c;
+      --surface: #0c0f12;
+      --card:    #0f1318;
+      --border:  rgba(0,255,136,0.1);
+      --border2: rgba(0,255,136,0.28);
+      --green:   #8892B0;
+      --cyan:    #00d4ff;
+      --text:    #e8eef4;
+      --muted:   #6e7a8a;
+      --dim:     #2e3840;
+      --ease:    cubic-bezier(0.16,1,0.3,1);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--black);color:var(--text);font-family:var(--font);overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased}
+
+    /* CURSOR */
+    #cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--green);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--green);transition:transform .15s}
+    #cur-o{position:fixed;top:0;left:0;width:30px;height:30px;border:1px solid rgba(0,255,136,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .35s var(--ease)}
+    body:has(a:hover,.chip:hover) #cur{transform:translate(-50%,-50%) scale(2.8)}
+    body:has(a:hover,.chip:hover) #cur-o{opacity:0}
+
+    /* PROGRESS */
+    #prog{position:fixed;top:0;left:0;height:1px;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));z-index:3000;box-shadow:0 0 8px var(--green)}
+
+    /* CANVAS */
+    #bgc{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+    /* Scanlines */
+    body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px)}
+
+    /* NAV */
+    nav{position:fixed;top:0;width:100%;height:62px;z-index:1000;display:flex;justify-content:center;align-items:center;border-bottom:1px solid transparent;transition:all .4s var(--ease)}
+    nav.solid{background:rgba(8,10,12,.9);backdrop-filter:blur(24px) saturate(180%);border-bottom-color:var(--border)}
+    .nav-i{width:92%;max-width:1280px;display:flex;justify-content:space-between;align-items:center}
+    .logo{font-family:var(--mono);font-size:.82rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--text)}
+    .logo em{color:var(--green);font-style:normal}
+    .nav-links{display:flex;gap:2px}
+    .nav-links a{text-decoration:none;color:var(--muted);font-family:var(--mono);font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;padding:8px 13px;border-radius:4px;transition:all .25s var(--ease);position:relative}
+    .nav-links a:hover{color:var(--green)}
+    .nav-links a.on{color:var(--green)}
+    .nav-links a.on::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:4px;height:1px;background:var(--green);border-radius:2px}
+
+    /* HERO */
+    #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:130px 6% 80px;position:relative;z-index:2}
+    .av-wrap{position:relative;width:118px;height:118px;margin-bottom:38px}
+    .av-wrap::before{content:'';position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(var(--green) 0deg,var(--cyan) 90deg,transparent 200deg,var(--green) 360deg);animation:spin 5s linear infinite;filter:blur(2px);opacity:.75}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .av-wrap img{position:relative;z-index:1;width:100%;height:100%;border-radius:50%;object-fit:cover;border:2px solid var(--void)}
+    .htag{font-family:var(--mono);font-size:.73rem;letter-spacing:3px;color:var(--green);text-transform:uppercase;margin-bottom:20px;opacity:0}
+    .htag::before{content:'> ';opacity:.4}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .cb{animation:blink 1s step-end infinite;color:var(--green)}
+    h1{font-size:clamp(3rem,8vw,6.2rem);font-weight:700;letter-spacing:-3px;line-height:1.0;color:var(--text);margin-bottom:8px;opacity:0}
+    h1 .g{color:var(--green)}
+    .hrole{font-size:clamp(.95rem,2vw,1.3rem);font-weight:300;color:var(--muted);letter-spacing:.3px;margin-bottom:28px;opacity:0}
+    .hdesc{max-width:680px;font-size:.98rem;color:var(--muted);line-height:1.85;margin-bottom:44px;opacity:0}
+    .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;opacity:0}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:5px;font-family:var(--mono);font-size:.75rem;letter-spacing:1px;text-decoration:none;transition:all .3s var(--ease);cursor:none;text-transform:uppercase}
+    .btn-g{background:transparent;border:1px solid var(--green);color:var(--green);box-shadow:0 0 18px rgba(0,255,136,.08)}
+    .btn-g:hover{background:rgba(0,255,136,.07);box-shadow:0 0 36px rgba(0,255,136,.22);transform:translateY(-2px)}
+    .btn-w{background:transparent;border:1px solid var(--dim);color:var(--muted)}
+    .btn-w:hover{border-color:var(--muted);color:var(--text);transform:translateY(-2px)}
+    .stat-row{display:flex;margin-top:56px;opacity:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:rgba(12,15,18,.85)}
+    .stat-i{flex:1;padding:22px 18px;text-align:center;border-right:1px solid var(--border)}
+    .stat-i:last-child{border-right:none}
+    .stat-n{font-family:var(--mono);font-size:1.9rem;font-weight:700;color:var(--green);line-height:1;letter-spacing:-1px}
+    .stat-l{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:5px}
+    .scroll-h{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.4}
+    .scroll-h span{font-family:var(--mono);font-size:.6rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+    .sh-l{width:1px;height:42px;background:linear-gradient(to bottom,var(--green),transparent);animation:p2 2s ease-in-out infinite}
+    @keyframes p2{0%,100%{opacity:1}50%{opacity:.15}}
+
+    /* SECTIONS */
+    section{padding:110px 6%;max-width:1400px;margin:0 auto;position:relative;z-index:2}
+    .sec-label{font-family:var(--mono);font-size:.7rem;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-bottom:10px;opacity:.75}
+    .sec-title{font-size:clamp(1.9rem,4vw,2.9rem);font-weight:700;letter-spacing:-1.5px;color:var(--text);margin-bottom:58px;display:flex;align-items:center;gap:22px}
+    .sec-title::after{content:'';height:1px;flex-grow:1;background:linear-gradient(90deg,var(--border2),transparent)}
+
+    /* CARDS */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:42px;margin-bottom:24px;position:relative;overflow:hidden;transition:border-color .4s var(--ease),transform .4s var(--ease),box-shadow .4s var(--ease)}
+    .card::before{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(480px at var(--mx,50%) var(--my,50%),rgba(0,255,136,.035),transparent 60%);opacity:0;transition:opacity .4s}
+    .card:hover::before{opacity:1}
+    .card-top-line{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--green),var(--cyan),transparent);opacity:0;transition:opacity .4s}
+    .card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 0 50px rgba(0,255,136,.05),0 20px 60px rgba(0,0,0,.7)}
+    .card:hover .card-top-line{opacity:.6}
+    .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px}
+    .co-logo{height:27px;margin-bottom:18px;filter:brightness(0) invert(1) opacity(.55);object-fit:contain;transition:opacity .3s}
+    .card:hover .co-logo{opacity:.85}
+    .co-name{font-size:1.35rem;font-weight:700;color:var(--text);letter-spacing:-.5px;margin-bottom:4px}
+    .co-role{color:var(--green);font-size:.92rem;font-weight:500;margin-bottom:5px}
+    .co-loc{font-family:var(--mono);font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:5px}
+    .co-loc i{color:var(--green);font-size:.6rem}
+    .date-pill{font-family:var(--mono);font-size:.7rem;letter-spacing:.5px;color:var(--cyan);background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);padding:6px 13px;border-radius:20px;white-space:nowrap}
+    .ld{width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;margin-right:6px;animation:p2 1.5s infinite;box-shadow:0 0 6px var(--green);vertical-align:middle}
+    .blist{list-style:none;margin-bottom:26px}
+    .blist li{padding:5px 0 5px 20px;position:relative;color:var(--muted);font-size:.92rem;line-height:1.72;transition:color .3s}
+    .blist li::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:5px;height:1px;background:var(--green);opacity:.4}
+    .card:hover .blist li{color:rgba(232,238,244,.8)}
+    .card:hover .blist li::before{opacity:1}
+    .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}
+    .tag{font-family:var(--mono);font-size:.65rem;letter-spacing:1px;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.12);padding:4px 11px;border-radius:3px;text-transform:uppercase;transition:all .25s}
+    .tag:hover{background:rgba(0,255,136,.12);border-color:var(--green);box-shadow:0 0 10px rgba(0,255,136,.1)}
+    .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:13px;margin:26px 0}
+    .igw{border-radius:10px;overflow:hidden;border:1px solid var(--border);position:relative}
+    .igw::after{content:'';position:absolute;inset:0;background:rgba(0,255,136,.07);opacity:0;transition:opacity .3s}
+    .igw:hover::after{opacity:1}
+    .igw img{width:100%;height:145px;object-fit:cover;display:block;transition:transform .6s var(--ease)}
+    .igw:hover img{transform:scale(1.05)}
+    .chart-w{background:rgba(0,0,0,.45);border:1px solid var(--border);border-radius:11px;padding:18px;margin-top:22px;height:225px}
+    .chart-lbl{font-family:var(--mono);font-size:.63rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:11px}
+
+    /* PROJECTS */
+    .proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+    .pcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:30px;transition:all .4s var(--ease);position:relative;overflow:hidden}
+    .pcard:hover{border-color:var(--border2);transform:translateY(-5px);box-shadow:0 0 40px rgba(0,255,136,.05),0 20px 50px rgba(0,0,0,.6)}
+    .pcard::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--green),transparent);opacity:0;transition:opacity .4s}
+    .pcard:hover::after{opacity:.65}
+    .pnum{font-family:var(--mono);font-size:4.5rem;font-weight:700;color:rgba(0,255,136,.05);position:absolute;top:10px;right:18px;line-height:1;transition:color .4s;user-select:none}
+    .pcard:hover .pnum{color:rgba(0,255,136,.11)}
+    .pcard h4{font-size:1rem;font-weight:600;color:var(--text);margin-bottom:16px;letter-spacing:-.3px;line-height:1.4;position:relative;z-index:1}
+
+    /* SKILLS */
+    .sk-grid{display:flex;flex-wrap:wrap;gap:44px}
+    .sk-g{flex:1;min-width:215px}
+    .sk-g h4{font-family:var(--mono);font-size:.7rem;letter-spacing:3px;color:var(--green);text-transform:uppercase;margin-bottom:16px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+    .chips{display:flex;flex-wrap:wrap;gap:9px}
+    .chip{font-family:var(--mono);font-size:.76rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:9px 16px;border-radius:6px;display:flex;align-items:center;gap:9px;transition:all .3s var(--ease);cursor:none}
+    .chip:hover{border-color:var(--green);color:var(--text);background:rgba(0,255,136,.04);box-shadow:0 0 18px rgba(0,255,136,.07);transform:translateY(-2px)}
+    .chip i{color:var(--green);font-size:.82rem;transition:transform .3s}
+    .chip:hover i{transform:scale(1.2)}
+
+    /* CERTS / AWARDS */
+    .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:18px}
+    .awc{background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden;transition:all .4s var(--ease)}
+    .awc:hover{border-color:var(--border2);transform:translateY(-5px);box-shadow:0 0 36px rgba(0,255,136,.05),0 18px 50px rgba(0,0,0,.7)}
+    .awi{overflow:hidden;height:175px;position:relative}
+    .awi::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,var(--card) 100%)}
+    .awi img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+    .awc:hover .awi img{transform:scale(1.06)}
+    .awb{padding:18px 20px}
+    .awb h4{font-size:.97rem;font-weight:600;color:var(--text);margin-bottom:4px;letter-spacing:-.2px}
+    .awb p{font-size:.8rem;color:var(--muted)}
+
+    /* CONTACT */
+    #contact{background:var(--card);border:1px solid var(--border);border-radius:18px;margin:36px 6% 56px;padding:84px 40px;text-align:center;position:relative;z-index:2;overflow:hidden}
+    #contact::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,136,.04),transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%)}
+    #contact h2{font-size:clamp(1.9rem,5vw,3.4rem);font-weight:700;letter-spacing:-2px;color:var(--text);margin-bottom:10px}
+    #contact h2 em{color:var(--green);font-style:normal}
+    .ct-sub{color:var(--muted);font-size:.88rem;margin-bottom:50px;font-family:var(--mono);letter-spacing:1px}
+    .ct-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:18px;position:relative;z-index:1}
+    .cti{padding:26px 14px;border-radius:11px;border:1px solid var(--border);background:rgba(8,10,12,.6);transition:all .35s var(--ease)}
+    .cti:hover{border-color:var(--border2);transform:translateY(-5px);box-shadow:0 0 28px rgba(0,255,136,.07)}
+    .cti i{font-size:1.5rem;color:var(--green);margin-bottom:12px;display:block;transition:transform .35s}
+    .cti:hover i{transform:scale(1.15) translateY(-3px)}
+    .cti p{font-size:.8rem;color:var(--muted);line-height:1.5}
+
+    footer{padding:28px;text-align:center;font-family:var(--mono);font-size:.65rem;letter-spacing:2px;color:var(--dim);border-top:1px solid var(--border);position:relative;z-index:2}
+
+    /* GSAP base state */
+    .gf{opacity:0;transform:translateY(38px)}
+
+    @media(max-width:768px){
+      .nav-links{display:none}
+      h1{font-size:3rem}
+      .card{padding:26px}
+      #contact{margin:18px 5%;padding:56px 20px}
+      section{padding:75px 5%}
+      .stat-row{flex-wrap:wrap}
+      .stat-i{min-width:50%}
+    }
+  </style>
 </head>
 <body>
-    <!-- Same HTML structure as before, keeping all images -->
-    <nav>
-        <div class="nav-content">
-            <div class="logo">MOHIUDDIN<span>.</span></div>
-            <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#experience">Experience</a>
-                <a href="#projects">Projects</a>
-                <a href="#skills">Skills</a>
-                <a href="#certifications">Certifications</a>
-                <a href="#awards">Awards</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </div>
-    </nav>
 
-    <header id="about">
-        <div class="hero-bg"></div>
-        <div class="profile-container">
-            <img src="IMG_5169.png" alt="Syed Mustafa Mohiuddin">
-        </div>
-        <h1>Syed Mustafa Mohiuddin</h1>
-        <div class="about-summary">
-            Systems Engineer with comprehensive expertise in electrotechnical systems development, specializing in medical device development and system integration.
-        </div>
-    </header>
+<div id="cur"></div>
+<div id="cur-o"></div>
+<div id="prog"></div>
+<canvas id="bgc"></canvas>
 
-    <!-- All your existing sections with same images remain exactly the same -->
-    <!-- [Insert all your existing section content here - experience, projects
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-i">
+    <div class="logo">MOHIUDDIN<em>.</em></div>
+    <div class="nav-links">
+      <a href="#hero" class="nl">About</a>
+      <a href="#experience" class="nl">Work</a>
+      <a href="#projects" class="nl">Projects</a>
+      <a href="#skills" class="nl">Skills</a>
+      <a href="#certifications" class="nl">Certs</a>
+      <a href="#awards" class="nl">Awards</a>
+      <a href="#contact" class="nl">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="av-wrap">
+    <img src="IMG_5169.png" alt="Syed Mustafa Mohiuddin">
+  </div>
+  <p class="htag" id="htag">Systems Engineer — Mechatronics — Medical Devices<span class="cb">_</span></p>
+  <h1 id="hname">Syed Mustafa<br><span class="g">Mohiuddin</span></h1>
+  <p class="hrole" id="hrole">Mechatronics Systems Engineer</p>
+  <p class="hdesc" id="hdesc">Specializing in electrotechnical systems development, medical device integration, and force limitation for CT systems at Siemens Healthineers. Building the future of intelligent medical mechatronics.</p>
+  <div class="btn-row" id="hbtns">
+    <a href="#contact" class="btn btn-g"><i class="fas fa-terminal"></i>Get in Touch</a>
+    <a href="#experience" class="btn btn-w"><i class="fas fa-arrow-down"></i>Explore Work</a>
+  </div>
+  <div class="stat-row" id="hstats">
+    <div class="stat-i"><div class="stat-n"><span class="cnt" data-n="3">0</span>+</div><div class="stat-l">Years Exp</div></div>
+    <div class="stat-i"><div class="stat-n"><span class="cnt" data-n="5">0</span></div><div class="stat-l">Companies</div></div>
+    <div class="stat-i"><div class="stat-n"><span class="cnt" data-n="6">0</span>+</div><div class="stat-l">Certifications</div></div>
+    <div class="stat-i"><div class="stat-n"><span class="cnt" data-n="8">0</span>%</div><div class="stat-l">AUV Uptime ↑</div></div>
+  </div>
+  <div class="scroll-h"><span>Scroll</span><div class="sh-l"></div></div>
+</div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="sec-label gf">// 01 — Professional Journey</p>
+  <div class="sec-title gf">Experience</div>
+
+  <div class="card gf">
+    <div class="card-top-line"></div>
+    <img src="SHL.DE_BIG-f02b9f6c.png" class="co-logo" alt="Siemens">
+    <div class="card-top">
+      <div><div class="co-name">Siemens Healthineers AG</div><div class="co-role">Working Student – Systems Engineering & Force Limitation</div><div class="co-loc"><i class="fas fa-map-marker-alt"></i>Kemnath, Germany</div></div>
+      <div class="date-pill"><span class="ld"></span>Mar 2025 – Present</div>
+    </div>
+    <ul class="blist">
+      <li>Multi-model implementation of force limitation algorithms across CT patient table series.</li>
+      <li>Advanced system diagnostics using Drive Manager and TCB for motor current optimization.</li>
+      <li>Iterative safety mechanism refinement using structured field-test data evaluation.</li>
+      <li>Cross-functional PLM collaboration across Mechanical, Electrical, and Software teams.</li>
+      <li>Risk evaluation & safety compliance support.</li>
+      <li>Developed integration and lab test validation strategies for dynamic motion systems.</li>
+    </ul>
+    <div class="tags"><span class="tag">Force Limitation</span><span class="tag">PLM</span><span class="tag">Drive Manager</span><span class="tag">TCB</span><span class="tag">Safety Compliance</span><span class="tag">CT Systems</span></div>
+    <div class="img-grid">
+      <div class="igw"><img src="IMG_0149.jpg" alt="Lab"></div>
+      <div class="igw"><img src="ew2.png" alt="Diagnostics"></div>
+      <div class="igw"><img src="aca.png" alt="Algorithm"></div>
+      <div class="igw"><img src="zzq.png" alt="Force Data"></div>
+    </div>
+    <div class="chart-w"><div class="chart-lbl">Innovation Impact Score — Quarterly Progression</div><canvas id="c1"></canvas></div>
+  </div>
+
+  <div class="card gf">
+    <div class="card-top-line"></div>
+    <img src="SHL.DE_BIG-f02b9f6c.png" class="co-logo" alt="Siemens">
+    <div class="card-top">
+      <div><div class="co-name">Siemens Healthineers AG</div><div class="co-role">Bachelor Thesis – Intelligent Dynamic Force Limitation</div><div class="co-loc"><i class="fas fa-map-marker-alt"></i>Kemnath, Germany</div></div>
+      <div class="date-pill">Oct 2024 – Feb 2025</div>
+    </div>
+    <ul class="blist">
+      <li>Engineered real-time torque-controlled force limitation system enabling "Single Click Activation."</li>
+      <li>Built electromechanical validation test rigs for dynamic load scenarios.</li>
+      <li>Developed simulation models for collision vs normal motion threshold optimization.</li>
+      <li>Applied ISO 15066 and IEC 60601-2-44 safety frameworks.</li>
+      <li>Conducted empirical hypothesis validation using systems engineering methodology.</li>
+      <li>Authored certification-ready compliance documentation.</li>
+    </ul>
+    <div class="tags"><span class="tag">ISO 15066</span><span class="tag">IEC 60601-2-44</span><span class="tag">Torque Control</span><span class="tag">HIL Testing</span><span class="tag">Simulink</span><span class="tag">FMEA</span></div>
+    <div class="img-grid">
+      <div class="igw"><img src="ew.png" alt="System Model"></div>
+      <div class="igw"><img src="Picture2.jpg" alt="Prototype"></div>
+      <div class="igw"><img src="IMG_0126 (1).jpg" alt="Test Rig"></div>
+      <div class="igw"><img src="IMG_9684 (1).jpg" alt="Lab"></div>
+    </div>
+    <div class="chart-w"><div class="chart-lbl">Safety & Efficiency — Development Phase Milestones</div><canvas id="c2"></canvas></div>
+  </div>
+
+  <div class="card gf">
+    <div class="card-top-line"></div>
+    <img src="SHL.DE_BIG-f02b9f6c.png" class="co-logo" alt="Siemens">
+    <div class="card-top">
+      <div><div class="co-name">Siemens Healthineers AG</div><div class="co-role">Mechatronics Products Intern</div><div class="co-loc"><i class="fas fa-map-marker-alt"></i>Kemnath, Germany</div></div>
+      <div class="date-pill">Apr 2024 – Feb 2025</div>
+    </div>
+    <ul class="blist">
+      <li>Developed LiDAR-based collision avoidance system for Nexaris Angio CT.</li>
+      <li>Integrated sensor logic into sliding gantry architecture.</li>
+      <li>Improved obstacle detection reliability and reduced false alarms.</li>
+      <li>Created structured engineering documentation supporting PLM lifecycle.</li>
+    </ul>
+    <div class="tags"><span class="tag">SICK LiDAR</span><span class="tag">Collision Avoidance</span><span class="tag">C/C++</span><span class="tag">Gantry Systems</span><span class="tag">PLM</span></div>
+    <div class="img-grid">
+      <div class="igw"><img src="50319.png" alt="Sensor"></div>
+      <div class="igw"><img src="vs.png" alt="Logic"></div>
+      <div class="igw"><img src="rrtrr.png" alt="Validation"></div>
+      <div class="igw"><img src="Screenshot 2026-02-26 011728.png" alt="Architecture"></div>
+    </div>
+  </div>
+
+  <div class="card gf">
+    <div class="card-top-line"></div>
+    <img src="Kraken_Robotics_Logo-2025-Black-Horizontal.png" class="co-logo" alt="Kraken Robotics">
+    <div class="card-top">
+      <div><div class="co-name">Kraken Robotics</div><div class="co-role">Electrical Engineering Intern</div><div class="co-loc"><i class="fas fa-map-marker-alt"></i>Rostock, Germany</div></div>
+      <div class="date-pill">Oct 2023 – Mar 2024</div>
+    </div>
+    <ul class="blist">
+      <li>Analyzed battery discharge profiles using MATLAB, improving AUV uptime by 8%.</li>
+      <li>Built advanced MATLAB visualizations for telemetry trend analysis.</li>
+      <li>Conducted environmental stress testing for marine battery systems.</li>
+      <li>Performed FMEA on power distribution units.</li>
+      <li>Integrated battery containers into pressure-resistant hulls.</li>
+      <li>Troubleshot harnesses under extreme marine conditions.</li>
+      <li>Derived failure pattern insights from telemetry datasets.</li>
+    </ul>
+    <div class="tags"><span class="tag">MATLAB</span><span class="tag">AUV Systems</span><span class="tag">FMEA</span><span class="tag">Battery Systems</span><span class="tag">Telemetry</span></div>
+    <div class="img-grid">
+      <div class="igw"><img src="Screenshot 2026-02-26 145216.png" alt="Telemetry"></div>
+      <div class="igw"><img src="servcalibmedener2.jpg" alt="Calibration"></div>
+      <div class="igw"><img src="Pictureq1.png" alt="Battery"></div>
+    </div>
+    <div class="chart-w"><div class="chart-lbl">AUV Uptime Growth — Optimization Timeline</div><canvas id="c3"></canvas></div>
+  </div>
+
+  <div class="card gf">
+    <div class="card-top-line"></div>
+    <img src="logo_profile.png" class="co-logo" alt="Aqua Tech" style="filter:none;opacity:.7">
+    <div class="card-top">
+      <div><div class="co-name">Aqua Tech GmbH</div><div class="co-role">Mechanical Design & Production Engineer</div><div class="co-loc"><i class="fas fa-map-marker-alt"></i>Germany</div></div>
+      <div class="date-pill">Mar 2024 – Aug 2024</div>
+    </div>
+    <ul class="blist">
+      <li>Managed end-to-end production control for mechanical assemblies.</li>
+      <li>Designed structural CAD models for load-bearing components.</li>
+      <li>Reduced bottlenecks by 10% via WIP optimization.</li>
+      <li>Designed custom jigs and electromechanical tooling.</li>
+      <li>Improved manufacturability via tolerance analysis.</li>
+      <li>Conducted throughput simulation for layout optimization.</li>
+    </ul>
+    <div class="tags"><span class="tag">Siemens NX</span><span class="tag">CAD</span><span class="tag">WIP Optimization</span><span class="tag">Tolerance Analysis</span></div>
+    <div class="img-grid"><div class="igw"><img src="vsae.png" alt="Production"></div></div>
+    <div class="chart-w"><div class="chart-lbl">Bottleneck Reduction — Before vs After Optimization</div><canvas id="c4"></canvas></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="sec-label gf">// 02 — Technical Work</p>
+  <div class="sec-title gf">Projects</div>
+  <div class="proj-grid">
+    <div class="pcard gf"><div class="pnum">01</div><h4>HIL-Based Cable Routing & Motion Simulation</h4><ul class="blist"><li>Dynamic cable stress simulation utilizing Siemens NX.</li><li>Routing optimization for multi-axis gantry movement.</li><li>Verified insulation coordination and EMC shielding limits.</li><li>Virtual life-cycle abrasion and wear analysis.</li></ul><div class="tags"><span class="tag">Siemens NX</span><span class="tag">EMC</span><span class="tag">HIL</span></div></div>
+    <div class="pcard gf"><div class="pnum">02</div><h4>Automated Collision Avoidance for Mobile CT Units</h4><ul class="blist"><li>SICK LiDAR integration with safety-rated control logic.</li><li>Real-time C/C++ embedded implementation on microcontrollers.</li><li>Fail-safe braking for medical environments.</li><li>Algorithm refinement to eliminate false triggers.</li></ul><div class="tags"><span class="tag">LiDAR</span><span class="tag">C/C++</span><span class="tag">Safety Logic</span></div></div>
+    <div class="pcard gf"><div class="pnum">03</div><h4>Digital Twin Simulation of CT Patient Table Dynamics</h4><ul class="blist"><li>High-fidelity MATLAB and Simulink system modeling.</li><li>Load-dependent motor torque profile simulation across axes.</li><li>Validation against empirical force sensors.</li><li>PID control loop tuning for seamless motion.</li></ul><div class="tags"><span class="tag">MATLAB</span><span class="tag">Simulink</span><span class="tag">PID</span></div></div>
+    <div class="pcard gf"><div class="pnum">04</div><h4>Embedded Motor Control Optimization Platform</h4><ul class="blist"><li>STM32 and Arduino interfaces for hardware control.</li><li>PWM-based adjustment for dynamic torque scaling.</li><li>Power electronics efficiency testing under varied loads.</li><li>Real-time sensor feedback integration.</li></ul><div class="tags"><span class="tag">STM32</span><span class="tag">PWM</span><span class="tag">Embedded</span></div></div>
+    <div class="pcard gf"><div class="pnum">05</div><h4>Smart Mechatronic Test Bench with Real-Time Feedback</h4><ul class="blist"><li>Custom test bench with real-time feedback loops.</li><li>Automated data logging and performance visualization.</li><li>HIL validation configurations.</li><li>Electromechanical test variable integration.</li></ul><div class="tags"><span class="tag">HIL</span><span class="tag">Data Logging</span><span class="tag">Feedback</span></div></div>
+    <div class="pcard gf"><div class="pnum">06</div><h4>3D Printed Adaptive Sensor Mounting System</h4><ul class="blist"><li>Rapid prototyping of modular mounting systems.</li><li>Siemens NX CAD for structural integrity.</li><li>Tolerance optimization for sensor alignment.</li><li>Iterative design for manufacturability.</li></ul><div class="tags"><span class="tag">3D Print</span><span class="tag">NX CAD</span><span class="tag">Prototyping</span></div></div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="sec-label gf">// 03 — Capabilities</p>
+  <div class="sec-title gf">Technical Skills</div>
+  <div class="sk-grid gf">
+    <div class="sk-g"><h4>Mechanical</h4><div class="chips"><div class="chip"><i class="fas fa-cube"></i>Siemens NX</div><div class="chip"><i class="fas fa-drafting-table"></i>SolidWorks</div><div class="chip"><i class="fas fa-draw-polygon"></i>Creo</div><div class="chip"><i class="fas fa-microchip"></i>CAD Modeling</div><div class="chip"><i class="fas fa-layer-group"></i>Sheet Metal</div><div class="chip"><i class="fas fa-tools"></i>Tolerance Analysis</div></div></div>
+    <div class="sk-g"><h4>Electrical</h4><div class="chips"><div class="chip"><i class="fas fa-cogs"></i>Motor Control</div><div class="chip"><i class="fas fa-bolt"></i>Power Electronics</div><div class="chip"><i class="fas fa-server"></i>Elec. Cabinets</div><div class="chip"><i class="fas fa-shield-virus"></i>EMC & Grounding</div></div></div>
+    <div class="sk-g"><h4>Software</h4><div class="chips"><div class="chip"><i class="fas fa-square-root-alt"></i>MATLAB</div><div class="chip"><i class="fas fa-wave-square"></i>Simulink</div><div class="chip"><i class="fas fa-code"></i>C / C++</div><div class="chip"><i class="fab fa-python"></i>Python</div><div class="chip"><i class="fas fa-microchip"></i>Embedded Sys.</div><div class="chip"><i class="fas fa-network-wired"></i>PLC</div></div></div>
+    <div class="sk-g"><h4>Systems Eng.</h4><div class="chips"><div class="chip"><i class="fas fa-check-double"></i>ISO 15066</div><div class="chip"><i class="fas fa-file-medical"></i>IEC 60601</div><div class="chip"><i class="fas fa-exclamation-triangle"></i>FMEA</div><div class="chip"><i class="fas fa-laptop-code"></i>HIL Testing</div><div class="chip"><i class="fas fa-clone"></i>Digital Twin</div></div></div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <p class="sec-label gf">// 04 — Credentials</p>
+  <div class="sec-title gf">Certifications</div>
+  <div class="grid2">
+    <div class="awc gf"><div class="awi"><img src="1769856219125.jpg" alt="Ops IE"></div><div class="awb"><h4>Operations Industrial Engineer</h4><p>Siemens Mobility</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="vsw.png" alt="Analytics"></div><div class="awb"><h4>Google Analytics Certification</h4><p>Data interpretation & performance optimization</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="df399590-690d-447e-b496-98e1b90503e5.JPG" alt="R&D"></div><div class="awb"><h4>Research & Development Program</h4><p>Advanced Innovation Methodologies</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="Screenshot 2026-02-26 195042.png" alt="NX Cert"></div><div class="awb"><h4>Siemens NX Certification</h4><p>Professional CAD Modeling</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="Screenshot 2026-02-26 195231.png" alt="AWS IoT"></div><div class="awb"><h4>AWS IoT Microcontroller</h4><p>Cloud and Embedded Integration</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="Screenshot 2026-02-26 195250.png" alt="Energy"></div><div class="awb"><h4>Energy Resource Systems</h4><p>Technical Frameworks</p></div></div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <p class="sec-label gf">// 05 — Recognition</p>
+  <div class="sec-title gf">Awards</div>
+  <div class="grid2">
+    <div class="awc gf"><div class="awi"><img src="db8da812-17b6-41ad-b804-a84df993561c.jpg" alt="ITT"></div><div class="awb"><h4>Innovation Think Tank Recognition</h4><p>Strategic innovation leadership</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="vwe.jpg" alt="ITT2"></div><div class="awb"><h4>Innovation Think Tank Recognition</h4><p>Cross-functional ideation award</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="ct2.PNG" alt="Harvard MUN"></div><div class="awb"><h4>Best Delegation — Harvard Model UN</h4><p>Outstanding diplomatic performance</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="gds.PNG" alt="Eng Ex"></div><div class="awb"><h4>Engineering Excellence Recognition</h4><p>Outstanding technical contribution</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="IMG_9608.jpg" alt="Eng Ex 2"></div><div class="awb"><h4>Engineering Excellence Recognition</h4><p>Systems engineering achievement</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="IMG_9605.jpg" alt="Eng Ex 3"></div><div class="awb"><h4>Engineering Excellence Recognition</h4><p>Innovation in medical devices</p></div></div>
+    <div class="awc gf"><div class="awi"><img src="IMG_2450.jpg" alt="Eng Ex 4"></div><div class="awb"><h4>Engineering Excellence Recognition</h4><p>Mechatronics systems award</p></div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div id="contact" class="gf">
+  <h2>Let's Build <em>Something</em><br>Extraordinary</h2>
+  <p class="ct-sub">// open to Systems Engineering & Medical Device roles</p>
+  <div class="ct-grid">
+    <div class="cti"><i class="fas fa-envelope"></i><p>mustafa91syed@gmail.com</p></div>
+    <div class="cti"><i class="fab fa-linkedin"></i><p>linkedin.com/in/syed-mustafa-mohiuddin</p></div>
+    <div class="cti"><i class="fas fa-phone"></i><p>+49 176 73553547</p></div>
+    <div class="cti"><i class="fas fa-map-marker-alt"></i><p>Bayreuth, Germany</p></div>
+  </div>
+</div>
+
+<footer>© 2026 · SYED MUSTAFA MOHIUDDIN · MECHATRONICS SYSTEMS ENGINEER · BAYREUTH, GERMANY</footer>
+
+<script>
+/* ── THREE.JS PARTICLE FIELD ── */
+(function(){
+  const cv = document.getElementById('bgc');
+  const ren = new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+  ren.setPixelRatio(Math.min(devicePixelRatio,2));
+  ren.setSize(innerWidth,innerHeight);
+  ren.setClearColor(0x000000,0);
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,2000);
+  cam.position.z = 480;
+
+  const N = 1600;
+  const pos = new Float32Array(N*3);
+  for(let i=0;i<N*3;i++) pos[i]=(Math.random()-.5)*1300;
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const mat = new THREE.PointsMaterial({color:0x00ff88,size:1.15,transparent:true,opacity:.5,sizeAttenuation:true});
+  const pts = new THREE.Points(geo,mat);
+  scene.add(pts);
+
+  // Line connections
+  const lm = new THREE.LineBasicMaterial({color:0x00ff88,transparent:true,opacity:.035});
+  const lp = [];
+  for(let i=0;i<100;i++){
+    const a=(Math.random()*N|0)*3, b=(Math.random()*N|0)*3;
+    lp.push(pos[a],pos[a+1],pos[a+2],pos[b],pos[b+1],pos[b+2]);
+  }
+  const lg = new THREE.BufferGeometry();
+  lg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(lp),3));
+  scene.add(new THREE.LineSegments(lg,lm));
+
+  let mx=0,my=0;
+  document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*.35;my=(e.clientY/innerHeight-.5)*.35});
+  window.addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();ren.setSize(innerWidth,innerHeight)});
+
+  let t=0;
+  (function animate(){
+    requestAnimationFrame(animate);
+    t+=.00025;
+    pts.rotation.y=t+mx; pts.rotation.x=t*.28+my;
+    scene.children[1].rotation.y=t+mx; scene.children[1].rotation.x=t*.28+my;
+    ren.render(scene,cam);
+  })();
+})();
+
+/* ── GSAP ── */
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero sequence
+gsap.set(['#htag','#hname','#hrole','#hdesc','#hbtns','#hstats'],{opacity:0,y:28});
+const tl=gsap.timeline({delay:.25});
+tl.to('.av-wrap',{opacity:1,y:0,duration:1,ease:'power3.out',from:{opacity:0,y:25}})
+  .to('#htag', {opacity:1,y:0,duration:.85,ease:'power3.out'},'-=.6')
+  .to('#hname',{opacity:1,y:0,duration:.85,ease:'power3.out'},'-=.65')
+  .to('#hrole',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.6')
+  .to('#hdesc',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.55')
+  .to('#hbtns',{opacity:1,y:0,duration:.75,ease:'power3.out'},'-=.5')
+  .to('#hstats',{opacity:1,y:0,duration:.75,ease:'power3.out'},'-=.4');
+
+// Scroll reveals
+gsap.utils.toArray('.gf').forEach((el,i)=>{
+  gsap.fromTo(el,{opacity:0,y:42},{
+    opacity:1,y:0,duration:.88,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 89%',toggleActions:'play none none none'},
+    delay:(i%3)*.06
+  });
+});
+
+/* ── CURSOR ── */
+const c=document.getElementById('cur'),co=document.getElementById('cur-o');
+let cx=0,cy=0,ox=0,oy=0;
+document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY});
+(function mc(){
+  c.style.left=cx+'px';c.style.top=cy+'px';
+  ox+=(cx-ox)*.09;oy+=(cy-oy)*.09;
+  co.style.left=ox+'px';co.style.top=oy+'px';
+  requestAnimationFrame(mc);
+})();
+
+/* ── SCROLL EVENTS ── */
+window.addEventListener('scroll',()=>{
+  const pct=scrollY/(document.body.scrollHeight-innerHeight)*100;
+  document.getElementById('prog').style.width=pct+'%';
+  document.getElementById('nav').classList.toggle('solid',scrollY>40);
+  const secs=document.querySelectorAll('section[id],[id="contact"],[id="hero"]');
+  let act='';
+  secs.forEach(s=>{if(scrollY>=s.offsetTop-180)act=s.id});
+  document.querySelectorAll('.nl').forEach(a=>{
+    a.classList.remove('on');
+    if(a.getAttribute('href')==='#'+act)a.classList.add('on');
+  });
+});
+
+/* ── COUNTERS ── */
+setTimeout(()=>{
+  document.querySelectorAll('.cnt').forEach(el=>{
+    const n=+el.dataset.n; let v=0;
+    const t=setInterval(()=>{v=Math.min(v+n/32,n);el.textContent=Math.floor(v);if(v>=n)clearInterval(t)},38);
+  });
+},1300);
+
+/* ── CARD SPOTLIGHT ── */
+document.querySelectorAll('.card').forEach(c=>{
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    c.style.setProperty('--mx',e.clientX-r.left+'px');
+    c.style.setProperty('--my',e.clientY-r.top+'px');
+  });
+});
+
+/* ── CHARTS ── */
+Chart.defaults.color='#6e7a8a';
+Chart.defaults.font.family="'SF Mono','Fira Code',monospace";
+Chart.defaults.font.size=11;
+
+const co2={
+  responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{backgroundColor:'#0c0f12',borderColor:'rgba(0,255,136,.28)',borderWidth:1,titleColor:'#e8eef4',bodyColor:'#6e7a8a',padding:12,cornerRadius:5}},
+  scales:{
+    y:{grid:{color:'rgba(0,255,136,.04)',borderColor:'transparent'},ticks:{color:'#6e7a8a'},border:{display:false}},
+    x:{grid:{display:false,borderColor:'transparent'},ticks:{color:'#6e7a8a'},border:{display:false}}
+  }
+};
+function ld(labels,data,col='#00ff88'){
+  return{labels,datasets:[{data,borderColor:col,pointBackgroundColor:'#000',pointBorderColor:col,pointRadius:4,pointHoverRadius:7,borderWidth:2,tension:.4,fill:true,backgroundColor:col+'14'}]};
+}
+new Chart(document.getElementById('c1'),{type:'line',data:ld(['Q1','Q2','Q3','Q4'],[22,48,78,96]),options:co2});
+new Chart(document.getElementById('c2'),{type:'line',data:ld(['Concept','Design','Test','Final'],[28,52,80,96],'#00d4ff'),options:co2});
+new Chart(document.getElementById('c3'),{type:'line',data:ld(['Baseline','Month 1','Month 3','Optimized'],[82,84,87,90]),options:{...co2,scales:{...co2.scales,y:{...co2.scales.y,min:78,max:93}}}});
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Before','After'],datasets:[{data:[100,90],backgroundColor:['rgba(110,122,138,.2)','rgba(0,255,136,.18)'],borderColor:['rgba(110,122,138,.6)','#00ff88'],borderWidth:1.5,borderRadius:7,borderSkipped:false}]},options:co2});
+</script>
+</body>
+</html>
