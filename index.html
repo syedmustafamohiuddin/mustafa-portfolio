@@ -14,7 +14,7 @@
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
       --mono: "SF Mono", "Fira Code", "Cascadia Code", "Roboto Mono", monospace;
       /* ── Siemens Healthineers Brand Theme ── */
-      --black:    #0E1A1A;          /* very light teal-tinted page background  */
+      --black:    #F2F7F7;          /* very light teal-tinted page background  */
       --void:     #FFFFFF;          /* white — avatar ring interior            */
       --surface:  #E4EEEE;          /* slightly deeper teal-tinted chip surface*/
       --card:     #FFFFFF;          /* pure white cards                        */
@@ -41,7 +41,7 @@
     #prog{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));z-index:3000;box-shadow:0 0 8px rgba(0,153,153,.6)}
 
     /* CANVAS */
-    #bgc{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.45}
+    #bgc{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.9}
 
     /* Clean overlay — no scanlines for a medical/professional feel */
     body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
@@ -417,7 +417,7 @@
   <h2>Let's Build <em>Something</em><br>Extraordinary</h2>
   <p class="ct-sub">// open to Systems Engineering & Medical Device roles</p>
   <div class="ct-grid">
-    <div class="cti"><i class="fas fa-envelope"></i><p>mustafa91syed@gmail.com</p></div>
+    <div class="cti"><i class="fas fa-envelope"></i><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9df0e8eee9fcfbfca4aceee4f8f9ddfaf0fcf4f1b3fef2f0">[email&#160;protected]</a></p></div>
     <div class="cti"><i class="fab fa-linkedin"></i><p>linkedin.com/in/syed-mustafa-mohiuddin</p></div>
     <div class="cti"><i class="fas fa-phone"></i><p>+49 176 73553547</p></div>
     <div class="cti"><i class="fas fa-map-marker-alt"></i><p>Bayreuth, Germany</p></div>
@@ -443,14 +443,14 @@
   for(let i=0;i<N*3;i++) pos[i]=(Math.random()-.5)*1300;
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-  const mat = new THREE.PointsMaterial({color:0x009999,size:1.2,transparent:true,opacity:.3,sizeAttenuation:true});
+  const mat = new THREE.PointsMaterial({color:0x009999,size:1.5,transparent:true,opacity:.7,sizeAttenuation:true});
   const pts = new THREE.Points(geo,mat);
   scene.add(pts);
 
   // Line connections
-  const lm = new THREE.LineBasicMaterial({color:0x009999,transparent:true,opacity:.04});
+  const lm = new THREE.LineBasicMaterial({color:0x009999,transparent:true,opacity:.22});
   const lp = [];
-  for(let i=0;i<100;i++){
+  for(let i=0;i<200;i++){
     const a=(Math.random()*N|0)*3, b=(Math.random()*N|0)*3;
     lp.push(pos[a],pos[a+1],pos[a+2],pos[b],pos[b+1],pos[b+2]);
   }
