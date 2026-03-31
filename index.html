@@ -102,8 +102,15 @@
     .card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 0 50px rgba(0,255,136,.05),0 20px 60px rgba(0,0,0,.7)}
     .card:hover .card-top-line{opacity:.6}
     .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px}
-    .co-logo{height:27px;margin-bottom:18px;filter:brightness(0) invert(1) opacity(.55);object-fit:contain;transition:opacity .3s}
+    
+    /* FIXED LOGO SIZE - consistent and properly scaled */
+    .co-logo{height:32px;width:auto;max-width:140px;margin-bottom:18px;filter:brightness(0) invert(1) opacity(.55);object-fit:contain;transition:opacity .3s;display:block}
     .card:hover .co-logo{opacity:.85}
+    
+    /* Special override for dark logos (like Kraken) to maintain visibility */
+    .card .co-logo[alt="Kraken Robotics"]{filter:brightness(0) invert(0) opacity(.75);}
+    .card:hover .co-logo[alt="Kraken Robotics"]{opacity:1; filter:brightness(0) invert(0);}
+    
     .co-name{font-size:1.35rem;font-weight:700;color:var(--text);letter-spacing:-.5px;margin-bottom:4px}
     .co-role{color:var(--green);font-size:.92rem;font-weight:500;margin-bottom:5px}
     .co-loc{font-family:var(--mono);font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:5px}
@@ -185,6 +192,8 @@
       section{padding:75px 5%}
       .stat-row{flex-wrap:wrap}
       .stat-i{min-width:50%}
+      /* responsive logos on mobile */
+      .co-logo{height:28px; max-width:120px;}
     }
   </style>
 </head>
@@ -240,7 +249,7 @@
 
   <div class="card gf">
     <div class="card-top-line"></div>
-    <img src="SHL.DE_BIG-f02b9f6c.png" class="co-logo" alt="Siemens">
+    <img src="SHL.DE_BIG-f02b9f6c.png" class="co-logo" alt="Siemens Healthineers">
     <div class="card-top">
       <div><div class="co-name">Siemens Healthineers AG</div><div class="co-role">Working Student – Systems Engineering & Force Limitation</div><div class="co-loc"><i class="fas fa-map-marker-alt"></i>Kemnath, Germany</div></div>
       <div class="date-pill"><span class="ld"></span>Mar 2025 – Present</div>
@@ -265,7 +274,7 @@
 
   <div class="card gf">
     <div class="card-top-line"></div>
-    <img src="SHL.DE_BIG-f02b9f6c.png" class="co-logo" alt="Siemens">
+    <img src="SHL.DE_BIG-f02b9f6c.png" class="co-logo" alt="Siemens Healthineers">
     <div class="card-top">
       <div><div class="co-name">Siemens Healthineers AG</div><div class="co-role">Bachelor Thesis – Intelligent Dynamic Force Limitation</div><div class="co-loc"><i class="fas fa-map-marker-alt"></i>Kemnath, Germany</div></div>
       <div class="date-pill">Oct 2024 – Feb 2025</div>
@@ -290,7 +299,7 @@
 
   <div class="card gf">
     <div class="card-top-line"></div>
-    <img src="SHL.DE_BIG-f02b9f6c.png" class="co-logo" alt="Siemens">
+    <img src="SHL.DE_BIG-f02b9f6c.png" class="co-logo" alt="Siemens Healthineers">
     <div class="card-top">
       <div><div class="co-name">Siemens Healthineers AG</div><div class="co-role">Mechatronics Products Intern</div><div class="co-loc"><i class="fas fa-map-marker-alt"></i>Kemnath, Germany</div></div>
       <div class="date-pill">Apr 2024 – Feb 2025</div>
@@ -337,7 +346,7 @@
 
   <div class="card gf">
     <div class="card-top-line"></div>
-    <img src="logo_profile.png" class="co-logo" alt="Aqua Tech" style="filter:none;opacity:.7">
+    <img src="logo_profile.png" class="co-logo" alt="Aqua Tech" style="filter: none; opacity: 0.7;">
     <div class="card-top">
       <div><div class="co-name">Aqua Tech GmbH</div><div class="co-role">Mechanical Design & Production Engineer</div><div class="co-loc"><i class="fas fa-map-marker-alt"></i>Germany</div></div>
       <div class="date-pill">Mar 2024 – Aug 2024</div>
