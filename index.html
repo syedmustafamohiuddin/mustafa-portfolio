@@ -291,6 +291,80 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
 /* ═══ MAG BUTTON ═══ */
 .mag{display:inline-flex;align-items:center;position:relative;transition:transform .2s var(--ease)}
 
+/* ═══ GLOBE ═══ */
+#globe-wrap{
+  position:absolute;
+  bottom:0;left:50%;
+  transform:translateX(-50%);
+  width:min(720px,100vw);
+  height:360px;
+  pointer-events:none;
+  z-index:0;
+  overflow:hidden;
+}
+#globe-canvas{
+  width:100%;height:100%;
+  display:block;
+}
+.globe-fade{
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 100%,transparent 40%,var(--bg) 80%);
+  pointer-events:none;
+}
+.globe-fade-bottom{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:160px;
+  background:linear-gradient(to top,var(--bg),transparent);
+  pointer-events:none;
+}
+
+/* ═══ TYPEWRITER ═══ */
+.hero-name{position:relative;z-index:2}
+.typed-line{display:block}
+.typed-cursor{
+  display:inline-block;
+  width:3px;
+  background:var(--blue);
+  margin-left:3px;
+  border-radius:1px;
+  vertical-align:baseline;
+  height:.85em;
+  position:relative;
+  top:.05em;
+  animation:cursorBlink .85s step-end infinite;
+  box-shadow:0 0 8px var(--bglow);
+}
+@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* Germany marker */
+.germany-label{
+  position:absolute;
+  font-family:var(--mono);
+  font-size:.58rem;
+  color:var(--blue);
+  background:rgba(10,132,255,.12);
+  border:1px solid rgba(10,132,255,.3);
+  padding:3px 8px;
+  border-radius:5px;
+  white-space:nowrap;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .4s;
+  backdrop-filter:blur(6px);
+  letter-spacing:.04em;
+}
+.germany-label.visible{opacity:1}
+.germany-label::before{
+  content:'';
+  position:absolute;
+  bottom:-5px;left:50%;
+  transform:translateX(-50%);
+  width:1px;height:6px;
+  background:var(--blue);
+}
+
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){.sk-grid{grid-template-columns:repeat(2,1fr)}.proj-grid{grid-template-columns:1fr}.proj-card.featured{grid-column:span 1}.cred-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:640px){.nl{display:none}.stats-bar{flex-wrap:wrap}.st{min-width:50%}.ct-cards{grid-template-columns:1fr}.cred-grid{grid-template-columns:1fr}.lb-prev{left:-44px}.lb-next{right:-44px}footer{flex-direction:column;gap:6px;text-align:center}}
@@ -328,46 +402,62 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
 </nav>
 
 <!-- HERO -->
-<section id="hero">
+<section id="hero" style="padding-bottom:0">
   <svg class="hero-grid" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
     <defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,1)" stroke-width=".5"/></pattern></defs>
     <rect width="100%" height="100%" fill="url(#grid)"/>
   </svg>
 
-  <div class="av-wrap">
-    <div class="av-ring-outer"></div>
-    <div class="av-ring-inner"></div>
-    <div class="av-mask"></div>
-    <img class="av-img" src="IMG_5169.png" alt="Syed Mustafa Mohiuddin"/>
-    <div class="av-status"></div>
-  </div>
+  <!-- content above globe -->
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding-bottom:32px">
+    <div class="av-wrap">
+      <div class="av-ring-outer"></div>
+      <div class="av-ring-inner"></div>
+      <div class="av-mask"></div>
+      <img class="av-img" src="IMG_5169.png" alt="Syed Mustafa Mohiuddin"/>
+      <div class="av-status"></div>
+    </div>
 
-  <div class="h-badge"><div class="h-pip"></div>Open to Systems Engineering Roles</div>
+    <div class="h-badge"><div class="h-pip"></div>Open to Systems Engineering Roles</div>
 
-  <h1 class="hero-name">Syed Mustafa<br><span class="ga">Mohiuddin</span></h1>
-  <p class="h-role">Mechatronics · Automation · Robotics · Controls Engineering</p>
-  <p class="h-desc">Engineering intelligent systems where mechanics, electronics, and software converge — from force-controlled motion systems and autonomous robotics to embedded control architectures and digital twins.</p>
+    <!-- TYPEWRITER NAME -->
+    <h1 class="hero-name" id="hero-h1" style="min-height:1.2em">
+      <span class="typed-line" id="typed-line1"></span><br>
+      <span class="typed-line ga" id="typed-line2"></span><span class="typed-cursor" id="typed-cursor"></span>
+    </h1>
 
-  <div class="ticker-wrap">
-    <div class="ticker" id="ticker">
-      <span class="t-pill">Force Limitation</span><span class="t-pill">Motion Control</span><span class="t-pill">Digital Twin</span><span class="t-pill">HIL Testing</span><span class="t-pill">AUV Systems</span><span class="t-pill">Sensor Fusion</span><span class="t-pill">ISO 15066</span><span class="t-pill">FMEA</span><span class="t-pill">Siemens NX</span><span class="t-pill">MATLAB / Simulink</span><span class="t-pill">Embedded C/C++</span><span class="t-pill">PLC Programming</span><span class="t-pill">LiDAR Integration</span><span class="t-pill">Motor Control</span><span class="t-pill">Marine Robotics</span><span class="t-pill">PLM</span>
-      <!-- duplicate for infinite scroll -->
-      <span class="t-pill">Force Limitation</span><span class="t-pill">Motion Control</span><span class="t-pill">Digital Twin</span><span class="t-pill">HIL Testing</span><span class="t-pill">AUV Systems</span><span class="t-pill">Sensor Fusion</span><span class="t-pill">ISO 15066</span><span class="t-pill">FMEA</span><span class="t-pill">Siemens NX</span><span class="t-pill">MATLAB / Simulink</span><span class="t-pill">Embedded C/C++</span><span class="t-pill">PLC Programming</span><span class="t-pill">LiDAR Integration</span><span class="t-pill">Motor Control</span><span class="t-pill">Marine Robotics</span><span class="t-pill">PLM</span>
+    <p class="h-role">Mechatronics · Automation · Robotics · Controls Engineering</p>
+    <p class="h-desc">Engineering intelligent systems where mechanics, electronics, and software converge — from force-controlled motion systems and autonomous robotics to embedded control architectures and digital twins.</p>
+
+    <div class="ticker-wrap">
+      <div class="ticker" id="ticker">
+        <span class="t-pill">Force Limitation</span><span class="t-pill">Motion Control</span><span class="t-pill">Digital Twin</span><span class="t-pill">HIL Testing</span><span class="t-pill">AUV Systems</span><span class="t-pill">Sensor Fusion</span><span class="t-pill">ISO 15066</span><span class="t-pill">FMEA</span><span class="t-pill">Siemens NX</span><span class="t-pill">MATLAB / Simulink</span><span class="t-pill">Embedded C/C++</span><span class="t-pill">PLC Programming</span><span class="t-pill">LiDAR Integration</span><span class="t-pill">Motor Control</span><span class="t-pill">Marine Robotics</span><span class="t-pill">PLM</span>
+        <span class="t-pill">Force Limitation</span><span class="t-pill">Motion Control</span><span class="t-pill">Digital Twin</span><span class="t-pill">HIL Testing</span><span class="t-pill">AUV Systems</span><span class="t-pill">Sensor Fusion</span><span class="t-pill">ISO 15066</span><span class="t-pill">FMEA</span><span class="t-pill">Siemens NX</span><span class="t-pill">MATLAB / Simulink</span><span class="t-pill">Embedded C/C++</span><span class="t-pill">PLC Programming</span><span class="t-pill">LiDAR Integration</span><span class="t-pill">Motor Control</span><span class="t-pill">Marine Robotics</span><span class="t-pill">PLM</span>
+      </div>
+    </div>
+
+    <div class="ctas">
+      <a href="#ct" class="btn-p mag clk"><i class="fas fa-arrow-right"></i>Get in Touch</a>
+      <a href="#exp" class="btn-g mag clk"><i class="fas fa-arrow-down"></i>Explore Work</a>
+    </div>
+
+    <div class="stats-bar">
+      <div class="st"><div class="sn"><span class="cnt" data-n="3">0</span>+</div><div class="sl">Years Exp</div></div>
+      <div class="st"><div class="sn"><span class="cnt" data-n="5">0</span></div><div class="sl">Companies</div></div>
+      <div class="st"><div class="sn"><span class="cnt" data-n="6">0</span>+</div><div class="sl">Certifications</div></div>
+      <div class="st"><div class="sn"><span class="cnt" data-n="8">0</span>%</div><div class="sl">AUV Uptime ↑</div></div>
     </div>
   </div>
 
-  <div class="ctas">
-    <a href="#ct" class="btn-p mag clk"><i class="fas fa-arrow-right"></i>Get in Touch</a>
-    <a href="#exp" class="btn-g mag clk"><i class="fas fa-arrow-down"></i>Explore Work</a>
+  <!-- GLOBE -->
+  <div id="globe-wrap">
+    <canvas id="globe-canvas"></canvas>
+    <div class="globe-fade"></div>
+    <div class="globe-fade-bottom"></div>
+    <div class="germany-label" id="de-label">📍 Bayreuth, Germany</div>
   </div>
 
-  <div class="stats-bar">
-    <div class="st"><div class="sn"><span class="cnt" data-n="3">0</span>+</div><div class="sl">Years Exp</div></div>
-    <div class="st"><div class="sn"><span class="cnt" data-n="5">0</span></div><div class="sl">Companies</div></div>
-    <div class="st"><div class="sn"><span class="cnt" data-n="6">0</span>+</div><div class="sl">Certifications</div></div>
-    <div class="st"><div class="sn"><span class="cnt" data-n="8">0</span>%</div><div class="sl">AUV Uptime ↑</div></div>
-  </div>
-  <div class="scroll-c"><span>Scroll</span><div class="scroll-bar"></div></div>
+  <div class="scroll-c" style="position:relative;z-index:2;margin-top:-20px;padding-bottom:32px"><span>Scroll</span><div class="scroll-bar"></div></div>
 </section>
 
 <!-- EXPERIENCE -->
@@ -839,13 +929,321 @@ new Chart(document.getElementById('c2'),{type:'line',data:ml(['Concept','Design'
 new Chart(document.getElementById('c3'),{type:'line',data:ml(['Baseline','Mo1','Mo3','Opt.'],[82,84,87,90],'#0a84ff'),options:{...co,scales:{...co.scales,y:{...co.scales.y,min:78,max:93}}}});
 new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Before','After'],datasets:[{data:[100,90],backgroundColor:['rgba(255,255,255,.05)','rgba(10,132,255,.2)'],borderColor:['rgba(255,255,255,.1)','#0a84ff'],borderWidth:1,borderRadius:6}]},options:co});
 
-/* ═══ PARALLAX HERO GRID ═══ */
-document.addEventListener('mousemove',e=>{
-  const x=(e.clientX/innerWidth-.5)*12;
-  const y=(e.clientY/innerHeight-.5)*8;
-  const grid=document.querySelector('.hero-grid');
-  if(grid)grid.style.transform=`translate(${x}px,${y}px)`;
-},{passive:true});
+/* ═══ TYPEWRITER ═══ */
+(function(){
+  const line1El = document.getElementById('typed-line1');
+  const line2El = document.getElementById('typed-line2');
+  const cursorEl = document.getElementById('typed-cursor');
+  const line1 = 'Syed Mustafa';
+  const line2 = 'Mohiuddin';
+  let i = 0, phase = 1;
+  const speed = 72;
+
+  // Apply gradient style to line2 element
+  line2El.style.cssText = 'background:linear-gradient(135deg,#0a84ff 0%,#00d2d3 60%,#3fa0ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text';
+
+  // Start after hero fade-in delay
+  setTimeout(function tick(){
+    if(phase === 1){
+      line1El.textContent = line1.slice(0, i+1);
+      i++;
+      if(i >= line1.length){ phase = 2; i = 0; setTimeout(tick, 320); return; }
+    } else {
+      line2El.textContent = line2.slice(0, i+1);
+      i++;
+      if(i >= line2.length){
+        // Done — blink cursor then hide it after 2s
+        setTimeout(()=>{ cursorEl.style.display='none'; }, 2600);
+        return;
+      }
+    }
+    setTimeout(tick, speed + Math.random()*40 - 20);
+  }, 900);
+})();
+
+/* ═══ GLOBE ═══ */
+(function(){
+  const canvas = document.getElementById('globe-canvas');
+  const ctx = canvas.getContext('2d');
+  const label = document.getElementById('de-label');
+
+  // Germany lat/lon
+  const DE_LAT = 51.1657;
+  const DE_LON = 10.4515;
+
+  let W, H, R, cx, cy;
+  let rotY = 0.28; // start so Germany is visible center
+  let targetRotY = rotY;
+  let isDragging = false, dragX = 0;
+  let animFrame;
+
+  function resize(){
+    const wrap = canvas.parentElement;
+    W = canvas.width = wrap.offsetWidth;
+    H = canvas.height = wrap.offsetHeight;
+    R = Math.min(W, H * 2) * 0.46;
+    cx = W / 2;
+    cy = H; // center of full sphere is at bottom edge — half-globe
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Convert lat/lon to 3D xyz on unit sphere
+  function latLonToXYZ(lat, lon){
+    const phi = (90 - lat) * Math.PI / 180;
+    const theta = (lon + 180) * Math.PI / 180;
+    return {
+      x: -Math.sin(phi) * Math.cos(theta),
+      y:  Math.cos(phi),
+      z:  Math.sin(phi) * Math.sin(theta)
+    };
+  }
+
+  // Project 3D point to 2D given current rotation
+  function project(x, y, z, rotY){
+    // Rotate around Y axis
+    const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+    const x2 = x * cosY + z * sinY;
+    const z2 = -x * sinY + z * cosY;
+    return {
+      sx: cx + x2 * R,
+      sy: cy + y * R,  // y is up in geo coords
+      z: z2,           // depth
+      visible: z2 > -0.05
+    };
+  }
+
+  // Land masses — simplified polygons (major continents) as lat/lon arrays
+  // Europe + some key land areas for visual reference
+  const LAND = [
+    // Europe simplified
+    [[71,28],[70,32],[69,33],[68,35],[65,24],[63,22],[60,20],[59,18],[57,18],[56,15],[55,12],[55,10],[56,8],[56,4],[54,8],[54,12],[52,5],[51,4],[50,3],[48,2],[46,1],[44,2],[43,5],[42,3],[41,1],[40,0],[39,-1],[38,0],[37,0],[36,0],[36,3],[36,5],[37,10],[38,14],[40,18],[42,20],[42,24],[43,27],[43,28],[44,29],[46,30],[47,32],[47,35],[48,35],[49,32],[50,30],[52,22],[53,18],[54,18],[55,22],[56,22],[57,20],[58,22],[60,24],[61,26],[63,26],[65,22],[66,24],[67,26],[68,28],[70,28],[71,28]],
+    // Scandinavia
+    [[57,8],[58,6],[60,5],[62,5],[64,8],[66,14],[68,18],[70,24],[71,28],[70,30],[69,28],[68,26],[67,22],[66,22],[65,22],[63,20],[61,18],[59,18],[57,18],[56,12],[56,8],[57,8]],
+    // British Isles simplified
+    [[51,-5],[52,-4],[53,-4],[54,-3],[56,-3],[58,-3],[59,-3],[60,-1],[59,0],[58,1],[55,2],[53,1],[52,1],[51,1],[50,0],[50,-4],[51,-5]],
+    // Africa simplified
+    [[-35,18],[-34,22],[-30,30],[-26,32],[-20,36],[-12,38],[-6,40],[0,42],[6,42],[12,44],[16,40],[18,38],[22,37],[28,34],[32,28],[36,14],[38,8],[38,0],[36,-4],[30,-8],[22,-12],[16,-12],[10,-16],[4,-8],[0,-8],[-4,-8],[-8,-12],[-12,-14],[-16,-12],[-18,-10],[-16,-4],[-14,-2],[-10,0],[-8,2],[-6,0],[-4,-4],[-2,-8],[0,-14],[0,-18],[0,-22],[0,-28],[0,-34],[-8,-34],[-16,-30],[-22,-22],[-28,-16],[-34,-18],[-35,18]],
+    // North America rough
+    [[72,-130],[70,-128],[68,-130],[68,-136],[70,-140],[72,-140],[74,-120],[74,-80],[72,-76],[68,-70],[64,-64],[60,-64],[56,-60],[52,-56],[46,-52],[44,-54],[44,-60],[44,-66],[44,-70],[42,-70],[42,-74],[40,-74],[36,-76],[34,-78],[30,-80],[26,-80],[24,-82],[20,-86],[16,-90],[12,-84],[8,-78],[8,-76],[12,-72],[16,-62],[18,-66],[20,-70],[22,-74],[24,-76],[26,-80],[28,-80],[30,-88],[34,-88],[38,-90],[40,-86],[42,-80],[44,-76],[46,-76],[46,-70],[50,-64],[54,-58],[56,-56],[58,-62],[60,-64],[62,-62],[62,-66],[64,-66],[64,-76],[60,-78],[56,-78],[52,-78],[50,-84],[48,-90],[46,-84],[44,-84],[44,-80],[46,-72],[48,-70],[50,-66],[52,-56],[54,-54],[56,-54],[56,-60],[54,-64],[52,-58],[50,-60],[46,-60],[44,-62],[42,-66],[40,-66],[38,-68],[36,-72],[34,-76],[32,-80],[30,-82],[28,-80],[26,-80],[24,-82],[22,-84],[20,-88],[18,-92],[16,-96],[14,-90],[12,-86],[12,-84],[16,-90],[18,-88],[20,-90],[22,-92],[22,-88],[20,-96],[18,-98],[18,-102],[20,-104],[22,-106],[24,-108],[28,-110],[30,-116],[32,-118],[34,-118],[36,-122],[38,-122],[40,-124],[42,-124],[44,-124],[46,-124],[48,-124],[50,-128],[52,-130],[54,-132],[56,-130],[58,-136],[60,-138],[60,-142],[62,-144],[64,-146],[66,-148],[68,-150],[70,-148],[72,-140],[72,-130]],
+    // Asia simplified
+    [[70,30],[68,34],[66,40],[66,50],[68,60],[70,70],[72,80],[70,90],[68,100],[66,110],[70,120],[72,130],[70,140],[68,150],[66,160],[64,170],[62,172],[60,168],[58,162],[56,154],[54,142],[52,130],[50,124],[48,120],[46,114],[44,112],[42,110],[40,116],[38,120],[36,120],[34,118],[32,120],[30,120],[28,116],[26,112],[24,112],[22,114],[20,110],[18,106],[16,100],[14,100],[12,104],[10,106],[8,100],[6,100],[4,102],[2,104],[0,104],[-2,108],[-4,106],[-2,100],[0,100],[2,100],[4,102],[6,100],[8,96],[10,92],[12,88],[14,80],[16,74],[18,72],[20,68],[22,64],[24,60],[28,48],[28,44],[26,40],[24,38],[22,38],[20,40],[16,42],[12,42],[8,42],[6,40],[2,44],[0,42],[-2,40],[0,36],[4,30],[6,26],[8,22],[10,18],[12,16],[14,14],[18,12],[22,8],[28,10],[32,12],[36,14],[40,18],[44,20],[46,24],[48,28],[50,28],[52,26],[54,22],[56,20],[58,22],[60,26],[62,26],[64,28],[66,28],[68,28],[70,30]],
+    // South America simplified
+    [[12,-72],[10,-68],[8,-60],[6,-52],[4,-52],[2,-52],[0,-50],[-4,-36],[-8,-34],[-12,-38],[-16,-38],[-20,-40],[-24,-44],[-28,-48],[-32,-52],[-36,-56],[-40,-62],[-44,-66],[-48,-66],[-52,-68],[-54,-66],[-52,-62],[-50,-58],[-48,-50],[-44,-42],[-40,-38],[-36,-36],[-30,-30],[-24,-44],[-20,-44],[-16,-40],[-12,-38],[-8,-36],[-4,-38],[0,-50],[4,-60],[6,-60],[8,-64],[10,-68],[12,-72]],
+    // Australia simplified
+    [[-12,130],[-14,128],[-16,122],[-18,114],[-22,114],[-26,114],[-30,114],[-34,118],[-36,136],[-38,140],[-38,144],[-40,148],[-42,148],[-42,144],[-40,140],[-38,140],[-36,136],[-34,138],[-30,140],[-24,148],[-18,148],[-14,136],[-12,130]]
+  ];
+
+  // City coordinates for the location dot
+  const CITIES = [
+    { name: 'Bayreuth, Germany', lat: 49.9456, lon: 11.5713, isHome: true }
+  ];
+
+  let deScreenX = 0, deScreenY = 0, deVisible = false;
+  let pulseR = 0, pulseAlpha = 1;
+  let t = 0;
+
+  function drawGlobe(){
+    ctx.clearRect(0, 0, W, H);
+
+    // Clip to half-circle (upper half of sphere)
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, R + 2, Math.PI, 0, false); // top half arc
+    ctx.lineTo(cx + R + 2, cy);
+    ctx.lineTo(cx - R - 2, cy);
+    ctx.closePath();
+    ctx.clip();
+
+    // Ocean base gradient
+    const grad = ctx.createRadialGradient(cx, cy, R * 0.1, cx, cy * 0.5, R * 1.1);
+    grad.addColorStop(0, 'rgba(10,40,80,0.55)');
+    grad.addColorStop(0.5, 'rgba(5,20,50,0.40)');
+    grad.addColorStop(1, 'rgba(0,5,20,0.20)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Grid lines (latitude + longitude)
+    ctx.strokeStyle = 'rgba(10,132,255,0.10)';
+    ctx.lineWidth = 0.6;
+
+    // Latitude lines every 20°
+    for(let lat = -80; lat <= 80; lat += 20){
+      const phi = (90 - lat) * Math.PI / 180;
+      const y0 = Math.cos(phi);
+      const r0 = Math.sin(phi);
+      ctx.beginPath();
+      let first = true;
+      for(let lon = -180; lon <= 180; lon += 4){
+        const theta = (lon + 180) * Math.PI / 180;
+        const x3 = -r0 * Math.cos(theta);
+        const z3 =  r0 * Math.sin(theta);
+        const p = project(x3, y0, z3, rotY);
+        if(p.visible){
+          if(first){ ctx.moveTo(p.sx, p.sy); first = false; }
+          else ctx.lineTo(p.sx, p.sy);
+        } else { first = true; }
+      }
+      ctx.stroke();
+    }
+
+    // Longitude lines every 20°
+    for(let lon = 0; lon < 360; lon += 20){
+      ctx.beginPath();
+      let first = true;
+      for(let lat = -90; lat <= 90; lat += 3){
+        const phi = (90 - lat) * Math.PI / 180;
+        const theta = (lon + 180) * Math.PI / 180;
+        const x3 = -Math.sin(phi) * Math.cos(theta);
+        const y3 =  Math.cos(phi);
+        const z3 =  Math.sin(phi) * Math.sin(theta);
+        const p = project(x3, y3, z3, rotY);
+        if(p.visible && p.sy <= cy){
+          if(first){ ctx.moveTo(p.sx, p.sy); first = false; }
+          else ctx.lineTo(p.sx, p.sy);
+        } else { first = true; }
+      }
+      ctx.stroke();
+    }
+
+    // Draw land masses
+    LAND.forEach(polygon => {
+      ctx.beginPath();
+      let first = true;
+      polygon.forEach(([lat, lon]) => {
+        const {x, y, z} = latLonToXYZ(lat, lon);
+        const p = project(x, y, z, rotY);
+        if(p.visible){
+          if(first){ ctx.moveTo(p.sx, p.sy); first = false; }
+          else ctx.lineTo(p.sx, p.sy);
+        } else { first = true; }
+      });
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(30,80,140,0.35)';
+      ctx.strokeStyle = 'rgba(10,132,255,0.22)';
+      ctx.lineWidth = 0.8;
+      ctx.fill();
+      ctx.stroke();
+    });
+
+    // Germany highlight — glowing blob
+    const deXYZ = latLonToXYZ(DE_LAT, DE_LON);
+    const deP = project(deXYZ.x, deXYZ.y, deXYZ.z, rotY);
+    deVisible = deP.visible && deP.sy < cy + 10;
+    deScreenX = deP.sx;
+    deScreenY = deP.sy;
+
+    if(deVisible){
+      // Glow halo
+      const halo = ctx.createRadialGradient(deP.sx, deP.sy, 0, deP.sx, deP.sy, 22);
+      halo.addColorStop(0, 'rgba(10,132,255,0.55)');
+      halo.addColorStop(0.5, 'rgba(10,132,255,0.20)');
+      halo.addColorStop(1, 'rgba(10,132,255,0)');
+      ctx.beginPath();
+      ctx.arc(deP.sx, deP.sy, 22, 0, Math.PI * 2);
+      ctx.fillStyle = halo;
+      ctx.fill();
+
+      // Animated pulse ring
+      pulseR = (pulseR + 0.35) % 18;
+      pulseAlpha = 1 - pulseR / 18;
+      ctx.beginPath();
+      ctx.arc(deP.sx, deP.sy, 4 + pulseR, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(10,132,255,${pulseAlpha * 0.8})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Second ring offset
+      const r2 = (pulseR + 9) % 18;
+      const a2 = 1 - r2 / 18;
+      ctx.beginPath();
+      ctx.arc(deP.sx, deP.sy, 4 + r2, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(0,210,211,${a2 * 0.5})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Core dot
+      ctx.beginPath();
+      ctx.arc(deP.sx, deP.sy, 4.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#0a84ff';
+      ctx.shadowColor = '#0a84ff';
+      ctx.shadowBlur = 12;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Pin stem
+      ctx.beginPath();
+      ctx.moveTo(deP.sx, deP.sy - 4);
+      ctx.lineTo(deP.sx, deP.sy - 16);
+      ctx.strokeStyle = 'rgba(10,132,255,0.7)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      // Position label
+      const lbl = document.getElementById('de-label');
+      lbl.style.left = (deP.sx - lbl.offsetWidth / 2) + 'px';
+      lbl.style.top = (deP.sy - 38) + 'px';
+      lbl.classList.add('visible');
+    } else {
+      document.getElementById('de-label').classList.remove('visible');
+    }
+
+    // Globe rim glow
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, Math.PI, 0, false);
+    ctx.strokeStyle = 'rgba(10,132,255,0.25)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Atmosphere outer glow
+    const atmo = ctx.createRadialGradient(cx, cy, R - 4, cx, cy, R + 18);
+    atmo.addColorStop(0, 'rgba(10,132,255,0.12)');
+    atmo.addColorStop(1, 'rgba(10,132,255,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, R + 18, Math.PI, 0, false);
+    ctx.fillStyle = atmo;
+    ctx.fill();
+
+    ctx.restore();
+
+    t += 0.0018;
+    // Auto-rotate slowly, bias toward Germany center lon ~10°
+    if(!isDragging){
+      // Ease toward "show Germany" position
+      const targetAngle = -0.18; // rotY where Germany faces viewer
+      const diff = targetAngle - rotY;
+      if(Math.abs(diff) > 0.002){
+        rotY += diff * 0.008;
+      } else {
+        // gentle continuous slow rotate
+        rotY += 0.0006;
+      }
+    }
+    animFrame = requestAnimationFrame(drawGlobe);
+  }
+
+  // Mouse drag to rotate
+  canvas.style.pointerEvents = 'all';
+  canvas.style.cursor = 'grab';
+  canvas.addEventListener('mousedown', e => {
+    isDragging = true; dragX = e.clientX;
+    canvas.style.cursor = 'grabbing';
+  });
+  window.addEventListener('mousemove', e => {
+    if(!isDragging) return;
+    rotY += (e.clientX - dragX) * 0.006;
+    dragX = e.clientX;
+  });
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    canvas.style.cursor = 'grab';
+  });
+
+  drawGlobe();
+})();
+
 </script>
 </body>
 </html>
