@@ -291,33 +291,57 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
 /* ═══ MAG BUTTON ═══ */
 .mag{display:inline-flex;align-items:center;position:relative;transition:transform .2s var(--ease)}
 
-/* ═══ GLOBE ═══ */
+/* ═══ GLOBE — full-screen behind hero ═══ */
 #globe-wrap{
   position:absolute;
-  bottom:0;left:50%;
-  transform:translateX(-50%);
-  width:min(720px,100vw);
-  height:360px;
+  inset:0;
+  width:100%;
+  height:100%;
   pointer-events:none;
   z-index:0;
   overflow:hidden;
 }
 #globe-canvas{
-  width:100%;height:100%;
+  position:absolute;
+  left:50%;
+  bottom:-12%;
+  transform:translateX(-50%);
+  width:min(1100px,110vw);
+  height:min(1100px,110vw);
   display:block;
+  pointer-events:all;
 }
 .globe-fade{
   position:absolute;
   inset:0;
-  background:radial-gradient(ellipse 80% 60% at 50% 100%,transparent 40%,var(--bg) 80%);
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 50%, transparent 30%, rgba(5,5,7,.55) 65%, rgba(5,5,7,.92) 100%);
   pointer-events:none;
+  z-index:1;
 }
 .globe-fade-bottom{
   position:absolute;
   bottom:0;left:0;right:0;
-  height:160px;
-  background:linear-gradient(to top,var(--bg),transparent);
+  height:220px;
+  background:linear-gradient(to top,var(--bg) 0%,transparent 100%);
   pointer-events:none;
+  z-index:2;
+}
+.globe-fade-top{
+  position:absolute;
+  top:0;left:0;right:0;
+  height:160px;
+  background:linear-gradient(to bottom,var(--bg) 0%,transparent 100%);
+  pointer-events:none;
+  z-index:2;
+}
+.globe-fade-sides{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(to right, var(--bg) 0%, transparent 18%, transparent 82%, var(--bg) 100%);
+  pointer-events:none;
+  z-index:2;
 }
 
 /* ═══ TYPEWRITER ═══ */
@@ -338,32 +362,8 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
 }
 @keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
 
-/* Germany marker */
-.germany-label{
-  position:absolute;
-  font-family:var(--mono);
-  font-size:.58rem;
-  color:var(--red);
-  background:rgba(10,132,255,.12);
-  border:1px solid rgba(10,132,255,.3);
-  padding:3px 8px;
-  border-radius:5px;
-  white-space:nowrap;
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .4s;
-  backdrop-filter:blur(6px);
-  letter-spacing:.04em;
-}
-.germany-label.visible{opacity:5}
-.germany-label::before{
-  content:'';
-  position:absolute;
-  bottom:-5px;left:50%;
-  transform:translateX(-50%);
-  width:1px;height:6px;
-  background:var(--blue);
-}
+
+
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){.sk-grid{grid-template-columns:repeat(2,1fr)}.proj-grid{grid-template-columns:1fr}.proj-card.featured{grid-column:span 1}.cred-grid{grid-template-columns:repeat(2,1fr)}}
@@ -449,12 +449,13 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
     </div>
   </div>
 
-  <!-- GLOBE -->
+  <!-- GLOBE — full viewport background -->
   <div id="globe-wrap">
     <canvas id="globe-canvas"></canvas>
     <div class="globe-fade"></div>
     <div class="globe-fade-bottom"></div>
-    <div class="germany-label" id="de-label">📍 Bayreuth, Germany</div>
+    <div class="globe-fade-top"></div>
+    <div class="globe-fade-sides"></div>
   </div>
 
   <div class="scroll-c" style="position:relative;z-index:2;margin-top:-20px;padding-bottom:32px"><span>Scroll</span><div class="scroll-bar"></div></div>
@@ -650,12 +651,42 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
     <div class="rv"><div class="sec-lbl">02 — Projects</div><div class="sec-ttl">Technical <span class="dim">Work</span></div></div>
     <div class="proj-grid">
 
+      <!-- P01 HIL Cable Routing — animated circuit diagram SVG -->
       <div class="proj-card featured rv d1">
-        <div class="proj-img" onclick="openLbSet('proj1',0)">
-          <img src="ew.png" alt="HIL Cable Routing Simulation"/>
+        <div class="proj-img" style="cursor:default;overflow:hidden;background:#0c0f18">
+          <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <defs>
+              <linearGradient id="g1a" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0a84ff" stop-opacity=".9"/><stop offset="100%" stop-color="#00d2d3" stop-opacity=".9"/></linearGradient>
+              <filter id="glow1"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0a84ff" opacity=".7"/></marker>
+            </defs>
+            <!-- background grid -->
+            <pattern id="pgrid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30,0 L0,0 0,30" fill="none" stroke="rgba(10,132,255,.07)" stroke-width=".5"/></pattern>
+            <rect width="600" height="300" fill="url(#pgrid)"/>
+            <!-- gantry axis lines -->
+            <line x1="60" y1="150" x2="540" y2="150" stroke="rgba(10,132,255,.15)" stroke-width="1" stroke-dasharray="4,6"/>
+            <line x1="300" y1="30" x2="300" y2="270" stroke="rgba(10,132,255,.15)" stroke-width="1" stroke-dasharray="4,6"/>
+            <!-- cable routing paths — animated -->
+            <path d="M80,80 C140,80 160,150 220,150 C280,150 300,100 360,80 C420,60 460,120 520,120" fill="none" stroke="url(#g1a)" stroke-width="2.5" stroke-linecap="round" filter="url(#glow1)" opacity=".85">
+              <animate attributeName="stroke-dashoffset" from="400" to="0" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values=".6;1;.6" dur="3s" repeatCount="indefinite"/>
+            </path>
+            <path d="M80,180 C140,180 180,130 240,150 C300,170 320,200 380,180 C440,160 480,200 520,190" fill="none" stroke="url(#g1a)" stroke-width="2" stroke-linecap="round" filter="url(#glow1)" opacity=".6">
+              <animate attributeName="stroke-dashoffset" from="400" to="0" dur="4s" begin="1s" repeatCount="indefinite"/>
+            </path>
+            <!-- connector nodes -->
+            <circle cx="80" cy="80" r="6" fill="#0a84ff" filter="url(#glow1)"><animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/></circle>
+            <circle cx="80" cy="180" r="6" fill="#00d2d3" filter="url(#glow1)"><animate attributeName="r" values="5;8;5" dur="2.5s" begin=".5s" repeatCount="indefinite"/></circle>
+            <circle cx="520" cy="120" r="6" fill="#0a84ff" filter="url(#glow1)"/>
+            <circle cx="520" cy="190" r="6" fill="#00d2d3" filter="url(#glow1)"/>
+            <circle cx="300" cy="150" r="10" fill="none" stroke="#0a84ff" stroke-width="1.5" opacity=".5"><animate attributeName="r" values="8;16;8" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".5;0;.5" dur="3s" repeatCount="indefinite"/></circle>
+            <!-- axis labels -->
+            <text x="90" y="25" fill="rgba(10,132,255,.6)" font-family="JetBrains Mono,monospace" font-size="10">X-AXIS</text>
+            <text x="20" y="155" fill="rgba(0,210,211,.6)" font-family="JetBrains Mono,monospace" font-size="10" transform="rotate(-90,20,155)">Y-AXIS</text>
+            <text x="470" y="280" fill="rgba(245,245,247,.3)" font-family="JetBrains Mono,monospace" font-size="9">HIL SIM · EMC VERIFIED</text>
+          </svg>
           <div class="proj-img-overlay"></div>
           <div class="proj-img-label">01 — HIL / CAD</div>
-          <div class="proj-img-open"><i class="fas fa-expand"></i></div>
         </div>
         <div class="proj-body">
           <div class="proj-num">Project 01</div>
@@ -666,12 +697,42 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
         </div>
       </div>
 
+      <!-- P02 Collision Avoidance — LiDAR scan SVG -->
       <div class="proj-card rv d2">
-        <div class="proj-img" onclick="openLbSet('proj2',0)">
-          <img src="50319.png" alt="Collision Avoidance"/>
+        <div class="proj-img" style="cursor:default;overflow:hidden;background:#080c14">
+          <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <defs><filter id="glow2"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <rect width="300" height="220" fill="#080c14"/>
+            <!-- LiDAR sweep arcs -->
+            <g transform="translate(150,190)" filter="url(#glow2)">
+              <path d="M-130,-130 A130,130 0 0,1 130,-130" fill="none" stroke="rgba(10,132,255,.08)" stroke-width="1"/>
+              <path d="M-100,-100 A100,100 0 0,1 100,-100" fill="none" stroke="rgba(10,132,255,.1)" stroke-width="1"/>
+              <path d="M-70,-70 A70,70 0 0,1 70,-70" fill="none" stroke="rgba(10,132,255,.12)" stroke-width="1"/>
+              <path d="M-40,-40 A40,40 0 0,1 40,-40" fill="none" stroke="rgba(10,132,255,.15)" stroke-width="1"/>
+              <!-- sweeping beam -->
+              <line x1="0" y1="0" x2="0" y2="-140" stroke="#0a84ff" stroke-width="2" stroke-linecap="round" opacity=".8" filter="url(#glow2)">
+                <animateTransform attributeName="transform" type="rotate" from="-60" to="60" dur="2.5s" repeatCount="indefinite" additive="sum"/>
+              </line>
+              <path d="M0,0 L-50,-120 A130,130 0 0,1 50,-120 Z" fill="rgba(10,132,255,.06)">
+                <animateTransform attributeName="transform" type="rotate" from="-60" to="60" dur="2.5s" repeatCount="indefinite" additive="sum"/>
+              </path>
+              <!-- detected obstacles -->
+              <rect x="-90" y="-100" width="18" height="28" rx="2" fill="rgba(255,159,10,.25)" stroke="#ff9f0a" stroke-width="1.5">
+                <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" begin=".3s" repeatCount="indefinite"/>
+              </rect>
+              <rect x="60" y="-80" width="14" height="22" rx="2" fill="rgba(255,159,10,.25)" stroke="#ff9f0a" stroke-width="1.5">
+                <animate attributeName="opacity" values="0;0;1;1;0" dur="2.5s" begin="1.1s" repeatCount="indefinite"/>
+              </rect>
+              <!-- sensor origin -->
+              <circle cx="0" cy="0" r="5" fill="#0a84ff" filter="url(#glow2)"/>
+              <circle cx="0" cy="0" r="12" fill="none" stroke="#0a84ff" stroke-width="1" opacity=".4"><animate attributeName="r" values="5;20;5" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;0;.6" dur="2s" repeatCount="indefinite"/></circle>
+            </g>
+            <text x="10" y="18" fill="rgba(10,132,255,.7)" font-family="JetBrains Mono,monospace" font-size="9">SICK LiDAR · REAL-TIME</text>
+            <text x="10" y="210" fill="rgba(245,245,247,.25)" font-family="JetBrains Mono,monospace" font-size="8">COLLISION AVOIDANCE ACTIVE</text>
+            <circle cx="270" cy="14" r="5" fill="#30d158"><animate attributeName="opacity" values="1;.2;1" dur="1s" repeatCount="indefinite"/></circle>
+          </svg>
           <div class="proj-img-overlay"></div>
           <div class="proj-img-label">02 — Robotics / Safety</div>
-          <div class="proj-img-open"><i class="fas fa-expand"></i></div>
         </div>
         <div class="proj-body">
           <div class="proj-num">Project 02</div>
@@ -682,12 +743,37 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
         </div>
       </div>
 
+      <!-- P03 Digital Twin — simulation waveform SVG -->
       <div class="proj-card rv d3">
-        <div class="proj-img" onclick="openLbSet('proj3',0)">
-          <img src="aca.png" alt="Digital Twin"/>
+        <div class="proj-img" style="cursor:default;overflow:hidden;background:#050a10">
+          <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <defs>
+              <linearGradient id="g3a" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#00d2d3"/><stop offset="100%" stop-color="#0a84ff"/></linearGradient>
+              <filter id="glow3"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <rect width="300" height="220" fill="#050a10"/>
+            <!-- grid -->
+            <pattern id="pg3" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25,0 L0,0 0,25" fill="none" stroke="rgba(0,210,211,.05)" stroke-width=".5"/></pattern>
+            <rect width="300" height="220" fill="url(#pg3)"/>
+            <!-- torque waveform — sinusoidal with animation -->
+            <path d="M10,110 Q40,60 70,110 Q100,160 130,110 Q160,60 190,110 Q220,160 250,110 Q270,80 290,110" fill="none" stroke="url(#g3a)" stroke-width="2.5" stroke-linecap="round" filter="url(#glow3)">
+              <animate attributeName="d" values="M10,110 Q40,60 70,110 Q100,160 130,110 Q160,60 190,110 Q220,160 250,110 Q270,80 290,110;M10,110 Q40,80 70,110 Q100,140 130,110 Q160,80 190,110 Q220,140 250,110 Q270,90 290,110;M10,110 Q40,60 70,110 Q100,160 130,110 Q160,60 190,110 Q220,160 250,110 Q270,80 290,110" dur="4s" repeatCount="indefinite"/>
+            </path>
+            <!-- reference signal -->
+            <path d="M10,110 Q55,50 110,110 Q165,170 220,110 Q255,70 290,110" fill="none" stroke="rgba(245,245,247,.2)" stroke-width="1.5" stroke-dasharray="5,4"/>
+            <!-- vertical axis labels -->
+            <text x="14" y="58" fill="rgba(0,210,211,.55)" font-family="JetBrains Mono,monospace" font-size="8">+τ</text>
+            <text x="14" y="168" fill="rgba(0,210,211,.55)" font-family="JetBrains Mono,monospace" font-size="8">-τ</text>
+            <line x1="8" y1="110" x2="292" y2="110" stroke="rgba(255,255,255,.08)" stroke-width=".8"/>
+            <!-- PID indicator -->
+            <rect x="10" y="180" width="60" height="20" rx="3" fill="rgba(10,132,255,.12)" stroke="rgba(10,132,255,.3)" stroke-width="1"/>
+            <text x="14" y="194" fill="rgba(10,132,255,.8)" font-family="JetBrains Mono,monospace" font-size="8">PID CTRL</text>
+            <rect x="80" y="180" width="80" height="20" rx="3" fill="rgba(0,210,211,.08)" stroke="rgba(0,210,211,.25)" stroke-width="1"/>
+            <text x="84" y="194" fill="rgba(0,210,211,.8)" font-family="JetBrains Mono,monospace" font-size="8">DIGITAL TWIN</text>
+            <text x="14" y="22" fill="rgba(0,210,211,.7)" font-family="JetBrains Mono,monospace" font-size="9">TORQUE PROFILE · MATLAB/SIMULINK</text>
+          </svg>
           <div class="proj-img-overlay"></div>
           <div class="proj-img-label">03 — Simulation</div>
-          <div class="proj-img-open"><i class="fas fa-expand"></i></div>
         </div>
         <div class="proj-body">
           <div class="proj-num">Project 03</div>
@@ -698,12 +784,52 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
         </div>
       </div>
 
+      <!-- P04 Embedded Motor Control — MCU schematic SVG -->
       <div class="proj-card featured rv d2">
-        <div class="proj-img" onclick="openLbSet('proj4',0)">
-          <img src="Screenshot 2026-02-26 145216.png" alt="Embedded Motor Control"/>
+        <div class="proj-img" style="cursor:default;overflow:hidden;background:#08080f">
+          <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <defs>
+              <filter id="glow4"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <linearGradient id="g4a" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0a84ff"/><stop offset="100%" stop-color="#00d2d3"/></linearGradient>
+            </defs>
+            <rect width="600" height="300" fill="#08080f"/>
+            <!-- PCB-like background traces -->
+            <pattern id="pg4" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20,0 L0,0 0,20" fill="none" stroke="rgba(10,132,255,.05)" stroke-width=".5"/></pattern>
+            <rect width="600" height="300" fill="url(#pg4)"/>
+            <!-- STM32 MCU chip -->
+            <rect x="220" y="90" width="160" height="120" rx="6" fill="rgba(10,132,255,.08)" stroke="rgba(10,132,255,.4)" stroke-width="1.5" filter="url(#glow4)"/>
+            <text x="300" y="145" fill="rgba(10,132,255,.9)" font-family="JetBrains Mono,monospace" font-size="11" text-anchor="middle" font-weight="bold">STM32</text>
+            <text x="300" y="162" fill="rgba(245,245,247,.4)" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">MOTOR CTRL</text>
+            <!-- Pin traces from MCU left -->
+            <line x1="220" y1="110" x2="140" y2="110" stroke="url(#g4a)" stroke-width="1.5" opacity=".7"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" begin="0s" repeatCount="indefinite"/></line>
+            <line x1="220" y1="130" x2="140" y2="130" stroke="url(#g4a)" stroke-width="1.5" opacity=".7"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" begin=".2s" repeatCount="indefinite"/></line>
+            <line x1="220" y1="150" x2="140" y2="150" stroke="url(#g4a)" stroke-width="1.5" opacity=".7"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" begin=".4s" repeatCount="indefinite"/></line>
+            <line x1="220" y1="170" x2="140" y2="170" stroke="url(#g4a)" stroke-width="1.5" opacity=".7"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" begin=".6s" repeatCount="indefinite"/></line>
+            <line x1="220" y1="190" x2="140" y2="190" stroke="url(#g4a)" stroke-width="1.5" opacity=".7"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" begin=".8s" repeatCount="indefinite"/></line>
+            <!-- right side pins -->
+            <line x1="380" y1="110" x2="460" y2="110" stroke="url(#g4a)" stroke-width="1.5" opacity=".7"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" begin=".1s" repeatCount="indefinite"/></line>
+            <line x1="380" y1="130" x2="460" y2="130" stroke="url(#g4a)" stroke-width="1.5" opacity=".7"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" begin=".3s" repeatCount="indefinite"/></line>
+            <line x1="380" y1="150" x2="460" y2="150" stroke="url(#g4a)" stroke-width="1.5" opacity=".7"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" begin=".5s" repeatCount="indefinite"/></line>
+            <line x1="380" y1="170" x2="460" y2="170" stroke="url(#g4a)" stroke-width="1.5" opacity=".7"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" begin=".7s" repeatCount="indefinite"/></line>
+            <!-- Power module right -->
+            <rect x="462" y="100" width="80" height="100" rx="5" fill="rgba(0,210,211,.07)" stroke="rgba(0,210,211,.35)" stroke-width="1.2"/>
+            <text x="502" y="148" fill="rgba(0,210,211,.85)" font-family="JetBrains Mono,monospace" font-size="9" text-anchor="middle">PWM</text>
+            <text x="502" y="162" fill="rgba(245,245,247,.35)" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">DRIVER</text>
+            <!-- Sensor feedback left -->
+            <rect x="58" y="100" width="80" height="100" rx="5" fill="rgba(255,159,10,.06)" stroke="rgba(255,159,10,.3)" stroke-width="1.2"/>
+            <text x="98" y="148" fill="rgba(255,159,10,.85)" font-family="JetBrains Mono,monospace" font-size="9" text-anchor="middle">SENSOR</text>
+            <text x="98" y="162" fill="rgba(245,245,247,.35)" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">FEEDBACK</text>
+            <!-- Motor right end -->
+            <circle cx="565" cy="150" r="28" fill="rgba(10,132,255,.06)" stroke="rgba(10,132,255,.25)" stroke-width="1.2"/>
+            <text x="565" y="154" fill="rgba(10,132,255,.7)" font-family="JetBrains Mono,monospace" font-size="9" text-anchor="middle">MOTOR</text>
+            <line x1="542" y1="150" x2="507" y2="150" stroke="rgba(10,132,255,.5)" stroke-width="1.5"/>
+            <!-- PWM waveform at bottom -->
+            <polyline points="58,250 78,250 78,230 98,230 98,250 118,250 118,230 138,230 138,250 158,250 158,230 178,230 178,250 198,250" fill="none" stroke="rgba(0,210,211,.5)" stroke-width="1.5" stroke-linecap="square"/>
+            <text x="62" y="270" fill="rgba(0,210,211,.5)" font-family="JetBrains Mono,monospace" font-size="8">PWM SIGNAL</text>
+            <text x="14" y="22" fill="rgba(10,132,255,.65)" font-family="JetBrains Mono,monospace" font-size="9">EMBEDDED MOTOR CONTROL · STM32 + ARDUINO</text>
+          </svg>
           <div class="proj-img-overlay"></div>
           <div class="proj-img-label">04 — Embedded Systems</div>
-          <div class="proj-img-open"><i class="fas fa-expand"></i></div>
         </div>
         <div class="proj-body">
           <div class="proj-num">Project 04</div>
@@ -714,12 +840,38 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
         </div>
       </div>
 
+      <!-- P05 Test Bench — data dashboard SVG -->
       <div class="proj-card rv d3">
-        <div class="proj-img" onclick="openLbSet('proj5',0)">
-          <img src="IMG_0149.jpg" alt="Test Bench"/>
+        <div class="proj-img" style="cursor:default;overflow:hidden;background:#060810">
+          <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <defs><filter id="glow5"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+            <rect width="300" height="220" fill="#060810"/>
+            <!-- Dashboard panels -->
+            <rect x="10" y="10" width="130" height="60" rx="4" fill="rgba(10,132,255,.06)" stroke="rgba(10,132,255,.2)" stroke-width="1"/>
+            <text x="20" y="28" fill="rgba(10,132,255,.6)" font-family="JetBrains Mono,monospace" font-size="7">FORCE [N]</text>
+            <text x="20" y="52" fill="#0a84ff" font-family="JetBrains Mono,monospace" font-size="22" font-weight="bold" filter="url(#glow5)">
+              <animate attributeName="textContent" values="42.3;44.1;41.8;43.5;42.9" dur="3s" repeatCount="indefinite"/>42.3
+            </text>
+            <rect x="150" y="10" width="140" height="60" rx="4" fill="rgba(0,210,211,.05)" stroke="rgba(0,210,211,.18)" stroke-width="1"/>
+            <text x="160" y="28" fill="rgba(0,210,211,.6)" font-family="JetBrains Mono,monospace" font-size="7">TORQUE [Nm]</text>
+            <text x="160" y="52" fill="#00d2d3" font-family="JetBrains Mono,monospace" font-size="22" font-weight="bold" filter="url(#glow5)">
+              <animate attributeName="textContent" values="7.8;8.1;7.6;7.9;8.0" dur="2.8s" repeatCount="indefinite"/>7.8
+            </text>
+            <!-- Live waveform chart -->
+            <rect x="10" y="82" width="280" height="80" rx="4" fill="rgba(10,132,255,.03)" stroke="rgba(10,132,255,.12)" stroke-width="1"/>
+            <polyline points="20,142 40,122 60,138 80,115 100,130 120,108 140,125 160,112 180,128 200,118 220,135 240,110 260,128 280,115" fill="none" stroke="#0a84ff" stroke-width="2" stroke-linecap="round" filter="url(#glow5)">
+              <animate attributeName="points" values="20,142 40,122 60,138 80,115 100,130 120,108 140,125 160,112 180,128 200,118 220,135 240,110 260,128 280,115;20,130 40,115 60,128 80,120 100,140 120,118 140,132 160,105 180,120 200,128 220,115 240,125 260,118 280,130;20,142 40,122 60,138 80,115 100,130 120,108 140,125 160,112 180,128 200,118 220,135 240,110 260,128 280,115" dur="4s" repeatCount="indefinite"/>
+            </polyline>
+            <text x="14" y="96" fill="rgba(10,132,255,.5)" font-family="JetBrains Mono,monospace" font-size="7">LIVE DATA LOG · HIL VALIDATION</text>
+            <!-- Status indicators -->
+            <rect x="10" y="172" width="280" height="38" rx="4" fill="rgba(10,132,255,.03)" stroke="rgba(10,132,255,.1)" stroke-width="1"/>
+            <circle cx="28" cy="191" r="5" fill="#30d158" filter="url(#glow5)"><animate attributeName="opacity" values="1;.3;1" dur="1.2s" repeatCount="indefinite"/></circle>
+            <text x="40" y="195" fill="rgba(48,209,88,.8)" font-family="JetBrains Mono,monospace" font-size="8">SYSTEM NOMINAL</text>
+            <circle cx="155" cy="191" r="5" fill="#ff9f0a"/>
+            <text x="167" y="195" fill="rgba(255,159,10,.8)" font-family="JetBrains Mono,monospace" font-size="8">LOGGING ACTIVE</text>
+          </svg>
           <div class="proj-img-overlay"></div>
           <div class="proj-img-label">05 — Test Systems</div>
-          <div class="proj-img-open"><i class="fas fa-expand"></i></div>
         </div>
         <div class="proj-body">
           <div class="proj-num">Project 05</div>
@@ -730,12 +882,39 @@ footer{border-top:1px solid var(--s1);padding:22px 28px;display:flex;justify-con
         </div>
       </div>
 
+      <!-- P06 3D Sensor Mount — isometric CAD sketch SVG -->
       <div class="proj-card rv d4">
-        <div class="proj-img" onclick="openLbSet('proj6',0)">
-          <img src="Picture2.jpg" alt="Sensor Mounting"/>
+        <div class="proj-img" style="cursor:default;overflow:hidden;background:#07090e">
+          <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+            <defs>
+              <filter id="glow6"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <linearGradient id="g6top" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="rgba(10,132,255,.35)"/><stop offset="100%" stop-color="rgba(10,132,255,.12)"/></linearGradient>
+              <linearGradient id="g6side" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="rgba(10,132,255,.12)"/><stop offset="100%" stop-color="rgba(10,132,255,.06)"/></linearGradient>
+            </defs>
+            <rect width="300" height="220" fill="#07090e"/>
+            <!-- isometric bracket base -->
+            <polygon points="150,60 230,100 230,160 150,200 70,160 70,100" fill="rgba(10,132,255,.05)" stroke="rgba(10,132,255,.25)" stroke-width="1" filter="url(#glow6)"/>
+            <!-- top face -->
+            <polygon points="150,60 230,100 150,140 70,100" fill="url(#g6top)" stroke="rgba(10,132,255,.4)" stroke-width="1"/>
+            <!-- right face -->
+            <polygon points="230,100 230,160 150,200 150,140" fill="url(#g6side)" stroke="rgba(10,132,255,.2)" stroke-width="1"/>
+            <!-- sensor cylinder on top -->
+            <ellipse cx="150" cy="110" rx="22" ry="10" fill="rgba(0,210,211,.15)" stroke="rgba(0,210,211,.5)" stroke-width="1.5" filter="url(#glow6)"/>
+            <rect x="128" y="80" width="44" height="30" rx="4" fill="rgba(0,210,211,.1)" stroke="rgba(0,210,211,.4)" stroke-width="1.5"/>
+            <ellipse cx="150" cy="80" rx="22" ry="10" fill="rgba(0,210,211,.2)" stroke="rgba(0,210,211,.6)" stroke-width="1.5" filter="url(#glow6)"/>
+            <!-- sensor beam pulse -->
+            <line x1="150" y1="70" x2="150" y2="35" stroke="rgba(0,210,211,.6)" stroke-width="2" stroke-linecap="round" filter="url(#glow6)"><animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/><animate attributeName="y2" values="35;20;35" dur="1.5s" repeatCount="indefinite"/></line>
+            <!-- dimension lines -->
+            <line x1="240" y1="100" x2="240" y2="160" stroke="rgba(245,245,247,.15)" stroke-width=".8" stroke-dasharray="3,3"/>
+            <text x="244" y="135" fill="rgba(245,245,247,.3)" font-family="JetBrains Mono,monospace" font-size="8">h</text>
+            <line x1="70" y1="90" x2="230" y2="90" stroke="rgba(245,245,247,.15)" stroke-width=".8" stroke-dasharray="3,3"/>
+            <text x="148" y="86" fill="rgba(245,245,247,.3)" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">w</text>
+            <!-- labels -->
+            <text x="14" y="22" fill="rgba(0,210,211,.65)" font-family="JetBrains Mono,monospace" font-size="9">ADAPTIVE MOUNT · SIEMENS NX</text>
+            <text x="14" y="210" fill="rgba(245,245,247,.2)" font-family="JetBrains Mono,monospace" font-size="8">3D PRINTED · DFM OPTIMIZED</text>
+          </svg>
           <div class="proj-img-overlay"></div>
           <div class="proj-img-label">06 — Rapid Prototyping</div>
-          <div class="proj-img-open"><i class="fas fa-expand"></i></div>
         </div>
         <div class="proj-body">
           <div class="proj-num">Project 06</div>
@@ -961,36 +1140,34 @@ new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Before','Afte
   }, 900);
 })();
 
-/* ═══ GLOBE ═══ */
+/* ═══ GLOBE — full-screen, no location marker ═══ */
 (function(){
   const canvas = document.getElementById('globe-canvas');
   const ctx = canvas.getContext('2d');
-  const label = document.getElementById('de-label');
-
-  // Germany lat/lon
-  const DE_LAT = 51.1657;
-  const DE_LON = 10.4515;
 
   let W, H, R, cx, cy;
-  let rotY = 0.28; // start so Germany is visible center
-  let targetRotY = rotY;
+  let rotY = -0.18; // start centered on Europe/Atlantic
   let isDragging = false, dragX = 0;
-  let animFrame;
+  let lastDragVel = 0, dragVel = 0;
 
   function resize(){
-    const wrap = canvas.parentElement;
-    W = canvas.width = wrap.offsetWidth;
-    H = canvas.height = wrap.offsetHeight;
-    R = Math.min(W, H * 2) * 0.46;
+    const wrap = document.getElementById('globe-wrap');
+    // Canvas is absolutely positioned; use its CSS size
+    const rect = canvas.getBoundingClientRect();
+    W = canvas.width  = rect.width  * Math.min(devicePixelRatio, 2);
+    H = canvas.height = rect.height * Math.min(devicePixelRatio, 2);
+    ctx.scale(1,1); // reset
+    R  = Math.min(W, H) * 0.46;
     cx = W / 2;
-    cy = H; // center of full sphere is at bottom edge — half-globe
+    cy = H / 2; // true sphere centre — full sphere, not half
   }
-  resize();
-  window.addEventListener('resize', resize);
 
-  // Convert lat/lon to 3D xyz on unit sphere
+  // On first paint, getBoundingClientRect may be 0 if canvas hasn't laid out yet
+  // so we wait one frame
+  requestAnimationFrame(()=>{ resize(); window.addEventListener('resize', resize); });
+
   function latLonToXYZ(lat, lon){
-    const phi = (90 - lat) * Math.PI / 180;
+    const phi   = (90 - lat)  * Math.PI / 180;
     const theta = (lon + 180) * Math.PI / 180;
     return {
       x: -Math.sin(phi) * Math.cos(theta),
@@ -999,247 +1176,214 @@ new Chart(document.getElementById('c4'),{type:'bar',data:{labels:['Before','Afte
     };
   }
 
-  // Project 3D point to 2D given current rotation
-  function project(x, y, z, rotY){
-    // Rotate around Y axis
+  function project(x, y, z){
     const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
     const x2 = x * cosY + z * sinY;
     const z2 = -x * sinY + z * cosY;
     return {
       sx: cx + x2 * R,
-      sy: cy + y * R,  // y is up in geo coords
-      z: z2,           // depth
-      visible: z2 > -0.05
+      sy: cy - y * R,   // flip y so north is up
+      depth: z2,
+      visible: z2 > -0.02
     };
   }
 
-  // Land masses — simplified polygons (major continents) as lat/lon arrays
-  // Europe + some key land areas for visual reference
+  // Full continent land outlines — simplified lat/lon polygons
   const LAND = [
-    // Europe simplified
-    [[71,28],[70,32],[69,33],[68,35],[65,24],[63,22],[60,20],[59,18],[57,18],[56,15],[55,12],[55,10],[56,8],[56,4],[54,8],[54,12],[52,5],[51,4],[50,3],[48,2],[46,1],[44,2],[43,5],[42,3],[41,1],[40,0],[39,-1],[38,0],[37,0],[36,0],[36,3],[36,5],[37,10],[38,14],[40,18],[42,20],[42,24],[43,27],[43,28],[44,29],[46,30],[47,32],[47,35],[48,35],[49,32],[50,30],[52,22],[53,18],[54,18],[55,22],[56,22],[57,20],[58,22],[60,24],[61,26],[63,26],[65,22],[66,24],[67,26],[68,28],[70,28],[71,28]],
-    // Scandinavia
-    [[57,8],[58,6],[60,5],[62,5],[64,8],[66,14],[68,18],[70,24],[71,28],[70,30],[69,28],[68,26],[67,22],[66,22],[65,22],[63,20],[61,18],[59,18],[57,18],[56,12],[56,8],[57,8]],
-    // British Isles simplified
-    [[51,-5],[52,-4],[53,-4],[54,-3],[56,-3],[58,-3],[59,-3],[60,-1],[59,0],[58,1],[55,2],[53,1],[52,1],[51,1],[50,0],[50,-4],[51,-5]],
-    // Africa simplified
-    [[-35,18],[-34,22],[-30,30],[-26,32],[-20,36],[-12,38],[-6,40],[0,42],[6,42],[12,44],[16,40],[18,38],[22,37],[28,34],[32,28],[36,14],[38,8],[38,0],[36,-4],[30,-8],[22,-12],[16,-12],[10,-16],[4,-8],[0,-8],[-4,-8],[-8,-12],[-12,-14],[-16,-12],[-18,-10],[-16,-4],[-14,-2],[-10,0],[-8,2],[-6,0],[-4,-4],[-2,-8],[0,-14],[0,-18],[0,-22],[0,-28],[0,-34],[-8,-34],[-16,-30],[-22,-22],[-28,-16],[-34,-18],[-35,18]],
-    // North America rough
-    [[72,-130],[70,-128],[68,-130],[68,-136],[70,-140],[72,-140],[74,-120],[74,-80],[72,-76],[68,-70],[64,-64],[60,-64],[56,-60],[52,-56],[46,-52],[44,-54],[44,-60],[44,-66],[44,-70],[42,-70],[42,-74],[40,-74],[36,-76],[34,-78],[30,-80],[26,-80],[24,-82],[20,-86],[16,-90],[12,-84],[8,-78],[8,-76],[12,-72],[16,-62],[18,-66],[20,-70],[22,-74],[24,-76],[26,-80],[28,-80],[30,-88],[34,-88],[38,-90],[40,-86],[42,-80],[44,-76],[46,-76],[46,-70],[50,-64],[54,-58],[56,-56],[58,-62],[60,-64],[62,-62],[62,-66],[64,-66],[64,-76],[60,-78],[56,-78],[52,-78],[50,-84],[48,-90],[46,-84],[44,-84],[44,-80],[46,-72],[48,-70],[50,-66],[52,-56],[54,-54],[56,-54],[56,-60],[54,-64],[52,-58],[50,-60],[46,-60],[44,-62],[42,-66],[40,-66],[38,-68],[36,-72],[34,-76],[32,-80],[30,-82],[28,-80],[26,-80],[24,-82],[22,-84],[20,-88],[18,-92],[16,-96],[14,-90],[12,-86],[12,-84],[16,-90],[18,-88],[20,-90],[22,-92],[22,-88],[20,-96],[18,-98],[18,-102],[20,-104],[22,-106],[24,-108],[28,-110],[30,-116],[32,-118],[34,-118],[36,-122],[38,-122],[40,-124],[42,-124],[44,-124],[46,-124],[48,-124],[50,-128],[52,-130],[54,-132],[56,-130],[58,-136],[60,-138],[60,-142],[62,-144],[64,-146],[66,-148],[68,-150],[70,-148],[72,-140],[72,-130]],
-    // Asia simplified
-    [[70,30],[68,34],[66,40],[66,50],[68,60],[70,70],[72,80],[70,90],[68,100],[66,110],[70,120],[72,130],[70,140],[68,150],[66,160],[64,170],[62,172],[60,168],[58,162],[56,154],[54,142],[52,130],[50,124],[48,120],[46,114],[44,112],[42,110],[40,116],[38,120],[36,120],[34,118],[32,120],[30,120],[28,116],[26,112],[24,112],[22,114],[20,110],[18,106],[16,100],[14,100],[12,104],[10,106],[8,100],[6,100],[4,102],[2,104],[0,104],[-2,108],[-4,106],[-2,100],[0,100],[2,100],[4,102],[6,100],[8,96],[10,92],[12,88],[14,80],[16,74],[18,72],[20,68],[22,64],[24,60],[28,48],[28,44],[26,40],[24,38],[22,38],[20,40],[16,42],[12,42],[8,42],[6,40],[2,44],[0,42],[-2,40],[0,36],[4,30],[6,26],[8,22],[10,18],[12,16],[14,14],[18,12],[22,8],[28,10],[32,12],[36,14],[40,18],[44,20],[46,24],[48,28],[50,28],[52,26],[54,22],[56,20],[58,22],[60,26],[62,26],[64,28],[66,28],[68,28],[70,30]],
-    // South America simplified
+    // ── Europe ──
+    [[71,28],[70,32],[68,35],[65,24],[63,22],[60,20],[58,18],[56,15],[55,12],[55,10],[56,8],[56,4],[54,8],[54,12],[52,5],[51,4],[50,3],[48,2],[46,1],[44,2],[43,5],[42,3],[41,1],[40,0],[38,0],[36,0],[36,3],[36,5],[37,10],[38,14],[40,18],[42,20],[42,24],[43,28],[44,29],[46,30],[47,32],[47,35],[48,35],[49,32],[50,30],[52,22],[53,18],[54,18],[55,22],[56,22],[57,20],[58,22],[60,24],[63,26],[65,22],[66,24],[68,28],[70,28],[71,28]],
+    // ── Scandinavia ──
+    [[57,8],[58,6],[60,5],[62,5],[64,8],[66,14],[68,18],[70,24],[71,28],[70,30],[69,28],[67,22],[65,22],[63,20],[61,18],[59,18],[57,18],[56,12],[56,8],[57,8]],
+    // ── British Isles ──
+    [[51,-5],[52,-4],[54,-3],[56,-3],[58,-3],[59,-3],[60,-1],[58,1],[55,2],[53,1],[51,1],[50,0],[50,-4],[51,-5]],
+    // ── Iceland ──
+    [[63,-24],[64,-22],[65,-14],[66,-14],[66,-18],[65,-22],[63,-24]],
+    // ── Africa ──
+    [[-35,18],[-34,22],[-30,30],[-26,32],[-20,36],[-12,38],[-6,40],[0,42],[6,42],[12,44],[16,40],[18,38],[22,37],[28,34],[32,28],[36,14],[38,8],[38,0],[36,-4],[30,-8],[22,-12],[16,-12],[10,-16],[4,-8],[0,-8],[-4,-8],[-8,-12],[-12,-14],[-16,-12],[-18,-10],[-16,-4],[-10,0],[-8,2],[-6,0],[-4,-4],[-2,-8],[0,-14],[0,-22],[0,-34],[-8,-34],[-16,-30],[-22,-22],[-28,-16],[-34,-18],[-35,18]],
+    // ── North America ──
+    [[72,-130],[70,-128],[68,-130],[68,-136],[70,-140],[72,-140],[74,-120],[74,-80],[72,-76],[68,-70],[64,-64],[60,-64],[56,-60],[52,-56],[46,-52],[44,-60],[44,-66],[44,-70],[42,-70],[42,-74],[40,-74],[36,-76],[34,-78],[30,-80],[26,-80],[24,-82],[20,-86],[16,-90],[12,-84],[8,-78],[12,-72],[16,-62],[18,-66],[20,-70],[22,-74],[24,-76],[26,-80],[30,-88],[34,-88],[38,-90],[40,-86],[42,-80],[44,-76],[46,-70],[50,-64],[54,-58],[56,-56],[58,-62],[60,-64],[62,-66],[64,-76],[60,-78],[56,-78],[50,-84],[48,-90],[44,-84],[44,-80],[46,-72],[48,-70],[50,-66],[52,-56],[56,-54],[56,-60],[54,-64],[50,-60],[46,-60],[42,-66],[40,-66],[36,-72],[34,-76],[32,-80],[30,-82],[28,-80],[24,-82],[20,-88],[18,-92],[16,-96],[14,-90],[12,-86],[16,-90],[18,-88],[20,-90],[22,-88],[20,-96],[18,-102],[20,-104],[22,-106],[24,-108],[28,-110],[30,-116],[32,-118],[34,-118],[36,-122],[38,-122],[40,-124],[42,-124],[44,-124],[46,-124],[48,-124],[50,-128],[52,-130],[54,-132],[56,-130],[58,-136],[60,-138],[62,-144],[64,-146],[66,-148],[68,-150],[70,-148],[72,-140],[72,-130]],
+    // ── Greenland ──
+    [[60,-44],[63,-42],[66,-38],[70,-24],[76,-18],[78,-20],[80,-18],[82,-26],[84,-34],[83,-44],[82,-52],[80,-60],[76,-66],[72,-68],[68,-52],[64,-48],[60,-44]],
+    // ── South America ──
     [[12,-72],[10,-68],[8,-60],[6,-52],[4,-52],[2,-52],[0,-50],[-4,-36],[-8,-34],[-12,-38],[-16,-38],[-20,-40],[-24,-44],[-28,-48],[-32,-52],[-36,-56],[-40,-62],[-44,-66],[-48,-66],[-52,-68],[-54,-66],[-52,-62],[-50,-58],[-48,-50],[-44,-42],[-40,-38],[-36,-36],[-30,-30],[-24,-44],[-20,-44],[-16,-40],[-12,-38],[-8,-36],[-4,-38],[0,-50],[4,-60],[6,-60],[8,-64],[10,-68],[12,-72]],
-    // Australia simplified
-    [[-12,130],[-14,128],[-16,122],[-18,114],[-22,114],[-26,114],[-30,114],[-34,118],[-36,136],[-38,140],[-38,144],[-40,148],[-42,148],[-42,144],[-40,140],[-38,140],[-36,136],[-34,138],[-30,140],[-24,148],[-18,148],[-14,136],[-12,130]]
+    // ── Asia mainland ──
+    [[70,30],[68,34],[66,40],[66,50],[68,60],[70,70],[72,80],[70,90],[68,100],[66,110],[70,120],[72,130],[70,140],[68,150],[66,160],[64,170],[62,172],[60,168],[58,162],[56,154],[54,142],[52,130],[50,124],[48,120],[46,114],[44,112],[42,110],[40,116],[38,120],[36,120],[34,118],[32,120],[30,120],[28,116],[26,112],[22,114],[20,110],[18,106],[16,100],[14,100],[12,104],[10,106],[8,100],[6,100],[4,102],[2,104],[0,104],[-2,108],[-4,106],[-2,100],[0,100],[4,102],[6,100],[8,96],[10,92],[12,88],[14,80],[16,74],[18,72],[20,68],[22,64],[24,60],[28,48],[28,44],[26,40],[24,38],[22,38],[20,40],[16,42],[12,42],[8,42],[6,40],[2,44],[0,42],[-2,40],[0,36],[4,30],[6,26],[8,22],[10,18],[12,16],[14,14],[18,12],[22,8],[28,10],[32,12],[36,14],[40,18],[44,20],[46,24],[48,28],[50,28],[52,26],[54,22],[56,20],[58,22],[60,26],[62,26],[64,28],[66,28],[68,28],[70,30]],
+    // ── Japan ──
+    [[31,131],[33,131],[35,133],[36,136],[38,138],[40,140],[42,140],[44,141],[43,141],[42,140],[41,139],[40,140],[38,140],[36,136],[34,132],[32,130],[31,131]],
+    // ── Australia ──
+    [[-12,130],[-14,128],[-16,122],[-18,114],[-22,114],[-26,114],[-30,114],[-34,118],[-36,136],[-38,140],[-38,144],[-40,148],[-42,148],[-42,144],[-40,140],[-36,136],[-34,138],[-30,140],[-24,148],[-18,148],[-14,136],[-12,130]],
+    // ── New Zealand ──
+    [[-34,172],[-36,174],[-38,176],[-40,176],[-44,170],[-46,168],[-44,168],[-42,172],[-40,174],[-38,176],[-36,174],[-34,172]],
+    // ── Arabian Peninsula ──
+    [[16,42],[18,42],[20,40],[22,38],[24,38],[28,34],[30,32],[28,34],[24,52],[20,58],[16,54],[12,44],[16,42]]
   ];
 
-  // City coordinates for the location dot
-  const CITIES = [
-    { name: 'Bayreuth, Germany', lat: 49.9456, lon: 11.5713, isHome: true }
-  ];
+  // Floating particle arcs
+  const PARTICLES = Array.from({length:60}, ()=>({
+    lat: Math.random()*160-80,
+    lon: Math.random()*360-180,
+    size: Math.random()*1.5+0.5,
+    speed: (Math.random()-.5)*.0003,
+    phase: Math.random()*Math.PI*2
+  }));
 
-  let deScreenX = 0, deScreenY = 0, deVisible = false;
-  let pulseR = 0, pulseAlpha = 1;
   let t = 0;
 
   function drawGlobe(){
+    if(!W) { requestAnimationFrame(drawGlobe); return; }
     ctx.clearRect(0, 0, W, H);
 
-    // Clip to half-circle (upper half of sphere)
-    ctx.save();
+    // ── Ocean sphere ──
+    const ocean = ctx.createRadialGradient(cx - R*0.2, cy - R*0.25, R*0.08, cx, cy, R);
+    ocean.addColorStop(0,   'rgba(18,60,120,0.52)');
+    ocean.addColorStop(0.4, 'rgba(8,30,70,0.42)');
+    ocean.addColorStop(0.8, 'rgba(4,14,40,0.35)');
+    ocean.addColorStop(1,   'rgba(2,6,20,0.20)');
     ctx.beginPath();
-    ctx.arc(cx, cy, R + 2, Math.PI, 0, false); // top half arc
-    ctx.lineTo(cx + R + 2, cy);
-    ctx.lineTo(cx - R - 2, cy);
-    ctx.closePath();
-    ctx.clip();
-
-    // Ocean base gradient
-    const grad = ctx.createRadialGradient(cx, cy, R * 0.1, cx, cy * 0.5, R * 1.1);
-    grad.addColorStop(0, 'rgba(10,40,80,0.55)');
-    grad.addColorStop(0.5, 'rgba(5,20,50,0.40)');
-    grad.addColorStop(1, 'rgba(0,5,20,0.20)');
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, 0, Math.PI * 2);
-    ctx.fillStyle = grad;
+    ctx.arc(cx, cy, R, 0, Math.PI*2);
+    ctx.fillStyle = ocean;
     ctx.fill();
 
-    // Grid lines (latitude + longitude)
-    ctx.strokeStyle = 'rgba(10,132,255,0.10)';
-    ctx.lineWidth = 0.6;
-
-    // Latitude lines every 20°
-    for(let lat = -80; lat <= 80; lat += 20){
-      const phi = (90 - lat) * Math.PI / 180;
-      const y0 = Math.cos(phi);
-      const r0 = Math.sin(phi);
+    // ── Latitude lines ──
+    for(let lat = -80; lat <= 80; lat += 15){
+      const phi = (90-lat)*Math.PI/180;
+      const yr  = Math.cos(phi);
+      const rr  = Math.sin(phi) * R;
+      if(rr < 2) continue;
+      const screenY = cy - yr*R;
+      // only draw the visible arc
+      const halfAng = Math.acos(Math.max(-1, Math.min(1, Math.abs(yr) > 0.9999 ? 0 : 0)));
       ctx.beginPath();
-      let first = true;
-      for(let lon = -180; lon <= 180; lon += 4){
-        const theta = (lon + 180) * Math.PI / 180;
-        const x3 = -r0 * Math.cos(theta);
-        const z3 =  r0 * Math.sin(theta);
-        const p = project(x3, y0, z3, rotY);
-        if(p.visible){
-          if(first){ ctx.moveTo(p.sx, p.sy); first = false; }
-          else ctx.lineTo(p.sx, p.sy);
-        } else { first = true; }
-      }
+      ctx.ellipse(cx, screenY, rr, rr*0.06, 0, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(10,100,220,0.08)';
+      ctx.lineWidth = 0.8 * (W/600);
       ctx.stroke();
     }
 
-    // Longitude lines every 20°
+    // ── Longitude lines ──
     for(let lon = 0; lon < 360; lon += 20){
       ctx.beginPath();
       let first = true;
-      for(let lat = -90; lat <= 90; lat += 3){
-        const phi = (90 - lat) * Math.PI / 180;
-        const theta = (lon + 180) * Math.PI / 180;
-        const x3 = -Math.sin(phi) * Math.cos(theta);
-        const y3 =  Math.cos(phi);
-        const z3 =  Math.sin(phi) * Math.sin(theta);
-        const p = project(x3, y3, z3, rotY);
-        if(p.visible && p.sy <= cy){
-          if(first){ ctx.moveTo(p.sx, p.sy); first = false; }
-          else ctx.lineTo(p.sx, p.sy);
-        } else { first = true; }
+      for(let lat = -88; lat <= 88; lat += 3){
+        const {x,y,z} = latLonToXYZ(lat, lon);
+        const p = project(x,y,z);
+        if(p.visible){
+          if(first){ ctx.moveTo(p.sx,p.sy); first=false; }
+          else ctx.lineTo(p.sx,p.sy);
+        } else { first=true; }
       }
+      ctx.strokeStyle = 'rgba(10,100,220,0.07)';
+      ctx.lineWidth = 0.7 * (W/600);
       ctx.stroke();
     }
 
-    // Draw land masses
-    LAND.forEach(polygon => {
+    // ── Land polygons ──
+    LAND.forEach(poly => {
       ctx.beginPath();
       let first = true;
-      polygon.forEach(([lat, lon]) => {
-        const {x, y, z} = latLonToXYZ(lat, lon);
-        const p = project(x, y, z, rotY);
+      poly.forEach(([lat,lon]) => {
+        const {x,y,z} = latLonToXYZ(lat,lon);
+        const p = project(x,y,z);
         if(p.visible){
-          if(first){ ctx.moveTo(p.sx, p.sy); first = false; }
-          else ctx.lineTo(p.sx, p.sy);
-        } else { first = true; }
+          if(first){ ctx.moveTo(p.sx,p.sy); first=false; }
+          else ctx.lineTo(p.sx,p.sy);
+        } else { first=true; }
       });
       ctx.closePath();
-      ctx.fillStyle = 'rgba(30,80,140,0.35)';
-      ctx.strokeStyle = 'rgba(10,132,255,0.22)';
-      ctx.lineWidth = 0.8;
+      ctx.fillStyle   = 'rgba(20,80,160,0.28)';
+      ctx.strokeStyle = 'rgba(60,140,255,0.20)';
+      ctx.lineWidth   = 0.9 * (W/600);
       ctx.fill();
       ctx.stroke();
     });
 
-    // Germany highlight — glowing blob
-    const deXYZ = latLonToXYZ(DE_LAT, DE_LON);
-    const deP = project(deXYZ.x, deXYZ.y, deXYZ.z, rotY);
-    deVisible = deP.visible && deP.sy < cy + 10;
-    deScreenX = deP.sx;
-    deScreenY = deP.sy;
+    // ── Floating data particles ──
+    t += 0.008;
+    PARTICLES.forEach(p => {
+      p.lon += p.speed * 60 + rotY * 0.001;
+      const {x,y,z} = latLonToXYZ(p.lat, p.lon*180/Math.PI % 360);
+      const proj = project(x,y,z);
+      if(proj.visible){
+        const alpha = (0.3 + 0.3*Math.sin(t*2+p.phase)) * proj.depth * 0.5 + 0.15;
+        ctx.beginPath();
+        ctx.arc(proj.sx, proj.sy, p.size*(W/600), 0, Math.PI*2);
+        ctx.fillStyle = `rgba(80,160,255,${alpha})`;
+        ctx.fill();
+      }
+    });
 
-    if(deVisible){
-      // Glow halo
-      const halo = ctx.createRadialGradient(deP.sx, deP.sy, 0, deP.sx, deP.sy, 22);
-      halo.addColorStop(0, 'rgba(10,132,255,0.55)');
-      halo.addColorStop(0.5, 'rgba(10,132,255,0.20)');
-      halo.addColorStop(1, 'rgba(10,132,255,0)');
-      ctx.beginPath();
-      ctx.arc(deP.sx, deP.sy, 22, 0, Math.PI * 2);
-      ctx.fillStyle = halo;
-      ctx.fill();
-
-      // Animated pulse ring
-      pulseR = (pulseR + 0.35) % 18;
-      pulseAlpha = 1 - pulseR / 18;
-      ctx.beginPath();
-      ctx.arc(deP.sx, deP.sy, 4 + pulseR, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(10,132,255,${pulseAlpha * 0.8})`;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // Second ring offset
-      const r2 = (pulseR + 9) % 18;
-      const a2 = 1 - r2 / 18;
-      ctx.beginPath();
-      ctx.arc(deP.sx, deP.sy, 4 + r2, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(0,210,211,${a2 * 0.5})`;
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
-      // Core dot
-      ctx.beginPath();
-      ctx.arc(deP.sx, deP.sy, 4.5, 0, Math.PI * 2);
-      ctx.fillStyle = '#0a84ff';
-      ctx.shadowColor = '#0a84ff';
-      ctx.shadowBlur = 12;
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      // Pin stem
-      ctx.beginPath();
-      ctx.moveTo(deP.sx, deP.sy - 4);
-      ctx.lineTo(deP.sx, deP.sy - 16);
-      ctx.strokeStyle = 'rgba(10,132,255,0.7)';
-      ctx.lineWidth = 1.2;
-      ctx.stroke();
-
-      // Position label
-      const lbl = document.getElementById('de-label');
-      lbl.style.left = (deP.sx - lbl.offsetWidth / 2) + 'px';
-      lbl.style.top = (deP.sy - 38) + 'px';
-      lbl.classList.add('visible');
-    } else {
-      document.getElementById('de-label').classList.remove('visible');
-    }
-
-    // Globe rim glow
+    // ── Sphere rim glow ──
+    const rim = ctx.createRadialGradient(cx, cy, R*0.92, cx, cy, R*1.08);
+    rim.addColorStop(0,   'rgba(10,132,255,0)');
+    rim.addColorStop(0.5, 'rgba(10,132,255,0.14)');
+    rim.addColorStop(1,   'rgba(10,132,255,0)');
     ctx.beginPath();
-    ctx.arc(cx, cy, R, Math.PI, 0, false);
-    ctx.strokeStyle = 'rgba(10,132,255,0.25)';
-    ctx.lineWidth = 1.5;
+    ctx.arc(cx, cy, R*1.04, 0, Math.PI*2);
+    ctx.strokeStyle = rim;
+    ctx.lineWidth = R * 0.08;
     ctx.stroke();
 
-    // Atmosphere outer glow
-    const atmo = ctx.createRadialGradient(cx, cy, R - 4, cx, cy, R + 18);
-    atmo.addColorStop(0, 'rgba(10,132,255,0.12)');
-    atmo.addColorStop(1, 'rgba(10,132,255,0)');
+    // ── Specular highlight ──
+    const spec = ctx.createRadialGradient(cx-R*0.3, cy-R*0.35, 0, cx-R*0.15, cy-R*0.2, R*0.55);
+    spec.addColorStop(0,   'rgba(255,255,255,0.07)');
+    spec.addColorStop(0.6, 'rgba(255,255,255,0.01)');
+    spec.addColorStop(1,   'rgba(255,255,255,0)');
     ctx.beginPath();
-    ctx.arc(cx, cy, R + 18, Math.PI, 0, false);
+    ctx.arc(cx, cy, R, 0, Math.PI*2);
+    ctx.fillStyle = spec;
+    ctx.fill();
+
+    // ── Atmosphere outer ring ──
+    const atmo = ctx.createRadialGradient(cx, cy, R, cx, cy, R*1.18);
+    atmo.addColorStop(0,   'rgba(10,100,255,0.10)');
+    atmo.addColorStop(0.5, 'rgba(0,200,210,0.05)');
+    atmo.addColorStop(1,   'rgba(0,0,0,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, R*1.18, 0, Math.PI*2);
     ctx.fillStyle = atmo;
     ctx.fill();
 
-    ctx.restore();
-
-    t += 0.0018;
-    // Auto-rotate slowly, bias toward Germany center lon ~10°
+    // ── Slow auto-rotate (continuous) ──
     if(!isDragging){
-      // Ease toward "show Germany" position
-      const targetAngle = -0.18; // rotY where Germany faces viewer
-      const diff = targetAngle - rotY;
-      if(Math.abs(diff) > 0.002){
-        rotY += diff * 0.008;
-      } else {
-        // gentle continuous slow rotate
-        rotY += 0.0006;
+      rotY += 0.0012;
+      // Inertia from drag
+      if(Math.abs(lastDragVel) > 0.0001){
+        rotY += lastDragVel;
+        lastDragVel *= 0.95;
       }
     }
-    animFrame = requestAnimationFrame(drawGlobe);
+
+    requestAnimationFrame(drawGlobe);
   }
 
-  // Mouse drag to rotate
-  canvas.style.pointerEvents = 'all';
+  // ── Drag to spin ──
   canvas.style.cursor = 'grab';
   canvas.addEventListener('mousedown', e => {
-    isDragging = true; dragX = e.clientX;
+    isDragging = true; dragX = e.clientX; lastDragVel = 0;
     canvas.style.cursor = 'grabbing';
   });
   window.addEventListener('mousemove', e => {
     if(!isDragging) return;
-    rotY += (e.clientX - dragX) * 0.006;
+    dragVel = (e.clientX - dragX) * 0.004;
+    rotY += dragVel;
+    lastDragVel = dragVel;
     dragX = e.clientX;
   });
   window.addEventListener('mouseup', () => {
     isDragging = false;
     canvas.style.cursor = 'grab';
   });
+  // Touch support
+  canvas.addEventListener('touchstart', e => {
+    isDragging = true; dragX = e.touches[0].clientX; lastDragVel = 0;
+  }, {passive:true});
+  canvas.addEventListener('touchmove', e => {
+    if(!isDragging) return;
+    dragVel = (e.touches[0].clientX - dragX) * 0.004;
+    rotY += dragVel; lastDragVel = dragVel;
+    dragX = e.touches[0].clientX;
+  }, {passive:true});
+  canvas.addEventListener('touchend', () => { isDragging = false; });
 
   drawGlobe();
 })();
