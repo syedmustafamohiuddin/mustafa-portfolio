@@ -3,57 +3,119 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Syed Mustafa Mohiuddin — Mechatronics Systems Engineer</title>
+<title>Syed Mustafa Mohiuddin — Mechatronics Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
 <style>
-/* ─────────────────────────────────────────
+
+/* ══════════════════════════════════════════
    RESET & TOKENS
-───────────────────────────────────────── */
+══════════════════════════════════════════ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; font-size: 16px; }
 
 :root {
-  --bg:    #0a0a0a;
-  --bg1:   #111111;
-  --bg2:   #181818;
-  --bg3:   #222222;
-  --line:  rgba(255,255,255,.08);
-  --line2: rgba(255,255,255,.14);
-  --t1:    #f4f4f2;
-  --t2:    rgba(244,244,242,.55);
-  --t3:    rgba(244,244,242,.30);
-  --t4:    rgba(244,244,242,.15);
-  --acc:   #c8c8c0;
-  --ff:    'Inter', -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --bg:    #000000;
+  --bg1:   #080808;
+  --bg2:   #101010;
+  --bg3:   #181818;
+  --line:  rgba(255,255,255,.1);
+  --line2: rgba(255,255,255,.2);
+  --t1:    #ffffff;
+  --t2:    rgba(255,255,255,.55);
+  --t3:    rgba(255,255,255,.3);
+  --t4:    rgba(255,255,255,.15);
+  --acc:   #f5f5f0;
+  --green: #6ee7b7;
+  --ff-d:  'Barlow Condensed', sans-serif;
+  --ff-b:  'Barlow', sans-serif;
   --ease:  cubic-bezier(.25,.46,.45,.94);
+  --ease2: cubic-bezier(.76,0,.24,1);
 }
 
 body {
   background: var(--bg);
   color: var(--t1);
-  font-family: var(--ff);
+  font-family: var(--ff-b);
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  cursor: none;
 }
 
-img { display: block; max-width: 100%; }
 a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
 
-/* ─────────────────────────────────────────
-   SCROLL PROGRESS
-───────────────────────────────────────── */
-#prog {
-  position: fixed; top: 0; left: 0; height: 1px;
-  background: var(--t3); z-index: 9999;
-  width: 0; transition: width .1s linear;
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════ */
+.cursor {
+  position: fixed; z-index: 999999;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--t1); pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: width .2s var(--ease2), height .2s var(--ease2), opacity .2s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed; z-index: 999998;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.4); pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: all .15s var(--ease2);
+  mix-blend-mode: difference;
+}
+body:hover .cursor { opacity: 1; }
+
+/* ══════════════════════════════════════════
+   NOISE TEXTURE OVERLAY
+══════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 99990;
+  pointer-events: none;
+  opacity: .03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px;
 }
 
-/* ─────────────────────────────────────────
+/* ══════════════════════════════════════════
+   PAGE LOADER
+══════════════════════════════════════════ */
+#loader {
+  position: fixed; inset: 0; z-index: 99999;
+  background: var(--bg);
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 40px 48px;
+  transition: opacity .6s var(--ease2), visibility .6s;
+}
+#loader.done { opacity: 0; visibility: hidden; }
+
+.loader-pct {
+  font-family: var(--ff-d);
+  font-size: clamp(5rem, 14vw, 12rem);
+  font-weight: 900; letter-spacing: -.04em; line-height: 1;
+  color: var(--t1);
+}
+.loader-label {
+  font-size: .65rem; font-weight: 400; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--t3);
+  writing-mode: vertical-rl;
+  padding-bottom: 8px;
+}
+.loader-bar-wrap {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px; background: var(--line);
+}
+.loader-bar {
+  height: 100%; background: var(--t1); width: 0;
+  transition: width .05s linear;
+}
+
+/* ══════════════════════════════════════════
    LIGHTBOX
-───────────────────────────────────────── */
+══════════════════════════════════════════ */
 #lb {
   position: fixed; inset: 0; z-index: 99999;
   background: rgba(0,0,0,0);
@@ -61,353 +123,440 @@ a { text-decoration: none; color: inherit; }
   opacity: 0; pointer-events: none;
   transition: opacity .3s var(--ease), background .3s var(--ease);
 }
-#lb.open {
-  opacity: 1; pointer-events: all;
-  background: rgba(0,0,0,.95);
-  backdrop-filter: blur(24px);
-}
+#lb.open { opacity: 1; pointer-events: all; background: rgba(0,0,0,.96); backdrop-filter: blur(24px); }
 .lb-inner {
   position: relative; max-width: 88vw; max-height: 88vh;
   transform: translateY(16px) scale(.96); opacity: 0;
   transition: all .36s var(--ease);
 }
 #lb.open .lb-inner { transform: translateY(0) scale(1); opacity: 1; }
-.lb-inner img {
-  max-width: 100%; max-height: 84vh;
-  object-fit: contain; border-radius: 4px;
-  border: 1px solid var(--line2);
-}
+.lb-inner img { max-width: 100%; max-height: 84vh; object-fit: contain; border-radius: 2px; border: 1px solid var(--line2); }
 .lb-close {
   position: absolute; top: -14px; right: -14px;
   width: 32px; height: 32px; border-radius: 50%;
   background: var(--bg2); border: 1px solid var(--line2);
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; color: var(--t2); font-size: 14px;
-  transition: all .2s;
+  cursor: pointer; color: var(--t2); font-size: 14px; transition: all .2s;
 }
 .lb-close:hover { background: var(--bg3); color: var(--t1); }
 .lb-nav-btn {
   position: absolute; top: 50%; transform: translateY(-50%);
   width: 40px; height: 40px; border-radius: 50%;
-  background: rgba(10,10,10,.7); border: 1px solid var(--line);
+  background: rgba(0,0,0,.7); border: 1px solid var(--line);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; color: var(--t2); font-size: 12px;
   backdrop-filter: blur(8px); transition: all .2s;
 }
 .lb-nav-btn:hover { border-color: var(--line2); color: var(--t1); }
 .lb-prev { left: -54px; } .lb-next { right: -54px; }
-.lb-caption {
-  margin-top: 14px; text-align: center;
-  font-size: .72rem; color: var(--t3); letter-spacing: .06em;
-}
+.lb-caption { margin-top: 14px; text-align: center; font-size: .72rem; color: var(--t3); letter-spacing: .06em; }
 
-/* ─────────────────────────────────────────
+/* ══════════════════════════════════════════
    NAV
-───────────────────────────────────────── */
+══════════════════════════════════════════ */
 nav {
   position: fixed; top: 0; width: 100%; z-index: 1000;
-  padding: 28px 48px;
+  padding: 32px 48px;
   display: flex; align-items: center; justify-content: space-between;
-  transition: all .4s var(--ease);
+  transition: all .5s var(--ease);
+  mix-blend-mode: normal;
 }
 nav.scrolled {
-  padding: 18px 48px;
-  background: rgba(10,10,10,.9);
-  backdrop-filter: blur(20px) saturate(160%);
+  padding: 20px 48px;
+  background: rgba(0,0,0,.88);
+  backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid var(--line);
 }
+
 .nav-logo {
-  font-size: .72rem; font-weight: 400; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--t2);
-  transition: color .2s;
-}
-.nav-logo:hover { color: var(--t1); }
-.nav-links { display: flex; gap: 32px; align-items: center; }
-.nl {
-  font-size: .7rem; font-weight: 400; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--t3);
-  transition: color .2s;
-}
-.nl:hover, .nl.active { color: var(--t1); }
-.nav-cta {
-  font-size: .7rem; font-weight: 400; letter-spacing: .1em;
+  font-family: var(--ff-d);
+  font-size: 1.1rem; font-weight: 800; letter-spacing: .12em;
   text-transform: uppercase; color: var(--t1);
-  border: 1px solid var(--line2); padding: 9px 20px; border-radius: 2px;
-  transition: all .22s;
-}
-.nav-cta:hover { background: var(--t1); color: var(--bg); }
-
-/* ─────────────────────────────────────────
-   HERO
-───────────────────────────────────────── */
-#hero {
-  min-height: 100svh;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 0 48px 64px;
-  border-bottom: 1px solid var(--line);
-  position: relative; overflow: hidden;
 }
 
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-size: .68rem; font-weight: 400; letter-spacing: .18em;
+.nav-links { display: flex; gap: 36px; align-items: center; }
+
+/* Stōkt-style repeating hover links */
+.nl {
+  font-size: .65rem; font-weight: 500; letter-spacing: .14em;
   text-transform: uppercase; color: var(--t3);
-  margin-bottom: 28px;
+  overflow: hidden; height: 1.2em; display: inline-block;
+  transition: color .3s;
+  position: relative;
 }
-.pulse {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #6ee7b7;
+.nl span {
+  display: flex; flex-direction: column;
+  transition: transform .4s var(--ease2);
+}
+.nl span i { font-style: normal; display: block; line-height: 1.2; white-space: nowrap; }
+.nl:hover span { transform: translateY(-50%); }
+.nl:hover { color: var(--t1); }
+
+.nav-cta {
+  font-family: var(--ff-d);
+  font-size: .8rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--t1);
+  border: 1px solid var(--line2); padding: 11px 24px; border-radius: 2px;
+  transition: all .25s var(--ease2); position: relative; overflow: hidden;
+}
+.nav-cta::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--t1); transform: translateY(101%);
+  transition: transform .3s var(--ease2);
+}
+.nav-cta span { position: relative; z-index: 1; transition: color .3s; }
+.nav-cta:hover::before { transform: translateY(0); }
+.nav-cta:hover span { color: var(--bg); }
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+#hero {
+  min-height: 100svh; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 48px 60px;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: var(--bg);
+}
+.hero-bg-img {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,.85) 100%);
+  z-index: 1;
+}
+
+.hero-content { position: relative; z-index: 2; }
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: var(--ff-b);
+  font-size: .65rem; font-weight: 500; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--t3);
+  margin-bottom: 20px;
+}
+.hero-tag-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--green);
   box-shadow: 0 0 0 0 rgba(110,231,183,.4);
   animation: pulse 2.4s ease-in-out infinite;
 }
 @keyframes pulse {
   0%,100% { box-shadow: 0 0 0 0 rgba(110,231,183,.4); }
-  50% { box-shadow: 0 0 0 8px rgba(110,231,183,0); }
+  50% { box-shadow: 0 0 0 10px rgba(110,231,183,0); }
 }
 
 .hero-name {
-  font-size: clamp(3.2rem, 9vw, 9rem);
-  font-weight: 300; letter-spacing: -.03em; line-height: .96;
-  color: var(--t1); margin-bottom: 36px;
+  font-family: var(--ff-d);
+  font-size: clamp(4.5rem, 13vw, 13.5rem);
+  font-weight: 900; letter-spacing: -.02em; line-height: .92;
+  text-transform: uppercase; color: var(--t1);
+  overflow: hidden;
 }
-.hero-name .muted { color: var(--t3); }
+.hero-name-row { overflow: hidden; }
+.hero-name-row span {
+  display: block;
+  transform: translateY(110%);
+  animation: slideUp .9s var(--ease2) forwards;
+}
+.hero-name-row:nth-child(2) span { animation-delay: .1s; }
+.hero-name-row:nth-child(3) span { animation-delay: .2s; color: var(--t3); }
+@keyframes slideUp {
+  to { transform: translateY(0); }
+}
 
-.hero-desc-row {
-  display: flex; align-items: flex-start;
-  gap: 48px; padding-top: 36px;
-  border-top: 1px solid var(--line);
+.hero-bottom {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding-top: 32px; border-top: 1px solid var(--line);
+  margin-top: 28px; flex-wrap: wrap; gap: 24px;
 }
 .hero-desc {
-  font-size: .96rem; font-weight: 300; color: var(--t2);
-  line-height: 1.78; max-width: 480px; flex: 1;
+  font-size: clamp(.88rem, 1.2vw, 1.05rem);
+  font-weight: 300; line-height: 1.72; color: var(--t2);
+  max-width: 460px;
 }
-.hero-meta {
-  display: flex; gap: 48px; flex-shrink: 0; padding-top: 4px;
-}
-.hm-item { }
-.hm-label {
-  font-size: .6rem; font-weight: 400; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--t4); margin-bottom: 5px;
-}
-.hm-val {
-  font-size: 1.6rem; font-weight: 300; letter-spacing: -.04em;
-  color: var(--t1); line-height: 1;
-}
-.hm-unit { font-size: .7rem; color: var(--t3); margin-left: 2px; }
-
 .hero-ctas {
-  display: flex; gap: 10px; margin-top: 36px; flex-wrap: wrap;
+  display: flex; gap: 10px; flex-shrink: 0;
 }
-.btn-primary, .btn-ghost {
-  font-size: .72rem; font-weight: 400; letter-spacing: .1em;
-  text-transform: uppercase; padding: 14px 28px; border-radius: 2px;
-  transition: all .22s var(--ease); display: inline-flex; align-items: center; gap: 8px;
+.btn-fill {
+  font-family: var(--ff-d);
+  font-size: .9rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; padding: 16px 36px; border-radius: 2px;
+  background: var(--t1); color: var(--bg);
+  transition: all .25s var(--ease2); position: relative; overflow: hidden;
+  display: inline-flex; align-items: center; gap: 8px;
 }
-.btn-primary { background: var(--t1); color: var(--bg); }
-.btn-primary:hover { background: rgba(244,244,242,.88); transform: translateY(-1px); }
-.btn-ghost { border: 1px solid var(--line2); color: var(--t2); }
-.btn-ghost:hover { border-color: var(--t3); color: var(--t1); transform: translateY(-1px); }
+.btn-fill::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--green); transform: scaleX(0); transform-origin: left;
+  transition: transform .35s var(--ease2);
+}
+.btn-fill:hover::before { transform: scaleX(1); }
+.btn-fill span { position: relative; z-index: 1; }
+.btn-outline {
+  font-family: var(--ff-d);
+  font-size: .9rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; padding: 16px 36px; border-radius: 2px;
+  border: 1px solid var(--line2); color: var(--t2);
+  transition: all .25s var(--ease2);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-outline:hover { border-color: var(--t1); color: var(--t1); }
 
-/* scroll hint */
-.scroll-hint {
-  position: absolute; right: 48px; bottom: 64px;
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
+.hero-scroll {
+  position: absolute; right: 48px; bottom: 60px; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
 }
-.scroll-hint span {
-  font-size: .58rem; letter-spacing: .16em; text-transform: uppercase;
+.hero-scroll span {
+  font-size: .55rem; letter-spacing: .2em; text-transform: uppercase;
   color: var(--t4); writing-mode: vertical-rl;
 }
-.scroll-line {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, var(--t4), transparent);
+.hero-scroll-line {
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, var(--t3), transparent);
   animation: scrollline 2s ease-in-out infinite;
 }
-@keyframes scrollline {
-  0%,100% { transform: scaleY(1); opacity: .5; }
-  50% { transform: scaleY(.4); opacity: .2; }
-}
+@keyframes scrollline { 0%,100% { opacity: .5; } 50% { opacity: .1; } }
 
-/* ─────────────────────────────────────────
-   SECTION SCAFFOLD
-───────────────────────────────────────── */
-section { border-bottom: 1px solid var(--line); }
-.wrap { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
-.sec-pad { padding: 96px 0; }
-
-.sec-header {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  margin-bottom: 64px; padding-bottom: 28px;
+/* ══════════════════════════════════════════
+   MARQUEE
+══════════════════════════════════════════ */
+.marquee-section {
   border-bottom: 1px solid var(--line);
+  padding: 0; overflow: hidden;
 }
-.sec-num {
-  font-size: .62rem; font-weight: 400; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--t4); margin-bottom: 10px;
+.marquee-inner {
+  display: flex; gap: 0;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+  border-top: 1px solid var(--line);
 }
-.sec-title {
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-  font-weight: 300; letter-spacing: -.03em; color: var(--t1); line-height: 1;
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.marquee-item {
+  display: flex; align-items: center; gap: 28px;
+  padding: 18px 40px;
+  border-right: 1px solid var(--line);
+  white-space: nowrap; flex-shrink: 0;
 }
-.sec-sub {
-  font-size: .78rem; font-weight: 400; color: var(--t3);
-  letter-spacing: .06em; text-transform: uppercase;
+.marquee-item span {
+  font-family: var(--ff-d);
+  font-size: 1rem; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--t4);
+  transition: color .3s;
+}
+.marquee-item:hover span { color: var(--t1); }
+.marquee-diamond {
+  width: 4px; height: 4px; background: var(--t4);
+  transform: rotate(45deg); flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════
+   SECTION SCAFFOLD
+══════════════════════════════════════════ */
+section { border-bottom: 1px solid var(--line); }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+.sec-pad { padding: 100px 0; }
+
+/* Parenthetical section tag (Stōkt style) */
+.sec-tag {
+  font-size: .62rem; font-weight: 500; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--t4);
+  margin-bottom: 20px;
+}
+.sec-tag::before { content: '( '; }
+.sec-tag::after  { content: ' )'; }
+
+.sec-headline {
+  font-family: var(--ff-d);
+  font-size: clamp(2.6rem, 5.5vw, 5.2rem);
+  font-weight: 900; letter-spacing: -.02em; line-height: .95;
+  text-transform: uppercase; color: var(--t1);
+}
+.sec-headline .dim { color: var(--t3); }
+.sec-subline {
+  font-size: .75rem; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--t3);
 }
 
 /* Reveal */
 .rv {
-  opacity: 0; transform: translateY(20px);
-  transition: opacity .7s var(--ease), transform .7s var(--ease);
+  opacity: 0; transform: translateY(28px);
+  transition: opacity .8s var(--ease2), transform .8s var(--ease2);
 }
 .rv.vis { opacity: 1; transform: translateY(0); }
-.d1 { transition-delay: .06s; } .d2 { transition-delay: .12s; }
-.d3 { transition-delay: .18s; } .d4 { transition-delay: .24s; }
-.d5 { transition-delay: .30s; } .d6 { transition-delay: .36s; }
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+.d4{transition-delay:.32s}.d5{transition-delay:.40s}.d6{transition-delay:.48s}
 
-/* ─────────────────────────────────────────
+/* ══════════════════════════════════════════
    ABOUT
-───────────────────────────────────────── */
-#about .about-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-  align-items: start;
+══════════════════════════════════════════ */
+#about .about-top {
+  padding-top: 100px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; border-bottom: 1px solid var(--line);
+  padding-bottom: 64px;
+  margin-bottom: 64px;
 }
-.about-text { }
+.about-top-left { padding-right: 64px; border-right: 1px solid var(--line); }
+.about-top-right { padding-left: 64px; display: flex; flex-direction: column; justify-content: flex-end; }
+
 .about-lead {
-  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
-  font-weight: 300; line-height: 1.68; color: var(--t1);
-  letter-spacing: -.01em; margin-bottom: 28px;
+  font-family: var(--ff-d);
+  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+  font-weight: 700; line-height: 1.12; text-transform: uppercase;
+  letter-spacing: -.01em; color: var(--t1); margin-bottom: 32px;
 }
 .about-body {
-  font-size: .9rem; font-weight: 300; line-height: 1.84;
-  color: var(--t2); margin-bottom: 36px;
+  font-size: .95rem; font-weight: 300; line-height: 1.84; color: var(--t2);
+  margin-bottom: 18px;
 }
+
+/* Stats row (Stōkt-style big numbers) */
+.stats-row {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0; border-top: 1px solid var(--line);
+}
+.stat-item {
+  padding: 36px 0; border-right: 1px solid var(--line);
+  text-align: center;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: var(--ff-d);
+  font-size: clamp(3.5rem, 6vw, 6rem);
+  font-weight: 900; letter-spacing: -.03em; line-height: 1;
+  color: var(--t1); display: block;
+}
+.stat-label {
+  font-size: .62rem; font-weight: 500; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--t4); margin-top: 8px; display: block;
+}
+
+/* Spec table */
 .about-specs { }
 .about-spec-row {
-  display: flex; padding: 16px 0;
-  border-top: 1px solid var(--line);
+  display: flex; padding: 18px 0; border-top: 1px solid var(--line);
+  align-items: baseline;
 }
 .about-spec-row:last-child { border-bottom: 1px solid var(--line); }
 .asp-label {
-  font-size: .62rem; font-weight: 400; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--t4); width: 140px; flex-shrink: 0;
+  font-size: .58rem; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--t4); width: 150px; flex-shrink: 0;
   padding-top: 2px;
 }
-.asp-val { font-size: .88rem; font-weight: 300; color: var(--t2); line-height: 1.6; }
+.asp-val { font-size: .9rem; font-weight: 300; color: var(--t2); line-height: 1.5; }
+.asp-val.green { color: var(--green); }
 
-/* ─────────────────────────────────────────
+/* ══════════════════════════════════════════
    PROJECTS
-───────────────────────────────────────── */
-.proj-list { display: flex; flex-direction: column; gap: 0; }
+══════════════════════════════════════════ */
+#proj .sec-header {
+  padding: 64px 0; border-bottom: 1px solid var(--line);
+  display: flex; align-items: flex-end; justify-content: space-between;
+}
 
-.proj-item {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-  border-top: 1px solid var(--line);
+/* Project grid */
+.proj-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--line);
+}
+
+.proj-card {
+  background: var(--bg); position: relative; overflow: hidden;
   cursor: pointer;
-  transition: background .3s var(--ease);
-  position: relative;
 }
-.proj-item:last-child { border-bottom: 1px solid var(--line); }
-.proj-item:hover { background: var(--bg1); }
+.proj-card:hover .pc-img { transform: scale(1.06); filter: brightness(.7); }
+.proj-card:hover .pc-overlay { opacity: 1; }
+.proj-card:hover .pc-arrow { transform: translate(0,0); opacity: 1; }
 
-.proj-item.reverse { direction: rtl; }
-.proj-item.reverse > * { direction: ltr; }
-
-.proj-img {
-  height: 340px; overflow: hidden; background: var(--bg2);
-  position: relative;
+.pc-img-wrap {
+  height: 420px; overflow: hidden; position: relative;
+  background: var(--bg2);
 }
-.proj-img img {
+.pc-img {
   width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(20%) brightness(.78);
-  transition: transform .8s var(--ease), filter .4s;
-}
-.proj-item:hover .proj-img img {
-  transform: scale(1.04); filter: grayscale(0%) brightness(.88);
-}
-.proj-img-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(10,10,10,.2) 0%, transparent 60%);
-}
-.proj-tag {
-  position: absolute; top: 20px; left: 20px;
-  font-size: .58rem; font-weight: 400; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--t3);
-  background: rgba(10,10,10,.75); backdrop-filter: blur(8px);
-  border: 1px solid var(--line); padding: 5px 12px; border-radius: 2px;
+  filter: brightness(.6) grayscale(.15);
+  transition: transform .9s var(--ease2), filter .5s;
 }
 
-.proj-content {
-  padding: 48px; display: flex; flex-direction: column; justify-content: space-between;
+/* SVG placeholder */
+.pc-svg {
+  width: 100%; height: 100%; display: block;
+  transition: filter .5s;
+  filter: brightness(.9);
 }
-.proj-num {
-  font-size: .6rem; font-weight: 400; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--t4); margin-bottom: 18px;
+.proj-card:hover .pc-svg { filter: brightness(1.1); }
+
+.pc-tag {
+  position: absolute; top: 24px; left: 24px;
+  font-size: .58rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--t3);
+  background: rgba(0,0,0,.7); backdrop-filter: blur(10px);
+  border: 1px solid var(--line); padding: 6px 14px; border-radius: 2px;
 }
-.proj-title {
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  font-weight: 300; letter-spacing: -.025em; line-height: 1.24;
-  color: var(--t1); margin-bottom: 16px;
+.pc-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.45);
+  opacity: 0; transition: opacity .4s;
 }
-.proj-desc {
-  font-size: .85rem; font-weight: 300; color: var(--t2);
-  line-height: 1.78; margin-bottom: 28px; flex: 1;
+.pc-arrow {
+  position: absolute; bottom: 24px; right: 24px;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--t1); color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  transform: translate(8px, 8px); opacity: 0;
+  transition: all .35s var(--ease2);
 }
-.proj-outcome {
+
+.pc-body {
+  padding: 28px 32px 32px;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+}
+.pc-num {
+  font-size: .58rem; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--t4); margin-bottom: 10px;
+}
+.pc-title {
+  font-family: var(--ff-d);
+  font-size: clamp(1.2rem, 1.8vw, 1.7rem);
+  font-weight: 800; text-transform: uppercase; letter-spacing: -.01em;
+  color: var(--t1); line-height: 1.08; margin-bottom: 12px;
+}
+.pc-desc {
+  font-size: .84rem; font-weight: 300; color: var(--t2);
+  line-height: 1.78; margin-bottom: 20px;
+}
+.pc-outcome {
   background: var(--bg2); border: 1px solid var(--line);
-  border-radius: 2px; padding: 14px 18px; margin-bottom: 24px;
+  border-radius: 2px; padding: 12px 16px; margin-bottom: 18px;
 }
-.proj-outcome-label {
-  font-size: .55rem; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--t4); margin-bottom: 5px;
+.pc-outcome-label {
+  font-size: .52rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--t4); margin-bottom: 4px;
 }
-.proj-outcome-val {
-  font-size: .82rem; font-weight: 400; color: var(--t2);
-}
-.proj-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.pc-outcome-val { font-size: .8rem; font-weight: 400; color: var(--t2); }
+
+.pc-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .ptag {
-  font-size: .62rem; font-weight: 400; letter-spacing: .06em;
-  color: var(--t3); border: 1px solid var(--line);
+  font-size: .6rem; font-weight: 500; letter-spacing: .06em;
+  color: var(--t4); border: 1px solid var(--line);
   padding: 5px 12px; border-radius: 2px;
   transition: all .2s;
 }
-.proj-item:hover .ptag { border-color: var(--line2); color: var(--t2); }
-
-/* Wide project variant */
-.proj-wide {
-  display: grid; grid-template-columns: 1fr;
-  border-top: 1px solid var(--line);
-  background: var(--bg1);
-}
-.proj-wide-img {
-  height: 420px; overflow: hidden; background: var(--bg2); position: relative;
-}
-.proj-wide-img img {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(15%) brightness(.75);
-  transition: transform .8s var(--ease), filter .4s;
-}
-.proj-wide:hover .proj-wide-img img {
-  transform: scale(1.03); filter: grayscale(0%) brightness(.85);
-}
-.proj-wide-content {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 0; border-top: 1px solid var(--line);
-}
-.proj-wide-left { padding: 40px; border-right: 1px solid var(--line); }
-.proj-wide-right { padding: 40px; display: flex; flex-direction: column; justify-content: space-between; }
-
-/* SVG project card (no image) */
-.proj-svg-vis {
-  height: 340px; overflow: hidden; background: var(--bg2); position: relative;
-}
+.proj-card:hover .ptag { color: var(--t2); border-color: var(--line2); }
 
 /* Thumb gallery */
 .thumb-gallery {
-  display: flex; gap: 6px; margin-bottom: 20px;
+  display: flex; gap: 6px; margin-bottom: 18px;
 }
 .thumb-item {
-  width: 72px; height: 50px; flex-shrink: 0;
+  width: 68px; height: 48px; flex-shrink: 0;
   overflow: hidden; border-radius: 2px;
-  border: 1px solid var(--line); cursor: pointer;
-  background: var(--bg2);
+  border: 1px solid var(--line); cursor: pointer; background: var(--bg2);
 }
 .thumb-item img {
   width: 100%; height: 100%; object-fit: cover;
@@ -415,252 +564,327 @@ section { border-bottom: 1px solid var(--line); }
 }
 .thumb-item:hover img { filter: grayscale(0%); transform: scale(1.08); }
 
-/* ─────────────────────────────────────────
+/* Wide card (full width) */
+.proj-card-wide {
+  background: var(--bg); grid-column: span 2;
+  display: grid; grid-template-columns: 1fr 1fr;
+  cursor: pointer; position: relative; overflow: hidden;
+  border-top: 1px solid var(--line);
+}
+.proj-card-wide:hover .pw-img { transform: scale(1.04); filter: brightness(.7); }
+.pw-img-wrap {
+  height: 500px; overflow: hidden; position: relative; background: var(--bg2);
+}
+.pw-img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(.65) grayscale(.1);
+  transition: transform .9s var(--ease2), filter .5s;
+}
+.pw-content {
+  padding: 48px; display: flex; flex-direction: column; justify-content: space-between;
+  border-left: 1px solid var(--line);
+}
+.pw-tag {
+  position: absolute; top: 24px; left: 24px;
+  font-size: .58rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--t3);
+  background: rgba(0,0,0,.7); backdrop-filter: blur(10px);
+  border: 1px solid var(--line); padding: 6px 14px; border-radius: 2px;
+}
+
+/* ══════════════════════════════════════════
    SKILLS
-───────────────────────────────────────── */
-.skills-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+══════════════════════════════════════════ */
+#skills .skills-inner {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 0;
+  border-top: 1px solid var(--line);
 }
 .skill-col {
-  padding: 36px 32px; border-right: 1px solid var(--line);
+  padding: 40px 32px; border-right: 1px solid var(--line);
 }
 .skill-col:last-child { border-right: none; }
 .skill-col-label {
-  font-size: .6rem; font-weight: 400; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--t4);
-  margin-bottom: 24px; padding-bottom: 16px;
+  font-family: var(--ff-d);
+  font-size: .85rem; font-weight: 800; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--t1);
+  margin-bottom: 28px; padding-bottom: 16px;
   border-bottom: 1px solid var(--line);
 }
-.skill-items { display: flex; flex-direction: column; gap: 0; }
 .skill-item {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 11px 0; border-bottom: 1px solid var(--line);
-  font-size: .82rem; font-weight: 300; color: var(--t2);
-  transition: color .2s;
+  padding: 12px 0; border-bottom: 1px solid var(--line);
+  font-size: .84rem; font-weight: 300; color: var(--t3);
+  transition: color .2s, padding-left .2s;
 }
 .skill-item:last-child { border-bottom: none; }
-.skill-item:hover { color: var(--t1); }
-.skill-dot {
-  width: 4px; height: 4px; border-radius: 50%; background: var(--t4); flex-shrink: 0;
-}
+.skill-item:hover { color: var(--t1); padding-left: 8px; }
+.skill-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--t4); flex-shrink: 0; }
 
-/* ─────────────────────────────────────────
-   EXPERIENCE (horizontal scroll)
-───────────────────────────────────────── */
+/* ══════════════════════════════════════════
+   EXPERIENCE
+══════════════════════════════════════════ */
 .exp-scroll-outer {
-  overflow-x: auto; padding-bottom: 2px;
-  scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+  overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent;
 }
 .exp-scroll-outer::-webkit-scrollbar { height: 1px; }
 .exp-scroll-outer::-webkit-scrollbar-thumb { background: var(--line); }
 
 .exp-track {
-  display: flex; gap: 0; width: max-content;
-  padding: 0 48px;
+  display: flex; gap: 0; width: max-content; padding: 0 48px;
 }
 .exp-card {
-  width: 360px; flex-shrink: 0;
+  width: 380px; flex-shrink: 0;
+  padding: 40px 40px 40px 0; margin-right: 40px;
   border-right: 1px solid var(--line);
-  padding: 40px 40px 40px 0;
-  margin-right: 40px;
-  transition: all .3s var(--ease);
 }
-.exp-card:first-child { padding-left: 0; }
 .exp-card:last-child { border-right: none; margin-right: 0; }
 
-.exp-header { margin-bottom: 20px; }
 .exp-co {
-  font-size: 1rem; font-weight: 400; letter-spacing: -.02em;
-  color: var(--t1); margin-bottom: 5px;
+  font-family: var(--ff-d);
+  font-size: 1.2rem; font-weight: 800; letter-spacing: .02em;
+  text-transform: uppercase; color: var(--t1); margin-bottom: 4px;
 }
-.exp-role {
-  font-size: .75rem; font-weight: 300; color: var(--t3);
-  margin-bottom: 3px;
-}
+.exp-role { font-size: .78rem; font-weight: 300; color: var(--t3); margin-bottom: 4px; }
 .exp-meta {
   display: flex; align-items: center; gap: 10px;
-  font-size: .62rem; color: var(--t4); letter-spacing: .05em;
-  margin-top: 8px;
+  font-size: .6rem; color: var(--t4); letter-spacing: .06em; margin-top: 6px;
 }
-.exp-live {
-  display: flex; align-items: center; gap: 5px;
-  font-size: .6rem; color: #6ee7b7; letter-spacing: .1em;
-}
-.exp-live-dot {
-  width: 5px; height: 5px; border-radius: 50%; background: #6ee7b7;
-  animation: pulse 2s ease-in-out infinite;
-}
+.exp-live { display: flex; align-items: center; gap: 5px; font-size: .6rem; color: var(--green); }
+.exp-live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse 2s ease-in-out infinite; }
 
 .exp-img {
-  height: 180px; overflow: hidden; border-radius: 2px;
-  border: 1px solid var(--line); margin-bottom: 20px; cursor: pointer; position: relative;
+  height: 190px; overflow: hidden; border-radius: 2px;
+  border: 1px solid var(--line); margin: 20px 0 18px; cursor: pointer;
+  position: relative;
 }
 .exp-img img {
   width: 100%; height: 100%; object-fit: cover;
   filter: grayscale(20%) brightness(.8);
-  transition: transform .6s var(--ease), filter .3s;
+  transition: transform .6s var(--ease2), filter .3s;
 }
-.exp-card:hover .exp-img img { transform: scale(1.04); filter: grayscale(0%) brightness(.9); }
-.exp-img-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 50%, rgba(10,10,10,.6)); }
+.exp-card:hover .exp-img img { transform: scale(1.05); filter: grayscale(0%) brightness(.9); }
+.exp-img-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,.6)); }
 
-.exp-bullets { list-style: none; margin-bottom: 18px; }
+.exp-bullets { list-style: none; margin-bottom: 16px; }
 .exp-bullets li {
   font-size: .8rem; font-weight: 300; color: var(--t2);
-  line-height: 1.64; padding: 7px 0;
-  border-bottom: 1px solid var(--line); position: relative;
+  line-height: 1.64; padding: 8px 0;
+  border-bottom: 1px solid var(--line);
 }
 .exp-bullets li:first-child { border-top: 1px solid var(--line); }
 
-/* ─────────────────────────────────────────
+/* ══════════════════════════════════════════
    CREDENTIALS
-───────────────────────────────────────── */
+══════════════════════════════════════════ */
 .cred-section-label {
-  font-size: .6rem; font-weight: 400; letter-spacing: .18em;
+  font-family: var(--ff-d);
+  font-size: .78rem; font-weight: 800; letter-spacing: .2em;
   text-transform: uppercase; color: var(--t4);
-  margin-bottom: 24px; display: flex; align-items: center; gap: 16px;
+  margin-bottom: 20px; display: flex; align-items: center; gap: 16px;
 }
 .cred-section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); max-width: 60px; }
 
 .cred-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-  background: var(--line); margin-bottom: 1px;
-}
-.cred-card {
-  background: var(--bg); cursor: pointer;
-  transition: background .25s;
-  overflow: hidden;
-}
-.cred-card:hover { background: var(--bg1); }
-.cred-img {
-  height: 130px; overflow: hidden; background: var(--bg2); position: relative;
-}
-.cred-img img {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(10%); transition: transform .5s var(--ease), filter .3s;
-}
-.cred-card:hover .cred-img img { transform: scale(1.05); filter: grayscale(0%); }
-.cred-body { padding: 18px 20px; }
-.cred-title { font-size: .84rem; font-weight: 400; color: var(--t1); margin-bottom: 4px; line-height: 1.3; }
-.cred-issuer { font-size: .68rem; font-weight: 300; color: var(--t4); letter-spacing: .04em; }
-
-.awards-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 1px;
   background: var(--line);
 }
-.award-card {
-  background: var(--bg); cursor: pointer;
-  transition: background .25s; overflow: hidden;
+.cred-card {
+  background: var(--bg); cursor: pointer; transition: background .25s; overflow: hidden;
 }
-.award-card:hover { background: var(--bg1); }
-.award-img { height: 140px; overflow: hidden; background: var(--bg2); }
+.cred-card:hover { background: var(--bg2); }
+.cred-img { height: 140px; overflow: hidden; background: var(--bg2); }
+.cred-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(10%); transition: transform .5s var(--ease2), filter .3s;
+}
+.cred-card:hover .cred-img img { transform: scale(1.06); filter: grayscale(0%); }
+.cred-body { padding: 18px 20px; }
+.cred-title { font-size: .86rem; font-weight: 400; color: var(--t1); margin-bottom: 4px; line-height: 1.3; }
+.cred-issuer { font-size: .66rem; font-weight: 300; color: var(--t4); letter-spacing: .04em; }
+
+.awards-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--line);
+}
+.award-card { background: var(--bg); cursor: pointer; transition: background .25s; overflow: hidden; }
+.award-card:hover { background: var(--bg2); }
+.award-img { height: 150px; overflow: hidden; background: var(--bg2); }
 .award-img img {
   width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(20%); transition: transform .5s var(--ease), filter .3s;
+  filter: grayscale(20%); transition: transform .5s var(--ease2), filter .3s;
 }
 .award-card:hover .award-img img { transform: scale(1.06); filter: grayscale(0%); }
 .award-body { padding: 16px 18px; }
-.award-title { font-size: .8rem; font-weight: 400; color: var(--t1); margin-bottom: 3px; line-height: 1.3; }
-.award-sub { font-size: .65rem; font-weight: 300; color: var(--t4); }
+.award-title { font-size: .82rem; font-weight: 400; color: var(--t1); margin-bottom: 3px; line-height: 1.3; }
+.award-sub { font-size: .64rem; font-weight: 300; color: var(--t4); }
 
-/* ─────────────────────────────────────────
-   CONTACT
-───────────────────────────────────────── */
+/* ══════════════════════════════════════════
+   CTA / CONTACT (Stōkt "LET'S CUT THE BS" section)
+══════════════════════════════════════════ */
 #contact {
   border-bottom: none;
+  position: relative; overflow: hidden;
+  background: var(--bg);
 }
-.contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-.contact-left { padding: 96px 64px 96px 0; border-right: 1px solid var(--line); }
-.contact-right { padding: 96px 0 96px 64px; }
-.contact-headline {
-  font-size: clamp(2.2rem, 5vw, 4.2rem);
-  font-weight: 300; letter-spacing: -.035em; line-height: 1;
-  color: var(--t1); margin-bottom: 24px;
+.cta-section {
+  padding: 120px 48px;
+  text-align: center; position: relative; z-index: 1;
+  border-bottom: 1px solid var(--line);
 }
-.contact-headline .muted { color: var(--t3); }
-.contact-desc {
-  font-size: .88rem; font-weight: 300; color: var(--t2); line-height: 1.8;
-  max-width: 380px;
+.cta-tag {
+  font-size: .62rem; font-weight: 500; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--t4); margin-bottom: 32px;
+  display: block;
 }
-.contact-links { display: flex; flex-direction: column; gap: 0; }
-.contact-link {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 24px 0; border-bottom: 1px solid var(--line);
-  transition: all .2s var(--ease);
-}
-.contact-link:first-child { border-top: 1px solid var(--line); }
-.contact-link:hover { padding-left: 8px; }
-.cl-left { display: flex; align-items: center; gap: 16px; }
-.cl-label {
-  font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--t4); margin-bottom: 4px;
-}
-.cl-val { font-size: .88rem; font-weight: 300; color: var(--t1); }
-.cl-icon {
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 1px solid var(--line); display: flex; align-items: center;
-  justify-content: center; font-size: .8rem; color: var(--t3);
-  flex-shrink: 0; transition: all .2s;
-}
-.contact-link:hover .cl-icon { border-color: var(--t3); color: var(--t1); }
-.cl-arrow { font-size: .7rem; color: var(--t4); transition: transform .2s; }
-.contact-link:hover .cl-arrow { transform: translateX(4px); color: var(--t2); }
+.cta-tag::before { content: '( '; }
+.cta-tag::after  { content: ' )'; }
 
-/* ─────────────────────────────────────────
+.cta-headline {
+  font-family: var(--ff-d);
+  font-size: clamp(4rem, 12vw, 13rem);
+  font-weight: 900; letter-spacing: -.03em; line-height: .88;
+  text-transform: uppercase; color: var(--t1);
+  margin-bottom: 48px;
+}
+.cta-headline .dim { color: var(--t3); display: block; }
+
+.cta-sub {
+  font-size: .95rem; font-weight: 300; color: var(--t2); line-height: 1.8;
+  max-width: 420px; margin: 0 auto 48px;
+}
+
+/* Contact links */
+.contact-links-row {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; background: var(--line);
+}
+.contact-link {
+  background: var(--bg); padding: 40px 32px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 0; cursor: pointer; transition: background .25s;
+  position: relative; overflow: hidden;
+}
+.contact-link::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--bg2); transform: scaleY(0); transform-origin: bottom;
+  transition: transform .35s var(--ease2);
+}
+.contact-link:hover::before { transform: scaleY(1); }
+.contact-link:hover .cl-arrow { transform: rotate(-45deg); }
+.cl-label {
+  font-size: .58rem; font-weight: 500; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--t4); margin-bottom: 10px;
+  position: relative; z-index: 1;
+}
+.cl-val {
+  font-family: var(--ff-d);
+  font-size: 1.1rem; font-weight: 700; letter-spacing: .02em;
+  text-transform: uppercase; color: var(--t1);
+  position: relative; z-index: 1;
+}
+.cl-arrow {
+  margin-top: 16px; font-size: 1.2rem; color: var(--t4);
+  transition: transform .3s var(--ease2);
+  position: relative; z-index: 1;
+}
+
+/* ══════════════════════════════════════════
    FOOTER
-───────────────────────────────────────── */
+══════════════════════════════════════════ */
 footer {
-  padding: 24px 48px;
-  display: flex; align-items: center; justify-content: space-between;
+  padding: 32px 48px;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  gap: 24px;
   border-top: 1px solid var(--line);
 }
-.f-left, .f-right {
-  font-size: .62rem; font-weight: 400; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--t4);
+.f-logo {
+  font-family: var(--ff-d);
+  font-size: 1.1rem; font-weight: 900; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--t1);
+}
+.f-copy {
+  font-size: .6rem; font-weight: 400; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--t4); text-align: center;
+}
+.f-loc {
+  font-size: .6rem; font-weight: 400; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--t4); text-align: right;
 }
 
-/* ─────────────────────────────────────────
+/* ══════════════════════════════════════════
+   PROGRESS BAR
+══════════════════════════════════════════ */
+#prog {
+  position: fixed; top: 0; left: 0; height: 1px;
+  background: rgba(255,255,255,.4); z-index: 9999;
+  width: 0; transition: width .1s linear;
+}
+
+/* ══════════════════════════════════════════
    RESPONSIVE
-───────────────────────────────────────── */
+══════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .skills-grid { grid-template-columns: repeat(2, 1fr); }
-  .cred-grid { grid-template-columns: repeat(2, 1fr); }
-  .awards-grid { grid-template-columns: repeat(2, 1fr); }
+  .proj-grid { grid-template-columns: 1fr; }
+  .proj-card-wide { grid-template-columns: 1fr; }
+  .pw-img-wrap { height: 340px; }
+  .pw-content { border-left: none; border-top: 1px solid var(--line); }
+  .skills-inner { grid-template-columns: repeat(2,1fr); }
+  .cred-grid { grid-template-columns: repeat(2,1fr); }
+  .awards-grid { grid-template-columns: repeat(2,1fr); }
+  .contact-links-row { grid-template-columns: repeat(2,1fr); }
+  footer { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .f-copy { grid-column: span 2; order: 3; }
 }
 @media (max-width: 768px) {
-  nav { padding: 18px 24px; }
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+  nav { padding: 20px 24px; }
   nav.scrolled { padding: 14px 24px; }
   .nav-links .nl:not(.nav-cta) { display: none; }
   #hero { padding: 0 24px 48px; }
-  .hero-desc-row { flex-direction: column; gap: 28px; }
-  .hero-meta { gap: 28px; }
+  .hero-bottom { flex-direction: column; align-items: flex-start; }
+  .hero-scroll { display: none; }
   .wrap { padding: 0 24px; }
-  .about-grid { grid-template-columns: 1fr; gap: 48px; }
-  .proj-item { grid-template-columns: 1fr; }
-  .proj-item.reverse { direction: ltr; }
-  .proj-img, .proj-svg-vis { height: 260px; }
-  .proj-content { padding: 32px 24px; }
-  .proj-wide-content { grid-template-columns: 1fr; }
-  .proj-wide-left { border-right: none; border-bottom: 1px solid var(--line); }
-  .skills-grid { grid-template-columns: 1fr 1fr; }
-  .skill-col { padding: 24px 20px; }
-  .cred-grid { grid-template-columns: 1fr; }
-  .awards-grid { grid-template-columns: repeat(2, 1fr); }
-  .contact-inner { grid-template-columns: 1fr; }
-  .contact-left { padding: 64px 0 32px; border-right: none; border-bottom: 1px solid var(--line); }
-  .contact-right { padding: 32px 0 64px; }
-  footer { flex-direction: column; gap: 8px; text-align: center; padding: 20px 24px; }
+  .about-top { grid-template-columns: 1fr; }
+  .about-top-left { padding-right: 0; border-right: none; border-bottom: 1px solid var(--line); padding-bottom: 40px; }
+  .about-top-right { padding-left: 0; padding-top: 40px; }
+  .stats-row { grid-template-columns: repeat(3,1fr); }
+  .pc-img-wrap { height: 280px; }
+  .skills-inner { grid-template-columns: 1fr; }
+  .skill-col { border-right: none; border-bottom: 1px solid var(--line); }
+  .cta-section { padding: 80px 24px; }
+  .contact-links-row { grid-template-columns: 1fr 1fr; }
+  footer { grid-template-columns: 1fr; text-align: center; padding: 24px; }
+  .f-loc { text-align: center; }
+  .f-copy { grid-column: span 1; }
   .exp-track { padding: 0 24px; }
+  #loader { padding: 32px 24px; }
+  .proj-card-wide { grid-column: span 1; }
 }
 @media (max-width: 480px) {
-  .skills-grid { grid-template-columns: 1fr; }
-  .hero-meta { flex-direction: column; gap: 16px; }
+  .stats-row { grid-template-columns: 1fr; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--line); }
   .awards-grid { grid-template-columns: 1fr; }
+  .contact-links-row { grid-template-columns: 1fr; }
+  .cred-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
+<!-- CURSOR -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
+
+<!-- PROGRESS -->
 <div id="prog"></div>
+
+<!-- ════════════════ LOADER ════════════════ -->
+<div id="loader">
+  <div class="loader-pct" id="pct">0</div>
+  <div class="loader-label">Loading Portfolio</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="lbar"></div></div>
+</div>
 
 <!-- LIGHTBOX -->
 <div id="lb">
@@ -673,178 +897,197 @@ footer {
   </div>
 </div>
 
-<!-- NAV -->
+<!-- ════════════════ NAV ════════════════ -->
 <nav id="nav">
-  <a class="nav-logo" href="#hero">SMM<span style="opacity:.4">.</span></a>
+  <a class="nav-logo" href="#hero">SMM</a>
   <div class="nav-links">
-    <a href="#about" class="nl">About</a>
-    <a href="#proj" class="nl">Projects</a>
-    <a href="#skills" class="nl">Skills</a>
-    <a href="#exp" class="nl">Experience</a>
-    <a href="#contact" class="nl nav-cta">Contact</a>
+    <a href="#about" class="nl"><span><i>About</i><i>About</i></span></a>
+    <a href="#proj" class="nl"><span><i>Work</i><i>Work</i></span></a>
+    <a href="#skills" class="nl"><span><i>Skills</i><i>Skills</i></span></a>
+    <a href="#exp" class="nl"><span><i>Experience</i><i>Experience</i></span></a>
+    <a href="#contact" class="nav-cta"><span>Get in Touch</span></a>
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<section id="hero" style="border-bottom: 1px solid var(--line)">
-  <div class="hero-eyebrow">
-    <span class="pulse"></span>
-    Open to Mechatronics &amp; Robotics Engineering Roles
-  </div>
-
-  <h1 class="hero-name" id="h1">
-    <span id="tl1">Syed Mustafa</span><br>
-    <span class="muted" id="tl2">Mohiuddin</span>
-  </h1>
-
-  <div class="hero-desc-row">
-    <p class="hero-desc">
-      Engineering intelligent systems at the convergence of mechanics, electronics, and software. Specialising in force-controlled motion, autonomous robotics, embedded control architectures, and safety-critical systems for medical and industrial applications.
-    </p>
-    <div class="hero-meta">
-      <div class="hm-item">
-        <div class="hm-label">Experience</div>
-        <div class="hm-val"><span class="cnt" data-n="3">3</span><span class="hm-unit">+ yrs</span></div>
-      </div>
-      <div class="hm-item">
-        <div class="hm-label">Companies</div>
-        <div class="hm-val"><span class="cnt" data-n="5">5</span></div>
-      </div>
-      <div class="hm-item">
-        <div class="hm-label">Certs</div>
-        <div class="hm-val"><span class="cnt" data-n="6">6</span><span class="hm-unit">+</span></div>
+<!-- ════════════════ HERO ════════════════ -->
+<section id="hero" style="border-bottom:none">
+  <div class="hero-bg"><div class="hero-bg-img"></div></div>
+  <div class="hero-content">
+    <div class="hero-tag">
+      <span class="hero-tag-dot"></span>
+      Open to Mechatronics &amp; Robotics Roles — Bayreuth, Germany
+    </div>
+    <div class="hero-name">
+      <div class="hero-name-row"><span>Syed</span></div>
+      <div class="hero-name-row"><span>Mustafa</span></div>
+      <div class="hero-name-row"><span>Mohiuddin</span></div>
+    </div>
+    <div class="hero-bottom">
+      <p class="hero-desc">
+        Engineering intelligent systems at the convergence of mechanics, electronics, and software. Force-controlled motion · Autonomous robotics · Embedded control architectures · Safety-critical medical systems.
+      </p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-fill"><span>Get in Touch &rarr;</span></a>
+        <a href="#proj" class="btn-outline">View Work &darr;</a>
       </div>
     </div>
   </div>
-
-  <div class="hero-ctas">
-    <a href="#contact" class="btn-primary">Get in Touch &rarr;</a>
-    <a href="#proj" class="btn-ghost">View Work &darr;</a>
-  </div>
-
-  <div class="scroll-hint">
-    <div class="scroll-line"></div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
     <span>Scroll</span>
   </div>
 </section>
 
-<!-- ═══ ABOUT ═══ -->
+<!-- ════════════════ MARQUEE ════════════════ -->
+<div class="marquee-section">
+  <div class="marquee-inner">
+    <!-- Repeat twice for seamless loop -->
+    <div class="marquee-item"><span>Force Control</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>MATLAB / Simulink</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>SICK LiDAR</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>Siemens NX</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>ISO 15066</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>C / C++</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>Digital Twin</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>HIL Testing</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>Subsea Robotics</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>PLC Safety Logic</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>IEC 60601</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>ROS</span><span class="marquee-diamond"></span></div>
+    <!-- Duplicate -->
+    <div class="marquee-item"><span>Force Control</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>MATLAB / Simulink</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>SICK LiDAR</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>Siemens NX</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>ISO 15066</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>C / C++</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>Digital Twin</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>HIL Testing</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>Subsea Robotics</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>PLC Safety Logic</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>IEC 60601</span><span class="marquee-diamond"></span></div>
+    <div class="marquee-item"><span>ROS</span><span class="marquee-diamond"></span></div>
+  </div>
+</div>
+
+<!-- ════════════════ ABOUT ════════════════ -->
 <section id="about">
-  <div class="wrap sec-pad">
-    <div class="sec-header rv">
-      <div>
-        <div class="sec-num">01</div>
-        <div class="sec-title">About</div>
+  <div class="wrap">
+    <div class="about-top">
+      <div class="about-top-left rv">
+        <div class="sec-tag">About</div>
+        <h2 class="about-lead">I design intelligent mechatronic systems that operate at the boundary between physical and digital worlds.</h2>
+        <p class="about-body">
+          My work sits at the intersection of mechanical engineering, electrical systems, and embedded software — creating systems that sense, compute, and act with precision. From force-controlled motion architectures in medical CT imaging to LiDAR-guided autonomous navigation and subsea robotics.
+        </p>
+        <p class="about-body">
+          Currently at Siemens Healthineers on safety-critical motion control systems. Seeking my next challenge in automation, robotics, or advanced controls engineering.
+        </p>
       </div>
-      <div class="sec-sub">Bayreuth, Germany</div>
+      <div class="about-top-right rv d2">
+        <div class="about-specs">
+          <div class="about-spec-row">
+            <div class="asp-label">Discipline</div>
+            <div class="asp-val">Mechatronics &amp; Systems Engineering</div>
+          </div>
+          <div class="about-spec-row">
+            <div class="asp-label">Domain</div>
+            <div class="asp-val">Motion Control · Robotics · Embedded Systems</div>
+          </div>
+          <div class="about-spec-row">
+            <div class="asp-label">Industries</div>
+            <div class="asp-val">Medical Devices · Marine Robotics · Industrial Automation</div>
+          </div>
+          <div class="about-spec-row">
+            <div class="asp-label">Standards</div>
+            <div class="asp-val">ISO 15066 · IEC 60601-2-44 · IEC 61508</div>
+          </div>
+          <div class="about-spec-row">
+            <div class="asp-label">Education</div>
+            <div class="asp-val">B.Eng. Mechatronics · Hochschule Hof</div>
+          </div>
+          <div class="about-spec-row">
+            <div class="asp-label">Languages</div>
+            <div class="asp-val">English · German · Urdu</div>
+          </div>
+          <div class="about-spec-row">
+            <div class="asp-label">Status</div>
+            <div class="asp-val green">Available for New Roles</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="about-grid">
-      <div class="about-text rv d1">
-        <p class="about-lead">
-          I design and build intelligent mechatronic systems that operate at the boundary between the physical and digital worlds.
-        </p>
-        <p class="about-body">
-          My work sits at the intersection of mechanical engineering, electrical systems, and embedded software — creating systems that sense, compute, and act with precision. From force-controlled motion architectures in medical CT imaging to LiDAR-guided autonomous navigation and subsea robotics, I approach every challenge as a systems thinker with a product mindset.
-        </p>
-        <p class="about-body">
-          I'm driven by the belief that the most meaningful engineering happens at disciplinary boundaries. I'm equally comfortable in a simulation environment, on a test bench, or in a cross-functional PLM workflow — and I move fluidly between hardware and software depending on what the problem demands.
-        </p>
-        <p class="about-body">
-          Currently working at Siemens Healthineers on safety-critical motion control systems. Seeking my next challenge in automation, robotics, or advanced controls engineering.
-        </p>
+    <!-- Big stats -->
+    <div class="stats-row rv d3">
+      <div class="stat-item">
+        <span class="stat-num cnt" data-n="3">0</span>
+        <span class="stat-label">Years Experience</span>
       </div>
-
-      <div class="about-specs rv d2">
-        <div class="about-spec-row">
-          <div class="asp-label">Discipline</div>
-          <div class="asp-val">Mechatronics &amp; Systems Engineering</div>
-        </div>
-        <div class="about-spec-row">
-          <div class="asp-label">Domain Focus</div>
-          <div class="asp-val">Motion Control · Robotics · Embedded Systems</div>
-        </div>
-        <div class="about-spec-row">
-          <div class="asp-label">Industries</div>
-          <div class="asp-val">Medical Devices · Marine Robotics · Industrial Automation</div>
-        </div>
-        <div class="about-spec-row">
-          <div class="asp-label">Standards</div>
-          <div class="asp-val">ISO 15066 · IEC 60601-2-44 · IEC 61508</div>
-        </div>
-        <div class="about-spec-row">
-          <div class="asp-label">Education</div>
-          <div class="asp-val">B.Eng. Mechatronics · Hochschule Hof</div>
-        </div>
-        <div class="about-spec-row">
-          <div class="asp-label">Languages</div>
-          <div class="asp-val">English · German · Urdu</div>
-        </div>
-        <div class="about-spec-row">
-          <div class="asp-label">Status</div>
-          <div class="asp-val" style="color: #6ee7b7">Available for New Roles</div>
-        </div>
+      <div class="stat-item">
+        <span class="stat-num cnt" data-n="5">0</span>
+        <span class="stat-label">Companies</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num cnt" data-n="6">0</span>
+        <span class="stat-label">Certifications</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ PROJECTS ═══ -->
+<!-- ════════════════ PROJECTS ════════════════ -->
 <section id="proj">
-  <div class="wrap sec-pad">
+  <div class="wrap">
     <div class="sec-header rv">
       <div>
-        <div class="sec-num">02</div>
-        <div class="sec-title">Featured Projects</div>
+        <div class="sec-tag">02 — Engineering Case Studies</div>
+        <h2 class="sec-headline">Featured<br><span class="dim">Work</span></h2>
       </div>
-      <div class="sec-sub">Engineering Case Studies</div>
+      <div class="sec-subline">6 Projects</div>
     </div>
   </div>
 
-  <div class="proj-list">
-
-    <!-- P01 — Force Limitation (wide) -->
-    <div class="proj-wide rv">
-      <div class="proj-wide-img">
-        <img src="ew.png" alt="Force Limitation System"/>
-        <div class="proj-img-overlay"></div>
-        <div class="proj-tag">01 — Bachelor Thesis</div>
-        <div style="position:absolute;bottom:20px;right:20px">
+  <!-- P01 Wide: Force Limitation -->
+  <div style="padding:0 48px">
+    <div class="proj-card-wide rv" onclick="openLb('exp2',0)">
+      <div class="pw-img-wrap">
+        <img class="pw-img" src="ew.png" alt="Force Limitation"/>
+        <div class="pw-tag">01 — Bachelor Thesis</div>
+        <div style="position:absolute;bottom:20px;left:24px">
           <div class="thumb-gallery" style="margin:0">
-            <div class="thumb-item" onclick="openLb('exp2',0)"><img src="ew.png" alt=""/></div>
-            <div class="thumb-item" onclick="openLb('exp2',1)"><img src="Picture2.jpg" alt=""/></div>
-            <div class="thumb-item" onclick="openLb('exp2',2)"><img src="IMG_0126 (1).jpg" alt=""/></div>
-            <div class="thumb-item" onclick="openLb('exp2',3)"><img src="IMG_9684 (1).jpg" alt=""/></div>
+            <div class="thumb-item" onclick="event.stopPropagation();openLb('exp2',0)"><img src="ew.png" alt=""/></div>
+            <div class="thumb-item" onclick="event.stopPropagation();openLb('exp2',1)"><img src="Picture2.jpg" alt=""/></div>
+            <div class="thumb-item" onclick="event.stopPropagation();openLb('exp2',2)"><img src="IMG_0126 (1).jpg" alt=""/></div>
+            <div class="thumb-item" onclick="event.stopPropagation();openLb('exp2',3)"><img src="IMG_9684 (1).jpg" alt=""/></div>
           </div>
         </div>
       </div>
-      <div class="proj-wide-content">
-        <div class="proj-wide-left">
-          <div class="proj-num">Project 01 &nbsp;/&nbsp; 2024–2025</div>
-          <div class="proj-title" style="font-size: 1.4rem; margin-bottom: 16px;">Intelligent Force Limitation<br>for Medical CT Motion Systems</div>
-          <p class="proj-desc" style="font-size: .84rem;">
-            Designed and implemented a real-time torque-controlled force limitation algorithm for Siemens Healthineers' CT gantry systems — enabling safe human-machine interaction under ISO 15066 and IEC 60601-2-44. The work introduced a "Single Click Activation" paradigm that eliminated manual reconfiguration across motion variants.
+      <div class="pw-content">
+        <div>
+          <div class="pc-num">Project 01 / 2024–2025 / Siemens Healthineers</div>
+          <div class="pc-title" style="font-size:clamp(1.5rem,2.4vw,2.4rem);margin-bottom:20px">Intelligent Force Limitation for Medical CT Motion</div>
+          <p class="pc-desc">
+            Designed and implemented a real-time torque-controlled force limitation algorithm for CT gantry systems — enabling safe human-machine interaction under ISO 15066 and IEC 60601-2-44. Introduced a "Single Click Activation" paradigm eliminating manual reconfiguration across all motion variants.
           </p>
-          <p class="proj-desc" style="font-size: .84rem;">
-            Built custom electromechanical test rigs to simulate both dynamic load collisions and nominal motion scenarios. Authored full certification-ready compliance documentation for regulatory submission.
+          <p class="pc-desc">
+            Built custom electromechanical test rigs to simulate dynamic load collisions and nominal motion scenarios. Authored full certification-ready compliance documentation for regulatory submission.
           </p>
         </div>
-        <div class="proj-wide-right">
-          <div>
-            <div class="proj-outcome" style="margin-bottom: 12px;">
-              <div class="proj-outcome-label">Challenge</div>
-              <div class="proj-outcome-val">Real-time torque control across heterogeneous CT hardware variants without hardware modification</div>
-            </div>
-            <div class="proj-outcome" style="margin-bottom: 12px;">
-              <div class="proj-outcome-label">Outcome</div>
-              <div class="proj-outcome-val">Safety-certified multi-model algorithm with unified single-click activation across all variants</div>
-            </div>
-            <div class="proj-outcome">
-              <div class="proj-outcome-label">Impact</div>
-              <div class="proj-outcome-val">Compliance documentation accepted for regulatory review; deployed to next-generation CT platform</div>
-            </div>
+        <div>
+          <div class="pc-outcome" style="margin-bottom:10px">
+            <div class="pc-outcome-label">Challenge</div>
+            <div class="pc-outcome-val">Real-time torque control across heterogeneous CT hardware without modification</div>
           </div>
-          <div class="proj-tags" style="margin-top: 24px;">
+          <div class="pc-outcome" style="margin-bottom:10px">
+            <div class="pc-outcome-label">Outcome</div>
+            <div class="pc-outcome-val">Safety-certified multi-model algorithm with unified single-click activation</div>
+          </div>
+          <div class="pc-outcome" style="margin-bottom:20px">
+            <div class="pc-outcome-label">Impact</div>
+            <div class="pc-outcome-val">Compliance docs accepted for regulatory review; deployed to next-gen CT platform</div>
+          </div>
+          <div class="pc-tags">
             <span class="ptag">ISO 15066</span>
             <span class="ptag">Torque Control</span>
             <span class="ptag">HIL Testing</span>
@@ -855,132 +1098,113 @@ footer {
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- P02 — LiDAR -->
-    <div class="proj-item rv d1" onclick="openLb('exp3',0)">
-      <div class="proj-img" style="cursor:pointer">
-        <img src="50319.png" alt="LiDAR Collision Avoidance"/>
-        <div class="proj-img-overlay"></div>
-        <div class="proj-tag">02 — Collision Avoidance</div>
-      </div>
-      <div class="proj-content">
-        <div>
-          <div class="proj-num">Project 02 &nbsp;/&nbsp; Siemens Healthineers, 2024</div>
-          <div class="proj-title">LiDAR-Guided Collision Avoidance for Nexaris Angio CT</div>
-          <p class="proj-desc">
-            Integrated SICK LiDAR sensors into the sliding gantry architecture of the Nexaris Angio CT to deliver real-time spatial awareness and collision prevention. Developed embedded C/C++ detection logic with safety-rated PLC integration, achieving reliable obstacle detection while eliminating false-positive triggers that previously required manual intervention. Full PLM lifecycle documentation maintained for regulatory traceability.
-          </p>
+  <!-- 2-col grid for remaining projects -->
+  <div style="padding:0 48px;margin-top:1px">
+    <div class="proj-grid">
+
+      <!-- P02 LiDAR -->
+      <div class="proj-card rv d1" onclick="openLb('exp3',0)">
+        <div class="pc-img-wrap">
+          <img class="pc-img" src="50319.png" alt="LiDAR"/>
+          <div class="pc-tag">02 — Collision Avoidance</div>
+          <div class="pc-overlay"></div>
+          <div class="pc-arrow">→</div>
         </div>
-        <div>
+        <div class="pc-body">
+          <div class="pc-num">Project 02 / Siemens Healthineers, 2024</div>
+          <div class="pc-title">LiDAR-Guided Collision Avoidance<br>Nexaris Angio CT</div>
+          <p class="pc-desc">Integrated SICK LiDAR sensors into the sliding gantry architecture to deliver real-time spatial awareness. Embedded C/C++ detection logic with safety-rated PLC integration, eliminating false-positive triggers requiring manual intervention.</p>
           <div class="thumb-gallery">
             <div class="thumb-item" onclick="event.stopPropagation();openLb('exp3',0)"><img src="50319.png" alt=""/></div>
             <div class="thumb-item" onclick="event.stopPropagation();openLb('exp3',1)"><img src="vs.png" alt=""/></div>
             <div class="thumb-item" onclick="event.stopPropagation();openLb('exp3',2)"><img src="rrtrr.png" alt=""/></div>
             <div class="thumb-item" onclick="event.stopPropagation();openLb('exp3',3)"><img src="Screenshot 2026-02-26 011728.png" alt=""/></div>
           </div>
-          <div class="proj-tags">
+          <div class="pc-tags">
             <span class="ptag">SICK LiDAR</span>
             <span class="ptag">C/C++</span>
-            <span class="ptag">PLC Safety Logic</span>
+            <span class="ptag">PLC Safety</span>
             <span class="ptag">PLM</span>
             <span class="ptag">Gantry Systems</span>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- P03 — AUV -->
-    <div class="proj-item reverse rv d2" onclick="openLb('exp4',0)">
-      <div class="proj-img" style="cursor:pointer">
-        <img src="Screenshot 2026-02-26 145216.png" alt="AUV Battery Analysis"/>
-        <div class="proj-img-overlay"></div>
-        <div class="proj-tag">03 — Marine Robotics</div>
-      </div>
-      <div class="proj-content">
-        <div>
-          <div class="proj-num">Project 03 &nbsp;/&nbsp; Kraken Robotics, 2023–2024</div>
-          <div class="proj-title">AUV Power Optimisation &amp; Telemetry Analysis</div>
-          <p class="proj-desc">
-            At Kraken Robotics, I led MATLAB-driven battery discharge analysis for autonomous underwater vehicles operating in harsh marine environments. By modelling discharge curves against depth, temperature, and mission profiles, I identified critical inefficiencies in the power distribution architecture. Telemetry trend dashboards were developed for field teams, enabling mission-critical decision-making. Environmental stress testing and FMEA on power subsystems delivered an 8% improvement in operational uptime.
-          </p>
+      <!-- P03 AUV -->
+      <div class="proj-card rv d2" onclick="openLb('exp4',0)">
+        <div class="pc-img-wrap">
+          <img class="pc-img" src="Screenshot 2026-02-26 145216.png" alt="AUV"/>
+          <div class="pc-tag">03 — Marine Robotics</div>
+          <div class="pc-overlay"></div>
+          <div class="pc-arrow">→</div>
         </div>
-        <div>
+        <div class="pc-body">
+          <div class="pc-num">Project 03 / Kraken Robotics, 2023–2024</div>
+          <div class="pc-title">AUV Power Optimisation<br>&amp; Telemetry Analysis</div>
+          <p class="pc-desc">Led MATLAB-driven battery discharge analysis for AUVs in harsh marine environments. Modelled discharge curves against depth, temperature, and mission profiles. Telemetry dashboards for field teams enabled mission-critical decisions.</p>
           <div class="thumb-gallery">
             <div class="thumb-item" onclick="event.stopPropagation();openLb('exp4',0)"><img src="Screenshot 2026-02-26 145216.png" alt=""/></div>
             <div class="thumb-item" onclick="event.stopPropagation();openLb('exp4',1)"><img src="servcalibmedener2.jpg" alt=""/></div>
             <div class="thumb-item" onclick="event.stopPropagation();openLb('exp4',2)"><img src="Pictureq1.png" alt=""/></div>
           </div>
-          <div class="proj-outcome" style="margin-bottom: 14px;">
-            <div class="proj-outcome-label">Key Result</div>
-            <div class="proj-outcome-val">8% AUV operational uptime improvement through systematic power modelling and FMEA</div>
+          <div class="pc-outcome" style="margin-bottom:14px">
+            <div class="pc-outcome-label">Key Result</div>
+            <div class="pc-outcome-val">8% AUV operational uptime improvement through power modelling and FMEA</div>
           </div>
-          <div class="proj-tags">
+          <div class="pc-tags">
             <span class="ptag">MATLAB</span>
             <span class="ptag">FMEA</span>
             <span class="ptag">Battery Systems</span>
-            <span class="ptag">Telemetry</span>
             <span class="ptag">Subsea Robotics</span>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- P04 — Digital Twin -->
-    <div class="proj-item rv d1">
-      <div class="proj-svg-vis" style="background:#080c10;cursor:default">
-        <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
-          <defs>
-            <linearGradient id="wg" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="rgba(244,244,242,.8)"/>
-              <stop offset="100%" stop-color="rgba(244,244,242,.2)"/>
-            </linearGradient>
-          </defs>
-          <rect width="500" height="340" fill="#080c10"/>
-          <pattern id="pg" width="28" height="28" patternUnits="userSpaceOnUse">
-            <path d="M28,0 L0,0 0,28" fill="none" stroke="rgba(244,244,242,.04)" stroke-width=".6"/>
-          </pattern>
-          <rect width="500" height="340" fill="url(#pg)"/>
-          <!-- axis -->
-          <line x1="50" y1="170" x2="450" y2="170" stroke="rgba(244,244,242,.08)" stroke-width="1"/>
-          <line x1="50" y1="40" x2="50" y2="300" stroke="rgba(244,244,242,.06)" stroke-width="1"/>
-          <!-- grid lines -->
-          <line x1="50" y1="100" x2="450" y2="100" stroke="rgba(244,244,242,.04)" stroke-width=".5" stroke-dasharray="4,8"/>
-          <line x1="50" y1="240" x2="450" y2="240" stroke="rgba(244,244,242,.04)" stroke-width=".5" stroke-dasharray="4,8"/>
-          <!-- torque waveform -->
-          <path d="M50,170 Q100,90 150,170 Q200,250 250,170 Q300,90 350,170 Q400,250 450,170" fill="none" stroke="url(#wg)" stroke-width="2.2" stroke-linecap="round">
-            <animate attributeName="d" values="M50,170 Q100,90 150,170 Q200,250 250,170 Q300,90 350,170 Q400,250 450,170;M50,170 Q100,112 150,170 Q200,228 250,170 Q300,112 350,170 Q400,228 450,170;M50,170 Q100,90 150,170 Q200,250 250,170 Q300,90 350,170 Q400,250 450,170" dur="5s" repeatCount="indefinite"/>
-          </path>
-          <!-- reference dashed -->
-          <path d="M50,170 Q110,100 175,170 Q240,240 305,170 Q370,100 450,170" fill="none" stroke="rgba(244,244,242,.14)" stroke-width="1.2" stroke-dasharray="6,5"/>
-          <!-- labels -->
-          <text x="56" y="58" fill="rgba(244,244,242,.22)" font-family="Inter,sans-serif" font-size="9" letter-spacing=".05em">TORQUE OUTPUT [Nm]</text>
-          <text x="56" y="92" fill="rgba(244,244,242,.16)" font-family="Inter,sans-serif" font-size="8">+ τ</text>
-          <text x="56" y="254" fill="rgba(244,244,242,.16)" font-family="Inter,sans-serif" font-size="8">− τ</text>
-          <!-- PID block -->
-          <rect x="180" y="286" width="72" height="22" rx="2" fill="rgba(244,244,242,.04)" stroke="rgba(244,244,242,.12)" stroke-width="1"/>
-          <text x="216" y="301" fill="rgba(244,244,242,.4)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle">PID CTRL</text>
-          <!-- Digital twin label -->
-          <rect x="264" y="286" width="92" height="22" rx="2" fill="rgba(244,244,242,.03)" stroke="rgba(244,244,242,.09)" stroke-width="1"/>
-          <text x="310" y="301" fill="rgba(244,244,242,.3)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle">DIGITAL TWIN</text>
-          <text x="380" y="325" fill="rgba(244,244,242,.15)" font-family="Inter,sans-serif" font-size="8">MATLAB / SIMULINK</text>
-        </svg>
-        <div class="proj-img-overlay"></div>
-        <div class="proj-tag">04 — Simulation</div>
-      </div>
-      <div class="proj-content">
-        <div>
-          <div class="proj-num">Project 04 &nbsp;/&nbsp; Siemens Healthineers, 2024</div>
-          <div class="proj-title">Digital Twin — Precision Motion Dynamics</div>
-          <p class="proj-desc">
-            Developed a high-fidelity MATLAB/Simulink model replicating load-dependent motor torque profiles across the full dynamic range of CT gantry motion. The digital twin was validated against empirical sensor data from instrumented test rigs, enabling early-stage algorithm validation before hardware integration. PID control loop tuning was performed entirely in simulation, reducing physical iteration cycles by over 60%.
-          </p>
+      <!-- P04 Digital Twin (SVG) -->
+      <div class="proj-card rv d1">
+        <div class="pc-img-wrap" style="background:#050810;cursor:default">
+          <svg class="pc-svg" viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="wg" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="rgba(255,255,255,.9)"/>
+                <stop offset="100%" stop-color="rgba(255,255,255,.15)"/>
+              </linearGradient>
+            </defs>
+            <rect width="560" height="420" fill="#050810"/>
+            <pattern id="pg" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M32,0 L0,0 0,32" fill="none" stroke="rgba(255,255,255,.04)" stroke-width=".7"/>
+            </pattern>
+            <rect width="560" height="420" fill="url(#pg)"/>
+            <line x1="60" y1="210" x2="500" y2="210" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+            <line x1="60" y1="50" x2="60" y2="370" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+            <line x1="60" y1="120" x2="500" y2="120" stroke="rgba(255,255,255,.04)" stroke-width=".6" stroke-dasharray="6,10"/>
+            <line x1="60" y1="300" x2="500" y2="300" stroke="rgba(255,255,255,.04)" stroke-width=".6" stroke-dasharray="6,10"/>
+            <path d="M60,210 Q130,100 200,210 Q270,320 340,210 Q410,100 480,210 L500,210" fill="none" stroke="url(#wg)" stroke-width="2.5" stroke-linecap="round">
+              <animate attributeName="d" values="M60,210 Q130,100 200,210 Q270,320 340,210 Q410,100 480,210 L500,210;M60,210 Q130,130 200,210 Q270,290 340,210 Q410,130 480,210 L500,210;M60,210 Q130,100 200,210 Q270,320 340,210 Q410,100 480,210 L500,210" dur="5s" repeatCount="indefinite"/>
+            </path>
+            <path d="M60,210 Q140,118 215,210 Q290,302 360,210 Q430,118 500,210" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1.4" stroke-dasharray="8,6"/>
+            <text x="68" y="72" fill="rgba(255,255,255,.25)" font-family="Barlow Condensed,sans-serif" font-size="11" font-weight="700" letter-spacing=".1em">TORQUE OUTPUT [Nm]</text>
+            <text x="68" y="112" fill="rgba(255,255,255,.15)" font-family="Barlow Condensed,sans-serif" font-size="10">+ τ</text>
+            <text x="68" y="314" fill="rgba(255,255,255,.15)" font-family="Barlow Condensed,sans-serif" font-size="10">− τ</text>
+            <rect x="190" y="356" width="90" height="28" rx="2" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+            <text x="235" y="374" fill="rgba(255,255,255,.45)" font-family="Barlow Condensed,sans-serif" font-size="10" font-weight="700" text-anchor="middle">PID CTRL</text>
+            <rect x="296" y="356" width="110" height="28" rx="2" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
+            <text x="351" y="374" fill="rgba(255,255,255,.3)" font-family="Barlow Condensed,sans-serif" font-size="10" font-weight="700" text-anchor="middle">DIGITAL TWIN</text>
+            <text x="390" y="406" fill="rgba(255,255,255,.12)" font-family="Barlow Condensed,sans-serif" font-size="9" letter-spacing=".06em">MATLAB / SIMULINK</text>
+          </svg>
+          <div class="pc-tag">04 — Simulation</div>
         </div>
-        <div>
-          <div class="proj-outcome">
-            <div class="proj-outcome-label">Impact</div>
-            <div class="proj-outcome-val">60%+ reduction in physical test iterations through pre-validated simulation</div>
+        <div class="pc-body">
+          <div class="pc-num">Project 04 / Siemens Healthineers, 2024</div>
+          <div class="pc-title">Digital Twin — Precision Motion Dynamics</div>
+          <p class="pc-desc">High-fidelity MATLAB/Simulink model replicating load-dependent motor torque profiles across the full dynamic range of CT gantry motion. Validated against empirical sensor data. PID control loop tuning in simulation reduced physical iterations by 60%+.</p>
+          <div class="pc-outcome" style="margin-bottom:14px">
+            <div class="pc-outcome-label">Impact</div>
+            <div class="pc-outcome-val">60%+ reduction in physical test iterations through pre-validated simulation</div>
           </div>
-          <div class="proj-tags" style="margin-top: 14px;">
+          <div class="pc-tags">
             <span class="ptag">MATLAB</span>
             <span class="ptag">Simulink</span>
             <span class="ptag">PID Control</span>
@@ -989,56 +1213,46 @@ footer {
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- P05 — HIL Cable Routing -->
-    <div class="proj-item reverse rv d2">
-      <div class="proj-svg-vis" style="background:#09090e;cursor:default">
-        <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
-          <defs>
-            <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="rgba(244,244,242,.75)"/>
-              <stop offset="100%" stop-color="rgba(244,244,242,.2)"/>
-            </linearGradient>
-          </defs>
-          <rect width="500" height="340" fill="#09090e"/>
-          <pattern id="cg2" width="24" height="24" patternUnits="userSpaceOnUse">
-            <path d="M24,0 L0,0 0,24" fill="none" stroke="rgba(244,244,242,.04)" stroke-width=".5"/>
-          </pattern>
-          <rect width="500" height="340" fill="url(#cg2)"/>
-          <!-- cable paths -->
-          <path d="M60,100 C130,100 150,170 220,170 C290,170 310,110 380,90 C420,78 450,120 490,110" fill="none" stroke="url(#cg)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="600" stroke-dashoffset="600">
-            <animate attributeName="stroke-dashoffset" from="600" to="0" dur="2.5s" fill="freeze" begin=".2s"/>
-          </path>
-          <path d="M60,200 C120,200 160,145 230,170 C300,195 330,215 400,195 C430,186 460,215 490,208" fill="none" stroke="rgba(244,244,242,.35)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="550" stroke-dashoffset="550">
-            <animate attributeName="stroke-dashoffset" from="550" to="0" dur="3s" fill="freeze" begin=".6s"/>
-          </path>
-          <path d="M60,248 C130,248 170,200 240,220 C310,240 340,268 430,248" fill="none" stroke="rgba(244,244,242,.18)" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="480" stroke-dashoffset="480">
-            <animate attributeName="stroke-dashoffset" from="480" to="0" dur="3.5s" fill="freeze" begin="1s"/>
-          </path>
-          <!-- nodes -->
-          <circle cx="60" cy="100" r="5" fill="rgba(244,244,242,.85)"><animate attributeName="r" values="4;7;4" dur="2.4s" repeatCount="indefinite"/></circle>
-          <circle cx="60" cy="200" r="4" fill="rgba(244,244,242,.5)"><animate attributeName="r" values="3;6;3" dur="2.8s" begin=".4s" repeatCount="indefinite"/></circle>
-          <circle cx="60" cy="248" r="3" fill="rgba(244,244,242,.3)"/>
-          <circle cx="220" cy="170" r="7" fill="none" stroke="rgba(244,244,242,.3)" stroke-width="1"><animate attributeName="r" values="6;16;6" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".4;0;.4" dur="3s" repeatCount="indefinite"/></circle>
-          <!-- labels -->
-          <text x="62" y="28" fill="rgba(244,244,242,.3)" font-family="Inter,sans-serif" font-size="9" letter-spacing=".06em">HIL CABLE ROUTING SIMULATION</text>
-          <text x="62" y="44" fill="rgba(244,244,242,.16)" font-family="Inter,sans-serif" font-size="8">SIEMENS NX · EMC VERIFIED</text>
-          <text x="62" y="316" fill="rgba(244,244,242,.14)" font-family="Inter,sans-serif" font-size="8">MULTI-AXIS GANTRY MOTION ENVELOPE</text>
-        </svg>
-        <div class="proj-img-overlay"></div>
-        <div class="proj-tag">05 — HIL / CAD</div>
-      </div>
-      <div class="proj-content">
-        <div>
-          <div class="proj-num">Project 05 &nbsp;/&nbsp; Siemens Healthineers, 2024</div>
-          <div class="proj-title">HIL-Based Cable Routing &amp; EMC Simulation</div>
-          <p class="proj-desc">
-            Engineered dynamic cable stress simulation in Siemens NX for a multi-axis medical imaging gantry, covering the full motion envelope from design to virtual life-cycle validation. EMC shielding and insulation coordination were verified through hardware-in-the-loop methodology, enabling identification of abrasion failure modes before physical prototyping. Results fed directly into engineering change requests and design review documentation.
-          </p>
+      <!-- P05 HIL Cable (SVG) -->
+      <div class="proj-card rv d2">
+        <div class="pc-img-wrap" style="background:#06060e;cursor:default">
+          <svg class="pc-svg" viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(255,255,255,.9)"/>
+                <stop offset="100%" stop-color="rgba(255,255,255,.2)"/>
+              </linearGradient>
+            </defs>
+            <rect width="560" height="420" fill="#06060e"/>
+            <pattern id="cg2" width="28" height="28" patternUnits="userSpaceOnUse">
+              <path d="M28,0 L0,0 0,28" fill="none" stroke="rgba(255,255,255,.04)" stroke-width=".5"/>
+            </pattern>
+            <rect width="560" height="420" fill="url(#cg2)"/>
+            <path d="M70,120 C150,120 180,210 260,210 C340,210 370,140 450,110 C490,94 520,145 555,132" fill="none" stroke="url(#cg)" stroke-width="2.8" stroke-linecap="round" stroke-dasharray="700" stroke-dashoffset="700">
+              <animate attributeName="stroke-dashoffset" from="700" to="0" dur="2.5s" fill="freeze" begin=".2s"/>
+            </path>
+            <path d="M70,240 C140,240 185,178 270,210 C355,242 390,262 470,242 C505,234 530,256 556,250" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-linecap="round" stroke-dasharray="650" stroke-dashoffset="650">
+              <animate attributeName="stroke-dashoffset" from="650" to="0" dur="3.2s" fill="freeze" begin=".6s"/>
+            </path>
+            <path d="M70,300 C150,300 200,248 282,272 C365,296 405,326 510,300" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="560" stroke-dashoffset="560">
+              <animate attributeName="stroke-dashoffset" from="560" to="0" dur="3.8s" fill="freeze" begin="1s"/>
+            </path>
+            <circle cx="70" cy="120" r="6" fill="rgba(255,255,255,.9)"><animate attributeName="r" values="5;9;5" dur="2.4s" repeatCount="indefinite"/></circle>
+            <circle cx="70" cy="240" r="5" fill="rgba(255,255,255,.5)"><animate attributeName="r" values="4;8;4" dur="2.8s" begin=".4s" repeatCount="indefinite"/></circle>
+            <circle cx="70" cy="300" r="4" fill="rgba(255,255,255,.3)"/>
+            <circle cx="260" cy="210" r="7" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"><animate attributeName="r" values="7;20;7" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".5;0;.5" dur="3s" repeatCount="indefinite"/></circle>
+            <text x="74" y="38" fill="rgba(255,255,255,.3)" font-family="Barlow Condensed,sans-serif" font-size="11" font-weight="700" letter-spacing=".1em">HIL CABLE ROUTING SIMULATION</text>
+            <text x="74" y="56" fill="rgba(255,255,255,.14)" font-family="Barlow Condensed,sans-serif" font-size="9">SIEMENS NX · EMC VERIFIED</text>
+            <text x="74" y="396" fill="rgba(255,255,255,.12)" font-family="Barlow Condensed,sans-serif" font-size="9" letter-spacing=".06em">MULTI-AXIS GANTRY MOTION ENVELOPE</text>
+          </svg>
+          <div class="pc-tag">05 — HIL / CAD</div>
         </div>
-        <div>
-          <div class="proj-tags">
+        <div class="pc-body">
+          <div class="pc-num">Project 05 / Siemens Healthineers, 2024</div>
+          <div class="pc-title">HIL-Based Cable Routing<br>&amp; EMC Simulation</div>
+          <p class="pc-desc">Dynamic cable stress simulation in Siemens NX for a multi-axis medical imaging gantry covering the full motion envelope. EMC shielding and insulation coordination verified through hardware-in-the-loop methodology, identifying abrasion failure modes before physical prototyping.</p>
+          <div class="pc-tags">
             <span class="ptag">Siemens NX</span>
             <span class="ptag">EMC</span>
             <span class="ptag">HIL</span>
@@ -1047,137 +1261,125 @@ footer {
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- P06 — Production Engineering -->
-    <div class="proj-item rv d1" onclick="openLb('exp5',0)">
-      <div class="proj-img" style="cursor:pointer">
-        <img src="vsae.png" alt="Production Engineering"/>
-        <div class="proj-img-overlay"></div>
-        <div class="proj-tag">06 — Production Engineering</div>
-      </div>
-      <div class="proj-content">
-        <div>
-          <div class="proj-num">Project 06 &nbsp;/&nbsp; Aqua Tech GmbH, 2024</div>
-          <div class="proj-title">Production Optimisation &amp; Mechanical Design</div>
-          <p class="proj-desc">
-            Led end-to-end production control and mechanical design for complex electromechanical assemblies at Aqua Tech GmbH. Created Siemens NX CAD models with design-for-manufacturability constraints and tolerance stack-up analysis. Conducted WIP and throughput simulation to identify production bottlenecks, achieving a 10% reduction in cycle time. Also designed custom jigs, fixtures, and tooling to support assembly quality and repeatability.
-          </p>
+      <!-- P06 Production -->
+      <div class="proj-card rv d1" style="grid-column:span 2" onclick="openLb('exp5',0)">
+        <div class="pc-img-wrap" style="height:340px">
+          <img class="pc-img" src="vsae.png" alt="Production Engineering"/>
+          <div class="pc-tag">06 — Production Engineering</div>
+          <div class="pc-overlay"></div>
+          <div class="pc-arrow">→</div>
         </div>
-        <div>
-          <div class="proj-outcome">
-            <div class="proj-outcome-label">Outcome</div>
-            <div class="proj-outcome-val">10% bottleneck reduction via throughput simulation and production redesign</div>
+        <div class="pc-body" style="display:grid;grid-template-columns:1fr 1fr;gap:48px">
+          <div>
+            <div class="pc-num">Project 06 / Aqua Tech GmbH, 2024</div>
+            <div class="pc-title">Production Optimisation<br>&amp; Mechanical Design</div>
+            <p class="pc-desc">End-to-end production control and mechanical design for complex electromechanical assemblies. Siemens NX CAD models with DFM constraints and tolerance stack-up analysis. Custom jigs, fixtures, and tooling to support assembly quality and repeatability.</p>
           </div>
-          <div class="proj-tags" style="margin-top: 14px;">
-            <span class="ptag">Siemens NX</span>
-            <span class="ptag">CAD</span>
-            <span class="ptag">Tolerance Analysis</span>
-            <span class="ptag">DFM</span>
-            <span class="ptag">WIP Optimisation</span>
+          <div style="display:flex;flex-direction:column;justify-content:flex-end">
+            <div class="pc-outcome" style="margin-bottom:14px">
+              <div class="pc-outcome-label">Outcome</div>
+              <div class="pc-outcome-val">10% bottleneck reduction via WIP and throughput simulation and production redesign</div>
+            </div>
+            <div class="pc-tags">
+              <span class="ptag">Siemens NX</span>
+              <span class="ptag">CAD</span>
+              <span class="ptag">Tolerance Analysis</span>
+              <span class="ptag">DFM</span>
+              <span class="ptag">WIP Optimisation</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-  </div><!-- /proj-list -->
+    </div>
+  </div>
 </section>
 
-<!-- ═══ SKILLS ═══ -->
+<!-- ════════════════ SKILLS ════════════════ -->
 <section id="skills">
-  <div class="wrap sec-pad">
-    <div class="sec-header rv">
+  <div class="wrap">
+    <div class="sec-header rv" style="padding:64px 0;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:0">
       <div>
-        <div class="sec-num">03</div>
-        <div class="sec-title">Technical Capabilities</div>
+        <div class="sec-tag">03 — Full-Stack Engineering</div>
+        <h2 class="sec-headline">Technical<br><span class="dim">Capabilities</span></h2>
       </div>
-      <div class="sec-sub">Full-Stack Engineering</div>
+      <div class="sec-subline">32 Competencies</div>
     </div>
   </div>
-  <div class="skills-grid">
-    <div class="skill-col rv d1">
+  <div class="skills-inner rv d1">
+    <div class="skill-col">
       <div class="skill-col-label">Mechanical Design</div>
-      <div class="skill-items">
-        <div class="skill-item"><span>Siemens NX</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>SolidWorks</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Creo</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>CAD Modelling</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Sheet Metal</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Tolerance Analysis</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>3D Printing / Rapid Proto.</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>DFM / DFA</span><span class="skill-dot"></span></div>
-      </div>
+      <div class="skill-item"><span>Siemens NX</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>SolidWorks</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Creo</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>CAD Modelling</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Sheet Metal</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Tolerance Analysis</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>3D Printing / Rapid Proto.</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>DFM / DFA</span><span class="skill-dot"></span></div>
     </div>
-    <div class="skill-col rv d2">
+    <div class="skill-col">
       <div class="skill-col-label">Electrical &amp; Control</div>
-      <div class="skill-items">
-        <div class="skill-item"><span>Motor Control</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Power Electronics</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>PLC Programming</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>EMC &amp; Grounding</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Battery Systems</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Electrical Cabinets</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Drive Manager / TCB</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Sensor Integration</span><span class="skill-dot"></span></div>
-      </div>
+      <div class="skill-item"><span>Motor Control</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Power Electronics</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>PLC Programming</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>EMC &amp; Grounding</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Battery Systems</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Electrical Cabinets</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Drive Manager / TCB</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Sensor Integration</span><span class="skill-dot"></span></div>
     </div>
-    <div class="skill-col rv d3">
+    <div class="skill-col">
       <div class="skill-col-label">Software &amp; Embedded</div>
-      <div class="skill-items">
-        <div class="skill-item"><span>MATLAB / Simulink</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>C / C++</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Python</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>STM32 / Arduino</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Embedded Systems</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>ROS</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>AWS IoT</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Real-Time Control</span><span class="skill-dot"></span></div>
-      </div>
+      <div class="skill-item"><span>MATLAB / Simulink</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>C / C++</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Python</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>STM32 / Arduino</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Embedded Systems</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>ROS</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>AWS IoT</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Real-Time Control</span><span class="skill-dot"></span></div>
     </div>
-    <div class="skill-col rv d4">
+    <div class="skill-col">
       <div class="skill-col-label">Systems Engineering</div>
-      <div class="skill-items">
-        <div class="skill-item"><span>ISO 15066</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>IEC 60601-2-44</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>FMEA / FMECA</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>HIL Testing</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Digital Twin</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>PLM Lifecycle</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Telemetry Analysis</span><span class="skill-dot"></span></div>
-        <div class="skill-item"><span>Risk Assessment</span><span class="skill-dot"></span></div>
-      </div>
+      <div class="skill-item"><span>ISO 15066</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>IEC 60601-2-44</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>FMEA / FMECA</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>HIL Testing</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Digital Twin</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>PLM Lifecycle</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Telemetry Analysis</span><span class="skill-dot"></span></div>
+      <div class="skill-item"><span>Risk Assessment</span><span class="skill-dot"></span></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ EXPERIENCE ═══ -->
+<!-- ════════════════ EXPERIENCE ════════════════ -->
 <section id="exp">
-  <div class="wrap sec-pad">
-    <div class="sec-header rv">
+  <div class="wrap">
+    <div class="sec-header rv" style="padding:64px 0;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between">
       <div>
-        <div class="sec-num">04</div>
-        <div class="sec-title">Experience</div>
+        <div class="sec-tag">04 — Professional Journey</div>
+        <h2 class="sec-headline">Experience</h2>
       </div>
-      <div class="sec-sub">Professional Journey</div>
+      <div class="sec-subline">5 Positions → Scroll →</div>
     </div>
   </div>
 
   <div class="exp-scroll-outer rv d1">
     <div class="exp-track">
 
-      <!-- E1 — SHS Working Student -->
       <div class="exp-card">
-        <div class="exp-header">
-          <div class="exp-co">Siemens Healthineers AG</div>
-          <div class="exp-role">Working Student — Systems Engineering</div>
-          <div class="exp-meta">
-            <span>Kemnath, Germany</span>
-            <span style="color:var(--line2)">·</span>
-            <div class="exp-live"><span class="exp-live-dot"></span>2025 — Present</div>
-          </div>
+        <div class="exp-co">Siemens Healthineers AG</div>
+        <div class="exp-role">Working Student — Systems Engineering</div>
+        <div class="exp-meta">
+          <span>Kemnath, Germany</span>
+          <span style="color:var(--line2)">·</span>
+          <div class="exp-live"><span class="exp-live-dot"></span>2025 — Present</div>
         </div>
         <div class="exp-img" onclick="openLb('exp1',0)">
-          <img src="IMG_0149.jpg" alt="Siemens Healthineers Lab"/>
+          <img src="IMG_0149.jpg" alt="Siemens Healthineers"/>
           <div class="exp-img-overlay"></div>
         </div>
         <div class="thumb-gallery">
@@ -1188,26 +1390,23 @@ footer {
         </div>
         <ul class="exp-bullets">
           <li>Multi-model force limitation algorithm across CT motion system variants</li>
-          <li>Advanced diagnostics via Drive Manager and TCB for motor optimisation</li>
-          <li>Cross-functional PLM collaboration across Mechanical, Electrical, Software</li>
+          <li>Advanced diagnostics via Drive Manager and TCB</li>
+          <li>Cross-functional PLM collaboration — Mechanical, Electrical, Software</li>
           <li>Risk evaluation and safety compliance for regulated dynamic motion systems</li>
         </ul>
-        <div class="proj-tags">
+        <div class="pc-tags">
           <span class="ptag">Force Limitation</span>
           <span class="ptag">PLM</span>
           <span class="ptag">Motion Control</span>
         </div>
       </div>
 
-      <!-- E2 — SHS Intern (Collision) -->
       <div class="exp-card">
-        <div class="exp-header">
-          <div class="exp-co">Siemens Healthineers AG</div>
-          <div class="exp-role">Mechatronics Intern — Collision Avoidance</div>
-          <div class="exp-meta"><span>Kemnath, Germany</span><span style="color:var(--line2)">·</span><span>Apr 2024 — Feb 2025</span></div>
-        </div>
+        <div class="exp-co">Siemens Healthineers AG</div>
+        <div class="exp-role">Mechatronics Intern — Collision Avoidance</div>
+        <div class="exp-meta"><span>Kemnath, Germany</span><span style="color:var(--line2)">·</span><span>Apr 2024 — Feb 2025</span></div>
         <div class="exp-img" onclick="openLb('exp3',0)">
-          <img src="50319.png" alt="LiDAR System"/>
+          <img src="50319.png" alt="LiDAR"/>
           <div class="exp-img-overlay"></div>
         </div>
         <div class="thumb-gallery">
@@ -1222,22 +1421,19 @@ footer {
           <li>False alarm elimination through signal filtering and threshold calibration</li>
           <li>PLM lifecycle traceability and compliance documentation</li>
         </ul>
-        <div class="proj-tags">
+        <div class="pc-tags">
           <span class="ptag">SICK LiDAR</span>
           <span class="ptag">C/C++</span>
           <span class="ptag">Gantry</span>
         </div>
       </div>
 
-      <!-- E3 — Kraken -->
       <div class="exp-card">
-        <div class="exp-header">
-          <div class="exp-co">Kraken Robotics</div>
-          <div class="exp-role">EE Intern — Autonomous Underwater Vehicles</div>
-          <div class="exp-meta"><span>Rostock, Germany</span><span style="color:var(--line2)">·</span><span>Oct 2023 — Mar 2024</span></div>
-        </div>
+        <div class="exp-co">Kraken Robotics</div>
+        <div class="exp-role">EE Intern — Autonomous Underwater Vehicles</div>
+        <div class="exp-meta"><span>Rostock, Germany</span><span style="color:var(--line2)">·</span><span>Oct 2023 — Mar 2024</span></div>
         <div class="exp-img" onclick="openLb('exp4',0)">
-          <img src="Screenshot 2026-02-26 145216.png" alt="AUV Telemetry"/>
+          <img src="Screenshot 2026-02-26 145216.png" alt="AUV"/>
           <div class="exp-img-overlay"></div>
         </div>
         <div class="thumb-gallery">
@@ -1251,22 +1447,19 @@ footer {
           <li>Environmental stress testing of marine battery systems</li>
           <li>FMEA on power distribution for subsea robotics</li>
         </ul>
-        <div class="proj-tags">
+        <div class="pc-tags">
           <span class="ptag">MATLAB</span>
           <span class="ptag">AUV</span>
           <span class="ptag">FMEA</span>
         </div>
       </div>
 
-      <!-- E4 — Aqua Tech -->
       <div class="exp-card">
-        <div class="exp-header">
-          <div class="exp-co">Aqua Tech GmbH</div>
-          <div class="exp-role">Mechanical Design &amp; Production Engineer</div>
-          <div class="exp-meta"><span>Germany</span><span style="color:var(--line2)">·</span><span>Mar 2024 — Aug 2024</span></div>
-        </div>
+        <div class="exp-co">Aqua Tech GmbH</div>
+        <div class="exp-role">Mechanical Design &amp; Production Engineer</div>
+        <div class="exp-meta"><span>Germany</span><span style="color:var(--line2)">·</span><span>Mar 2024 — Aug 2024</span></div>
         <div class="exp-img" onclick="openLb('exp5',0)">
-          <img src="vsae.png" alt="Production Engineering"/>
+          <img src="vsae.png" alt="Production"/>
           <div class="exp-img-overlay"></div>
         </div>
         <ul class="exp-bullets">
@@ -1275,20 +1468,17 @@ footer {
           <li>10% bottleneck reduction via WIP and throughput simulation</li>
           <li>Custom jigs, fixtures, and electromechanical tooling design</li>
         </ul>
-        <div class="proj-tags">
+        <div class="pc-tags">
           <span class="ptag">Siemens NX</span>
           <span class="ptag">CAD</span>
           <span class="ptag">DFM</span>
         </div>
       </div>
 
-      <!-- E5 — Siemens Mobility -->
       <div class="exp-card">
-        <div class="exp-header">
-          <div class="exp-co">Siemens Mobility</div>
-          <div class="exp-role">Operations Industrial Engineer</div>
-          <div class="exp-meta"><span>Germany</span><span style="color:var(--line2)">·</span><span>2022 — 2023</span></div>
-        </div>
+        <div class="exp-co">Siemens Mobility</div>
+        <div class="exp-role">Operations Industrial Engineer</div>
+        <div class="exp-meta"><span>Germany</span><span style="color:var(--line2)">·</span><span>2022 — 2023</span></div>
         <div class="exp-img" onclick="openLb('cert',0)">
           <img src="1769856219125.jpg" alt="Siemens Mobility"/>
           <div class="exp-img-overlay"></div>
@@ -1296,10 +1486,10 @@ footer {
         <ul class="exp-bullets">
           <li>Industrial operations engineering across rail systems division</li>
           <li>Process optimisation and production line analysis</li>
-          <li>Cross-team coordination in high-complexity manufacturing environment</li>
-          <li>Certification: Operations Industrial Engineer — Siemens Mobility</li>
+          <li>Cross-team coordination in high-complexity manufacturing</li>
+          <li>Certified: Operations Industrial Engineer — Siemens Mobility</li>
         </ul>
-        <div class="proj-tags">
+        <div class="pc-tags">
           <span class="ptag">Industrial Engineering</span>
           <span class="ptag">Operations</span>
         </div>
@@ -1309,19 +1499,19 @@ footer {
   </div>
 </section>
 
-<!-- ═══ CREDENTIALS ═══ -->
+<!-- ════════════════ CREDENTIALS ════════════════ -->
 <section id="creds">
   <div class="wrap sec-pad">
-    <div class="sec-header rv">
+    <div class="sec-header rv" style="display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:28px;border-bottom:1px solid var(--line);margin-bottom:48px">
       <div>
-        <div class="sec-num">05</div>
-        <div class="sec-title">Credentials</div>
+        <div class="sec-tag">05 — Recognition</div>
+        <h2 class="sec-headline">Credentials</h2>
       </div>
-      <div class="sec-sub">Certifications &amp; Awards</div>
+      <div class="sec-subline">Certs &amp; Awards</div>
     </div>
 
     <div class="cred-section-label rv">Certifications</div>
-    <div class="cred-grid rv d1" style="margin-bottom: 1px">
+    <div class="cred-grid rv d1">
       <div class="cred-card" onclick="openLb('cert',0)">
         <div class="cred-img"><img src="1769856219125.jpg" alt=""/></div>
         <div class="cred-body"><div class="cred-title">Operations Industrial Engineer</div><div class="cred-issuer">Siemens Mobility</div></div>
@@ -1348,7 +1538,7 @@ footer {
       </div>
     </div>
 
-    <div class="cred-section-label rv" style="margin-top: 48px;">Awards &amp; Recognition</div>
+    <div class="cred-section-label rv" style="margin-top:52px">Awards &amp; Recognition</div>
     <div class="awards-grid rv d2">
       <div class="award-card" onclick="openLb('award',0)">
         <div class="award-img"><img src="db8da812-17b6-41ad-b804-a84df993561c.jpg" alt=""/></div>
@@ -1379,79 +1569,101 @@ footer {
         <div class="award-body"><div class="award-title">Engineering Excellence</div><div class="award-sub">Mechatronics systems award</div></div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ═══ CONTACT ═══ -->
+<!-- ════════════════ CONTACT (Stōkt CTA style) ════════════════ -->
 <section id="contact">
-  <div class="wrap">
-    <div class="contact-inner">
-      <div class="contact-left rv">
-        <h2 class="contact-headline">Let's build<br>something<br><span class="muted">extraordinary.</span></h2>
-        <p class="contact-desc" style="margin-top: 24px;">
-          Open to Mechatronics, Automation, Robotics, and Controls Engineering roles. Based in Bayreuth, Germany — available globally for the right opportunity.
-        </p>
-      </div>
-      <div class="contact-right rv d1">
-        <div class="contact-links">
-          <a class="contact-link" href="mailto:mustafa91syed@gmail.com">
-            <div class="cl-left">
-              <div class="cl-icon">@</div>
-              <div>
-                <div class="cl-label">Email</div>
-                <div class="cl-val">mustafa91syed@gmail.com</div>
-              </div>
-            </div>
-            <span class="cl-arrow">→</span>
-          </a>
-          <a class="contact-link" href="https://linkedin.com/in/syed-mustafa-mohiuddin" target="_blank">
-            <div class="cl-left">
-              <div class="cl-icon">in</div>
-              <div>
-                <div class="cl-label">LinkedIn</div>
-                <div class="cl-val">syed-mustafa-mohiuddin</div>
-              </div>
-            </div>
-            <span class="cl-arrow">→</span>
-          </a>
-          <a class="contact-link" href="tel:+4917673553547">
-            <div class="cl-left">
-              <div class="cl-icon" style="font-size:.65rem">+49</div>
-              <div>
-                <div class="cl-label">Phone</div>
-                <div class="cl-val">+49 176 73553547</div>
-              </div>
-            </div>
-            <span class="cl-arrow">→</span>
-          </a>
-          <div class="contact-link" style="cursor:default">
-            <div class="cl-left">
-              <div class="cl-icon" style="font-size:.55rem">LOC</div>
-              <div>
-                <div class="cl-label">Location</div>
-                <div class="cl-val">Bayreuth, Germany</div>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;font-size:.6rem;color:#6ee7b7;letter-spacing:.08em">
-              <span style="width:5px;height:5px;border-radius:50%;background:#6ee7b7;display:inline-block;animation:pulse 2s infinite"></span>
-              Available
-            </div>
-          </div>
-        </div>
+  <!-- Bold CTA (mirrors "LET'S CUT THE BS") -->
+  <div class="cta-section rv">
+    <span class="cta-tag">Seriously</span>
+    <div class="cta-headline">
+      Let's Build<br>Something
+      <span class="dim">Extraordinary.</span>
+    </div>
+    <p class="cta-sub">Open to Mechatronics, Automation, Robotics, and Controls Engineering roles. Based in Bayreuth, Germany — available globally for the right opportunity.</p>
+  </div>
+
+  <!-- Contact links grid -->
+  <div class="contact-links-row rv d1">
+    <a class="contact-link" href="mailto:mustafa91syed@gmail.com">
+      <div class="cl-label">Email</div>
+      <div class="cl-val">mustafa91syed@gmail.com</div>
+      <div class="cl-arrow">→</div>
+    </a>
+    <a class="contact-link" href="https://linkedin.com/in/syed-mustafa-mohiuddin" target="_blank">
+      <div class="cl-label">LinkedIn</div>
+      <div class="cl-val">syed-mustafa-mohiuddin</div>
+      <div class="cl-arrow">→</div>
+    </a>
+    <a class="contact-link" href="tel:+4917673553547">
+      <div class="cl-label">Phone</div>
+      <div class="cl-val">+49 176 73553547</div>
+      <div class="cl-arrow">→</div>
+    </a>
+    <div class="contact-link" style="cursor:default">
+      <div class="cl-label">Location</div>
+      <div class="cl-val">Bayreuth, DE</div>
+      <div style="margin-top:16px;display:flex;align-items:center;gap:7px;font-size:.62rem;color:var(--green);letter-spacing:.1em;font-weight:500">
+        <span style="width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite"></span>
+        Available Now
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ════════════════ FOOTER ════════════════ -->
 <footer>
-  <div class="f-left">© 2026 Syed Mustafa Mohiuddin</div>
-  <div class="f-right">Mechatronics Systems Engineer · Bayreuth, DE</div>
+  <div class="f-logo">SMM</div>
+  <div class="f-copy">© 2026 Syed Mustafa Mohiuddin · All rights reserved</div>
+  <div class="f-loc">Mechatronics Systems Engineer · Bayreuth, DE</div>
 </footer>
 
 <script>
-/* ─── Lightbox ─── */
+/* ═══ CURSOR ═══ */
+const cur = document.getElementById('cur');
+const curR = document.getElementById('curR');
+let mx = -999, my = -999;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+  curR.style.left = mx + 'px'; curR.style.top = my + 'px';
+});
+document.querySelectorAll('a, button, .proj-card, .cred-card, .award-card, .contact-link').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cur.style.width = '20px'; cur.style.height = '20px';
+    curR.style.width = '54px'; curR.style.height = '54px';
+  });
+  el.addEventListener('mouseleave', () => {
+    cur.style.width = '10px'; cur.style.height = '10px';
+    curR.style.width = '36px'; curR.style.height = '36px';
+  });
+});
+
+/* ═══ LOADER ═══ */
+let pct = 0;
+const pctEl = document.getElementById('pct');
+const barEl = document.getElementById('lbar');
+const loaderEl = document.getElementById('loader');
+
+function tick() {
+  if (pct < 100) {
+    pct += Math.random() > .6 ? 2 : 1;
+    if (pct > 100) pct = 100;
+    pctEl.textContent = pct;
+    barEl.style.width = pct + '%';
+    setTimeout(tick, 18 + Math.random() * 22);
+  } else {
+    pctEl.textContent = 100;
+    barEl.style.width = '100%';
+    setTimeout(() => {
+      loaderEl.classList.add('done');
+    }, 320);
+  }
+}
+tick();
+
+/* ═══ LIGHTBOX ═══ */
 const LBS = {
   exp1: { imgs: ['IMG_0149.jpg','ew2.png','aca.png','zzq.png'], caps: ['Lab Work — Siemens Healthineers','System Diagnostics','Force Algorithm','Force Data Analysis'] },
   exp2: { imgs: ['ew.png','Picture2.jpg','IMG_0126 (1).jpg','IMG_9684 (1).jpg'], caps: ['Force Limitation Model','Hardware Prototype','Test Rig Setup','Lab Environment'] },
@@ -1462,10 +1674,8 @@ const LBS = {
   award: { imgs: ['db8da812-17b6-41ad-b804-a84df993561c.jpg','vwe.jpg','ct2.PNG','gds.PNG','IMG_9608.jpg','IMG_9605.jpg','IMG_2450.jpg'], caps: ['Innovation Think Tank Recognition','Innovation Think Tank — Cross-functional Award','Best Delegation — Harvard Model UN','Engineering Excellence Recognition','Engineering Excellence — Systems','Engineering Excellence — Autonomous Systems','Engineering Excellence — Mechatronics'] }
 };
 let lbSet = null, lbIdx = 0;
-
 function openLb(set, idx) {
-  lbSet = set; lbIdx = idx;
-  showLbImg();
+  lbSet = set; lbIdx = idx; showLbImg();
   document.getElementById('lb').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1473,7 +1683,7 @@ function showLbImg() {
   const s = LBS[lbSet];
   const img = document.getElementById('lb-img');
   img.src = s.imgs[lbIdx];
-  document.getElementById('lb-cap').textContent = (s.caps[lbIdx] || '') + ` (${lbIdx + 1}/${s.imgs.length})`;
+  document.getElementById('lb-cap').textContent = (s.caps[lbIdx]||'') + ` (${lbIdx+1}/${s.imgs.length})`;
 }
 function lbNav(d) {
   const s = LBS[lbSet];
@@ -1495,22 +1705,37 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') lbNav(1);
 });
 
-/* ─── Progress + Nav ─── */
+/* ═══ SCROLL PROGRESS + NAV ═══ */
 window.addEventListener('scroll', () => {
   const pct = scrollY / (document.body.scrollHeight - innerHeight) * 100;
   document.getElementById('prog').style.width = pct + '%';
-  document.getElementById('nav').classList.toggle('scrolled', scrollY > 50);
-  const secs = ['hero','about','proj','skills','exp','creds','contact'];
-  let cur = '';
-  secs.forEach(id => { const el = document.getElementById(id); if (el && scrollY >= el.offsetTop - 120) cur = id; });
-  document.querySelectorAll('.nl').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  document.getElementById('nav').classList.toggle('scrolled', scrollY > 60);
 }, { passive: true });
 
-/* ─── Scroll Reveal ─── */
+/* ═══ SCROLL REVEAL ═══ */
 const ro = new IntersectionObserver(entries => entries.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add('vis'); ro.unobserve(e.target); }
-}), { threshold: .05, rootMargin: '0px 0px -24px 0px' });
+}), { threshold: .06, rootMargin: '0px 0px -32px 0px' });
 document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+
+/* ═══ STAT COUNTERS ═══ */
+const counters = document.querySelectorAll('.cnt');
+const cntObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    const target = +el.dataset.n;
+    let current = 0;
+    const step = target / 40;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = Math.floor(current);
+    }, 35);
+    cntObserver.unobserve(el);
+  });
+}, { threshold: .5 });
+counters.forEach(el => cntObserver.observe(el));
 </script>
 </body>
 </html>
