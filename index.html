@@ -109,12 +109,12 @@ img { display:block; max-width:100%; }
   z-index:1000;
 }
 nav {
-  background: rgba(220,218,212,.92);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255,255,255,.6);
+  background: rgba(12,11,9,.68);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.09);
   border-radius: var(--r);
-  box-shadow: 0 4px 32px rgba(15,14,12,.08), 0 1px 2px rgba(15,14,12,.04);
+  box-shadow: 0 4px 32px rgba(0,0,0,.25), 0 1px 2px rgba(0,0,0,.15);
   height:60px;
   display:flex; align-items:center; justify-content:space-between;
   padding:0 24px;
@@ -122,27 +122,27 @@ nav {
 }
 .nav-logo {
   font-size:1.05rem; font-weight:500; letter-spacing:.01em;
-  color:var(--dark);
+  color:#FAFAF8;
 }
 .nav-logo img {
   height:28px; width:auto;
-  filter:none;
+  filter:brightness(0) invert(1);
 }
 .nav-links { display:flex; align-items:center; gap:32px; }
 .nl {
   font-size:.65rem; font-weight:500; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--muted);
+  text-transform:uppercase; color:rgba(255,255,255,.5);
   transition:color .25s;
 }
-.nl:hover { color:var(--dark); }
+.nl:hover { color:rgba(255,255,255,.9); }
 .nav-cta {
   font-size:.65rem; font-weight:500; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--tile);
-  background:var(--dark);
+  text-transform:uppercase; color:var(--dark);
+  background:#FAFAF8;
   padding:9px 22px; border-radius:100px;
   transition:all .25s var(--ease2);
 }
-.nav-cta:hover { background:var(--green); }
+.nav-cta:hover { background:var(--green); color:#fff; }
 
 /* ═══════════════════════════════════════════
    HERO SECTION
@@ -164,7 +164,7 @@ nav {
 }
 .hero-bg {
   position:absolute; inset:0;
-  background-image:url('5968ed0f4fa8093edae984df663954d0.jpg');
+  background-image:url('3e9d3a31cca9fe7b24f1fd859504b8f0.jpg');
   background-size:cover; background-position:center;
   z-index:0;
 }
@@ -544,20 +544,24 @@ nav {
    EXPERIENCE
 ═══════════════════════════════════════════ */
 #experience { padding:16px 20px; }
-.exp-scroll-wrap { overflow-x:auto; scrollbar-width:none; margin-top:20px; }
-.exp-scroll-wrap::-webkit-scrollbar { display:none; }
-.exp-track { display:flex; gap:16px; width:max-content; padding-bottom:4px; }
+.exp-scroll-wrap { overflow:hidden; margin-top:20px; }
+.exp-track {
+  display:flex; gap:16px; width:max-content; padding-bottom:4px;
+  animation: expScroll 36s linear infinite;
+}
+.exp-track:hover { animation-play-state:paused; }
+@keyframes expScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 .exp-card {
-  width:340px; flex-shrink:0;
+  width:400px; flex-shrink:0;
   background:var(--tile);
   border-radius:var(--r);
   box-shadow:var(--shadow);
   overflow:hidden;
   transition:box-shadow .3s, transform .3s var(--ease2);
 }
-.exp-card:hover { box-shadow:var(--shadow2); transform:translateY(-3px); }
+.exp-card:hover { box-shadow:var(--shadow2); transform:translateY(-4px); }
 .exp-img {
-  height:200px; overflow:hidden;
+  height:280px; overflow:hidden;
   background:var(--dark); position:relative;
 }
 .exp-img img, .exp-img video {
@@ -1062,14 +1066,14 @@ footer {
         <div class="hero-left">
           <div class="hero-name-line">Hi, I'm Mustafa</div>
           <h1 class="hero-h1">
-            Mecahtronics<br>
-            <em>Systems</em><br>
+            Ex-professional<br>
+            Judoka <em>turned</em><br>
             Engineer.
           </h1>
           <p class="hero-desc">
             Combining AI and Robotics to make technology that matters.
           </p>
-          <div class="hero-role">Mechatronics - Robotics - AI - Aspiring Entrepreneur</div>
+          <div class="hero-role">Mechatronics Systems Engineer</div>
           <div class="hero-btns">
             <a href="#projects" class="btn-hero-prim">View My Projects →</a>
             <a href="#connect" class="btn-hero-out">Let's Connect</a>
@@ -1266,6 +1270,131 @@ footer {
     <div class="exp-scroll-wrap">
       <div class="exp-track">
 
+        <div class="exp-card">
+          <div class="exp-img">
+            <img src="IMG_0149.jpg" alt="Siemens Healthineers"/>
+            <div class="exp-img-ov"></div>
+            <div class="exp-badge">Working Student</div>
+            <div class="exp-status"><span class="exp-live-dot"></span>Present</div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-co">Siemens Healthineers AG</div>
+            <div class="exp-role">Working Student — Systems Engineering</div>
+            <div class="exp-meta">Kemnath, Germany · 2025 — Present</div>
+            <ul class="exp-bullets">
+              <li>Multi-model force limitation algorithm across motion system variants</li>
+              <li>Advanced diagnostics via Drive Manager and TCB</li>
+              <li>Cross-functional PLM collaboration across disciplines</li>
+              <li>Risk evaluation and safety compliance for dynamic motion systems</li>
+            </ul>
+            <div class="exp-chips">
+              <span class="exp-chip">Force Limitation</span>
+              <span class="exp-chip">PLM</span>
+              <span class="exp-chip">Motion Control</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-img">
+            <video autoplay muted loop playsinline poster="ew.png">
+              <source src="IMG_2875.MOV" type="video/mp4">
+              <img src="ew.png" alt="" style="width:100%;height:100%;object-fit:cover"/>
+            </video>
+            <div class="exp-img-ov"></div>
+            <div class="exp-badge">Intern</div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-co">Siemens Healthineers AG</div>
+            <div class="exp-role">Mechatronics Intern — Collision Avoidance</div>
+            <div class="exp-meta">Kemnath, Germany · Apr 2024 — Feb 2025</div>
+            <ul class="exp-bullets">
+              <li>SICK LiDAR integration into Nexaris Angio CT gantry</li>
+              <li>Embedded C/C++ detection logic with fail-safe PLC braking</li>
+              <li>False alarm elimination through signal filtering</li>
+              <li>PLM lifecycle traceability and compliance documentation</li>
+            </ul>
+            <div class="exp-chips">
+              <span class="exp-chip">SICK LiDAR</span>
+              <span class="exp-chip">C/C++</span>
+              <span class="exp-chip">PLC Safety</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-img">
+            <img src="Screenshot 2026-02-26 145216.png" alt="Kraken Robotics"/>
+            <div class="exp-img-ov"></div>
+            <div class="exp-badge">EE Intern</div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-co">Kraken Robotics</div>
+            <div class="exp-role">EE Intern — Autonomous Underwater Vehicles</div>
+            <div class="exp-meta">Rostock, Germany · Oct 2023 — Mar 2024</div>
+            <ul class="exp-bullets">
+              <li>MATLAB battery discharge analysis → 8% AUV uptime improvement</li>
+              <li>Telemetry dashboards for marine field deployment teams</li>
+              <li>Environmental stress testing of marine battery systems</li>
+              <li>FMEA on power distribution for subsea robotics</li>
+            </ul>
+            <div class="exp-chips">
+              <span class="exp-chip">MATLAB</span>
+              <span class="exp-chip">AUV</span>
+              <span class="exp-chip">FMEA</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-img">
+            <img src="vsae.png" alt="Aqua Tech"/>
+            <div class="exp-img-ov"></div>
+            <div class="exp-badge">Design Engineer</div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-co">Aqua Tech GmbH</div>
+            <div class="exp-role">Mechanical Design & Production Engineer</div>
+            <div class="exp-meta">Germany · Mar 2024 — Aug 2024</div>
+            <ul class="exp-bullets">
+              <li>End-to-end production control for complex mechanical assemblies</li>
+              <li>Siemens NX CAD with DFM and tolerance stack-up analysis</li>
+              <li>10% bottleneck reduction via WIP and throughput simulation</li>
+              <li>Custom jigs, fixtures, and tooling design</li>
+            </ul>
+            <div class="exp-chips">
+              <span class="exp-chip">Siemens NX</span>
+              <span class="exp-chip">CAD</span>
+              <span class="exp-chip">DFM</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="exp-card">
+          <div class="exp-img">
+            <img src="1769856219125.jpg" alt="Siemens Mobility"/>
+            <div class="exp-img-ov"></div>
+            <div class="exp-badge">Industrial Engineer</div>
+          </div>
+          <div class="exp-body">
+            <div class="exp-co">Siemens Mobility</div>
+            <div class="exp-role">Operations Industrial Engineer</div>
+            <div class="exp-meta">Germany · 2022 — 2023</div>
+            <ul class="exp-bullets">
+              <li>Industrial operations engineering across rail systems division</li>
+              <li>Process optimisation and production line analysis</li>
+              <li>Cross-team coordination in high-complexity manufacturing</li>
+              <li>Certified: Operations Industrial Engineer</li>
+            </ul>
+            <div class="exp-chips">
+              <span class="exp-chip">Industrial Eng.</span>
+              <span class="exp-chip">Operations</span>
+              <span class="exp-chip">Lean</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── DUPLICATE SET for seamless loop ── -->
         <div class="exp-card">
           <div class="exp-img">
             <img src="IMG_0149.jpg" alt="Siemens Healthineers"/>
