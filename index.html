@@ -224,19 +224,22 @@ body::before {
 .lb-caption{margin-top:14px;text-align:center;font-size:.72rem;color:var(--tc3);letter-spacing:.06em;}
 
 /* ═══════════════════════════════════════════
-   NAV
+   NAV — always frosted glass
 ═══════════════════════════════════════════ */
 nav {
   position:fixed; top:0; width:100%; z-index:1000;
-  padding:28px 48px;
+  padding:0 20px;
   display:flex; align-items:center; justify-content:space-between;
-  transition:all .5s var(--ease);
+  height:64px;
+  background: rgba(10,9,7,.72);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border-bottom: 1px solid rgba(243,241,235,.07);
+  transition: background .4s var(--ease), border-color .4s;
 }
-nav.scrolled{
-  padding:16px 48px;
-  background:rgba(12,11,9,.92);
-  backdrop-filter:blur(24px) saturate(180%);
-  border-bottom:1px solid var(--ld);
+nav.scrolled {
+  background: rgba(10,9,7,.88);
+  border-bottom-color: rgba(243,241,235,.1);
 }
 .nav-logo{
   font-family:var(--ff-serif); font-size:1.2rem;
@@ -278,69 +281,71 @@ nav.scrolled{
 .nav-cta:hover span{color:var(--black);}
 
 /* ═══════════════════════════════════════════
-   HERO — STŌKT STYLE
+   HERO — card style
 ═══════════════════════════════════════════ */
 #hero{
-  min-height:100svh; position:relative;
-  background:var(--black);
-  display:flex;flex-direction:column;
-  padding:0 48px;
-  overflow:hidden;
-}
-
-.hero-bg-panel{
-  position:absolute; top:0; right:0;
-  width:52%; height:100%; overflow:hidden; z-index:0;
-}
-.hero-bg-panel::after{
-  content:'';position:absolute;inset:0;
-  background:
-    linear-gradient(to right,var(--black) 0%,rgba(12,11,9,.3) 100%),
-    linear-gradient(to top,var(--black) 0%,transparent 50%);
-}
-.hero-bg-panel img{
-  width:100%;height:100%;object-fit:cover;object-position:center;
-  filter:grayscale(25%) brightness(.5);
-}
-
-/* subtle grid on hero */
-.hero-grid{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(45,212,160,.03) 1px, transparent 1px),
-    linear-gradient(90deg,rgba(45,212,160,.03) 1px, transparent 1px);
-  background-size:64px 64px;
-  mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.5) 40%,transparent 100%);
-}
-
-.hero-inner{
-  position:relative;z-index:2;
-  display:flex;flex-direction:column;
   min-height:100svh;
-  padding-bottom:0;
+  background:#060504;
+  padding:72px 16px 16px;
+  display:flex; flex-direction:column;
+  position:relative; overflow:hidden;
 }
 
+/* Page-level bg texture */
+.hero-grid{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(45,212,160,.025) 1px, transparent 1px),
+    linear-gradient(90deg,rgba(45,212,160,.025) 1px, transparent 1px);
+  background-size:72px 72px;
+}
+
+/* The card */
+.hero-card{
+  flex:1;
+  position:relative; z-index:2;
+  background: #111009;
+  border-radius:18px;
+  border:1px solid rgba(243,241,235,.08);
+  overflow:hidden;
+  display:flex; flex-direction:column;
+  padding:44px 52px 32px;
+  min-height:0;
+}
+
+/* Subtle radial glow inside card */
+.hero-card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 60% at 20% 50%, rgba(45,212,160,.07) 0%, transparent 70%);
+  border-radius:18px;
+}
+
+/* top info bar inside card */
 .hero-top-bar{
   display:flex;align-items:center;justify-content:space-between;
-  padding-top:140px; padding-bottom:0;
+  margin-bottom:auto;
   flex-shrink:0;
 }
 .hero-est{
   font-size:.6rem;font-weight:500;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--tc3);
+  text-transform:uppercase;color:var(--tc4);
 }
 .hero-paren{
   font-size:.6rem;font-weight:500;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--tc3);
+  text-transform:uppercase;color:var(--tc4);
 }
 
+/* Name title — light weight */
 .hero-title-area{
-  flex:1;display:flex;align-items:center;padding:32px 0;
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding:40px 0 32px;
+  max-width:58%;
 }
 .hero-title{
   font-family:var(--ff-hv);
-  font-size:clamp(3.2rem,8.5vw,10.5rem);
-  font-weight:700;letter-spacing:-.04em;line-height:.9;
+  font-size:clamp(2.8rem,7.5vw,9.5rem);
+  font-weight:300;          /* light, not bold */
+  letter-spacing:-.03em;line-height:.92;
   color:var(--cream);font-style:normal;
 }
 .htl{overflow:hidden;}
@@ -350,92 +355,108 @@ nav.scrolled{
   font-style:normal;
 }
 .htl:nth-child(2) span{animation-delay:.08s;}
-.htl:nth-child(3) span{animation-delay:.16s;color:var(--cream);font-style:normal;}
-
-/* Circular hero photo */
-.hero-circle-photo{
-  position:absolute; top:50%; right:6%;
-  transform:translateY(-50%);
-  z-index:3;
-  width:clamp(220px,24vw,380px);
-  aspect-ratio:1/1;
-  border-radius:50%;
-  overflow:hidden;
-  border:1px solid rgba(243,241,235,.15);
-  box-shadow:0 0 0 8px rgba(243,241,235,.04), 0 0 60px rgba(45,212,160,.08);
-}
-.hero-circle-photo img{
-  width:100%;height:100%;
-  object-fit:cover;object-position:center top;
-  filter:grayscale(10%) brightness(.9);
-  transition:transform .6s var(--ease2),filter .4s;
-}
-.hero-circle-photo:hover img{ transform:scale(1.04); filter:grayscale(0%) brightness(1); }
+.htl:nth-child(3) span{animation-delay:.16s;}
 @keyframes slideUp{to{transform:translateY(0);}}
 
-.hero-bottom-area{
-  flex-shrink:0;
-  border-top:1px solid var(--ld);
-  padding:28px 0;
+/* Subtitle under name */
+.hero-subtitle{
+  font-family:var(--ff-sans);
+  font-size:clamp(.72rem,.9vw,.88rem);
+  font-weight:400;letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--tc3);
+  margin-top:22px;
+  margin-bottom:28px;
+  display:flex;align-items:center;gap:12px;
 }
-.hero-desc-row{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  gap:32px;flex-wrap:wrap;
-  margin-bottom:24px;
+.hero-subtitle-line{
+  width:28px;height:1px;background:var(--green);flex-shrink:0;
 }
-.hero-desc{
-  font-size:clamp(.82rem,1vw,.98rem);
-  font-weight:400;line-height:1.78;color:var(--tc2);
-  max-width:440px;
+
+/* Buttons row — directly under subtitle */
+.hero-ctas{
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
 }
-.hero-ctas{display:flex;gap:10px;align-items:center;flex-shrink:0;flex-wrap:wrap;}
 
 .btn-prim{
-  font-family:var(--ff-sans);font-size:.72rem;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;padding:13px 28px;border-radius:100px;
+  font-family:var(--ff-sans);font-size:.7rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;padding:12px 26px;border-radius:100px;
   background:var(--cream);color:var(--black);
   transition:all .25s var(--ease2);display:inline-flex;align-items:center;gap:8px;
 }
 .btn-prim:hover{background:var(--green);}
 .btn-out{
-  font-family:var(--ff-sans);font-size:.72rem;font-weight:500;letter-spacing:.1em;
-  text-transform:uppercase;padding:13px 28px;border-radius:100px;
-  border:1px solid var(--ld);color:var(--tc2);
+  font-family:var(--ff-sans);font-size:.7rem;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;padding:12px 26px;border-radius:100px;
+  border:1px solid rgba(243,241,235,.18);color:var(--tc2);
   transition:all .25s var(--ease2);display:inline-flex;align-items:center;gap:6px;
 }
 .btn-out:hover{border-color:var(--cream);color:var(--cream);}
 .btn-resume{
-  font-family:var(--ff-sans);font-size:.72rem;font-weight:500;letter-spacing:.1em;
-  text-transform:uppercase;padding:13px 28px;border-radius:100px;
-  border:1px solid var(--ld);color:var(--tc2);
+  font-family:var(--ff-sans);font-size:.7rem;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;padding:12px 26px;border-radius:100px;
+  border:1px solid rgba(243,241,235,.18);color:var(--tc2);
   transition:all .25s var(--ease2);display:inline-flex;align-items:center;gap:6px;
 }
 .btn-resume:hover{border-color:var(--green);color:var(--green);}
 
+/* Circular hero photo — positioned right inside card */
+.hero-circle-photo{
+  position:absolute;
+  top:50%; right:5%;
+  transform:translateY(-50%);
+  z-index:3;
+  width:clamp(200px,22vw,360px);
+  aspect-ratio:1/1;
+  border-radius:50%;
+  overflow:hidden;
+  border:1px solid rgba(243,241,235,.12);
+  box-shadow:0 0 0 10px rgba(243,241,235,.03), 0 0 80px rgba(45,212,160,.07);
+}
+.hero-circle-photo img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  filter:grayscale(8%) brightness(.92);
+  transition:transform .6s var(--ease2),filter .4s;
+}
+.hero-circle-photo:hover img{transform:scale(1.04);filter:grayscale(0%) brightness(1);}
+
+/* Footer strip inside card */
 .hero-foot{
   display:flex;align-items:center;justify-content:space-between;
-  border-top:1px solid var(--ld);padding:18px 0;
+  border-top:1px solid rgba(243,241,235,.07);
+  padding-top:20px;
+  flex-shrink:0;
 }
 .hero-scroll{
   display:flex;align-items:center;gap:12px;
-  font-size:.58rem;font-weight:500;letter-spacing:.18em;
+  font-size:.56rem;font-weight:500;letter-spacing:.18em;
   text-transform:uppercase;color:var(--tc4);
 }
 .h-scroll-line{
-  width:36px;height:1px;
+  width:32px;height:1px;
   background:linear-gradient(to right,var(--green),transparent);
   animation:sline 2s ease-in-out infinite;
 }
 @keyframes sline{0%,100%{opacity:.5}50%{opacity:.1}}
 .hero-avail{
   display:flex;align-items:center;gap:8px;
-  font-size:.58rem;font-weight:500;letter-spacing:.16em;
+  font-size:.56rem;font-weight:500;letter-spacing:.16em;
   text-transform:uppercase;color:var(--tc4);
 }
 .avail-dot{
   width:6px;height:6px;border-radius:50%;background:var(--green);
   animation:pulse 2.4s ease-in-out infinite;
 }
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(45,212,160,.4);}
+  50%{box-shadow:0 0 0 10px rgba(45,212,160,0);}
+}
+
+/* hide old unused hero elements */
+.hero-bg-panel{display:none!important;}
+.hero-inner{display:contents;}
+.hero-bottom-area,.hero-desc-row,.hero-desc{display:none;}
 @keyframes pulse{
   0%,100%{box-shadow:0 0 0 0 rgba(45,212,160,.4);}
   50%{box-shadow:0 0 0 10px rgba(45,212,160,0);}
@@ -1056,12 +1077,13 @@ footer{
 @media(max-width:768px){
   body{cursor:auto;}
   .cursor,.cursor-ring{display:none;}
-  nav{padding:18px 24px;}
-  nav.scrolled{padding:14px 24px;}
+  nav{padding:0 16px;height:56px;}
   .nav-links .nl:not(.nav-cta){display:none;}
-  .hero-circle-photo{width:clamp(140px,38vw,200px);right:4%;top:auto;bottom:30%;transform:none;}
+  #hero{padding:64px 10px 10px;}
+  .hero-card{padding:28px 24px 22px;border-radius:14px;}
+  .hero-circle-photo{width:120px;top:28px;right:20px;transform:none;}
+  .hero-title-area{max-width:100%;padding:28px 0 20px;}
   .wrap{padding:0 24px;}
-  #hero{padding:0 24px;}
   .cta-inner{padding:80px 24px 0;}
   .proj-2col{grid-template-columns:1fr;gap:10px;}
   .proj-card{border-right:none;}
@@ -1133,51 +1155,52 @@ footer{
 
 <!-- ════════════ HERO ════════════ -->
 <section id="hero">
-  <div class="hero-bg-panel" style="display:none;"></div>
   <div class="hero-grid"></div>
 
-  <!-- Circular portrait -->
-  <div class="hero-circle-photo">
-    <img src="IMG_3001-modified.png" alt="Syed Mustafa Mohiuddin"
-         onerror="this.src='IMG_0149.jpg'"/>
-  </div>
+  <div class="hero-card">
 
-  <div class="hero-inner">
+    <!-- Circular portrait — floats right inside card -->
+    <div class="hero-circle-photo">
+      <img src="IMG_3001-modified.png" alt="Syed Mustafa Mohiuddin"
+           onerror="this.src='IMG_0149.jpg'"/>
+    </div>
+
+    <!-- Top meta row -->
     <div class="hero-top-bar">
       <span class="hero-est">Est. 2021</span>
       <span class="hero-paren">( Mechatronics Engineer )</span>
     </div>
 
+    <!-- Name + subtitle + buttons -->
     <div class="hero-title-area">
       <h1 class="hero-title">
         <div class="htl"><span>Syed</span></div>
         <div class="htl"><span>Mustafa</span></div>
         <div class="htl"><span>Mohiuddin</span></div>
       </h1>
+      <div class="hero-subtitle">
+        <span class="hero-subtitle-line"></span>
+        Mechatronics Systems Engineer
+      </div>
+      <div class="hero-ctas">
+        <a href="#work" class="btn-prim">View Projects &rarr;</a>
+        <a href="#contact" class="btn-out">Get in Touch</a>
+        <a href="Nordson_Corporation_CV.pdf" download class="btn-resume">&#8595;&nbsp;Resume</a>
+      </div>
     </div>
 
-    <div class="hero-bottom-area">
-      <div class="hero-desc-row">
-        <p class="hero-desc">
-          Force-controlled motion · Autonomous robotics · Embedded control architectures · Safety-critical medical systems. Currently at Siemens Healthineers — open to next challenge.
-        </p>
-        <div class="hero-ctas">
-          <a href="#work" class="btn-prim">View Projects &rarr;</a>
-          <a href="#contact" class="btn-out">Get in Touch</a>
-          <a href="Nordson_Corporation_CV.pdf" download class="btn-resume">&#8595;&nbsp;Resume</a>
-        </div>
+    <!-- Bottom strip -->
+    <div class="hero-foot">
+      <div class="hero-scroll">
+        <div class="h-scroll-line"></div>
+        Scroll for more
       </div>
-      <div class="hero-foot">
-        <div class="hero-scroll">
-          <div class="h-scroll-line"></div>
-          Scroll for more
-        </div>
-        <div class="hero-avail">
-          <div class="avail-dot"></div>
-          Bayreuth, Germany — Available Now
-        </div>
+      <div class="hero-avail">
+        <div class="avail-dot"></div>
+        Bayreuth, Germany — Available Now
       </div>
     </div>
+
   </div>
 </section>
 
@@ -1904,7 +1927,7 @@ document.addEventListener('keydown',e=>{ if(!document.getElementById('lb').class
 window.addEventListener('scroll',()=>{
   const pct=scrollY/(document.body.scrollHeight-innerHeight)*100;
   document.getElementById('prog').style.width=pct+'%';
-  document.getElementById('nav').classList.toggle('scrolled',scrollY>60);
+  document.getElementById('nav').classList.toggle('scrolled',scrollY>40);
 },{ passive:true });
 
 /* ── SCROLL REVEAL ── */
