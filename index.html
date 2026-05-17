@@ -39,6 +39,7 @@ html { scroll-behavior:smooth; font-size:16px; }
 
   --ff-serif: 'Instrument Serif', Georgia, serif;
   --ff-sans:  'DM Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ff-hv:    'Helvetica Neue', Helvetica, Arial, sans-serif;
   --ease:  cubic-bezier(.25,.46,.45,.94);
   --ease2: cubic-bezier(.76,0,.24,1);
 }
@@ -240,7 +241,16 @@ nav.scrolled{
 .nav-logo{
   font-family:var(--ff-serif); font-size:1.2rem;
   color:var(--cream); letter-spacing:.02em;
+  display:flex; align-items:center;
 }
+.nav-logo-img{
+  height:36px; width:auto;
+  object-fit:contain;
+  display:block;
+  filter:brightness(0) invert(1);
+  transition:filter .3s;
+}
+.nav-logo:hover .nav-logo-img{ filter:brightness(0) invert(1) drop-shadow(0 0 6px rgba(45,212,160,.6)); }
 .nav-links{display:flex;gap:36px;align-items:center;}
 .nl{
   font-size:.63rem;font-weight:500;letter-spacing:.13em;
@@ -328,18 +338,39 @@ nav.scrolled{
   flex:1;display:flex;align-items:center;padding:32px 0;
 }
 .hero-title{
-  font-family:var(--ff-serif);
-  font-size:clamp(5rem,13.5vw,16rem);
-  font-weight:400;letter-spacing:-.03em;line-height:.88;
-  color:var(--cream);
+  font-family:var(--ff-hv);
+  font-size:clamp(3.2rem,8.5vw,10.5rem);
+  font-weight:700;letter-spacing:-.04em;line-height:.9;
+  color:var(--cream);font-style:normal;
 }
 .htl{overflow:hidden;}
 .htl span{
   display:block;transform:translateY(110%);
   animation:slideUp .9s var(--ease2) forwards;
+  font-style:normal;
 }
 .htl:nth-child(2) span{animation-delay:.08s;}
-.htl:nth-child(3) span{animation-delay:.16s;color:var(--green);font-style:italic;}
+.htl:nth-child(3) span{animation-delay:.16s;color:var(--cream);font-style:normal;}
+
+/* Circular hero photo */
+.hero-circle-photo{
+  position:absolute; top:50%; right:6%;
+  transform:translateY(-50%);
+  z-index:3;
+  width:clamp(220px,24vw,380px);
+  aspect-ratio:1/1;
+  border-radius:50%;
+  overflow:hidden;
+  border:1px solid rgba(243,241,235,.15);
+  box-shadow:0 0 0 8px rgba(243,241,235,.04), 0 0 60px rgba(45,212,160,.08);
+}
+.hero-circle-photo img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  filter:grayscale(10%) brightness(.9);
+  transition:transform .6s var(--ease2),filter .4s;
+}
+.hero-circle-photo:hover img{ transform:scale(1.04); filter:grayscale(0%) brightness(1); }
 @keyframes slideUp{to{transform:translateY(0);}}
 
 .hero-bottom-area{
@@ -487,13 +518,19 @@ nav.scrolled{
 /* ── P01 Full-width card ── */
 .pj-full{
   display:grid;grid-template-columns:1fr 1fr;
-  border-bottom:1px solid var(--ll);
+  border-bottom:none;
   cursor:pointer;overflow:hidden;
   background:var(--cream);
+  border-radius:12px;
+  border:1px solid var(--ll);
+  margin-bottom:12px;
+  transition:box-shadow .25s;
 }
+.pj-full:hover{ box-shadow:0 8px 48px rgba(12,11,9,.1); }
 .pj-full:hover .pjf-img{transform:scale(1.04);filter:brightness(.72) grayscale(.1);}
 .pjf-vid-wrap,.pjf-img-wrap{
-  height:580px;overflow:hidden;position:relative;background:var(--dark);
+  height:540px;overflow:hidden;position:relative;background:var(--dark);
+  border-radius:10px 0 0 10px;
 }
 .pjf-img{
   width:100%;height:100%;object-fit:cover;
@@ -565,19 +602,23 @@ nav.scrolled{
 /* ── 2-col project cards ── */
 .proj-2col{
   display:grid;grid-template-columns:1fr 1fr;
-  border-bottom:1px solid var(--ll);
-  gap:0;background:var(--ll);
+  border-bottom:none;
+  gap:12px;background:transparent;
+  padding:12px 0 0;
 }
 .proj-card{
   background:var(--cream);
   cursor:pointer;overflow:hidden;
   display:flex;flex-direction:column;
-  border-right:1px solid var(--ll);
-  transition:background .25s;
+  border-right:none;
+  border-radius:12px;
+  border:1px solid var(--ll);
+  transition:background .25s, box-shadow .25s;
 }
 .proj-card:last-child{border-right:none;}
+.proj-card:hover{ box-shadow:0 8px 40px rgba(12,11,9,.1); }
 .proj-card:hover .pc-img{transform:scale(1.05);filter:brightness(.72) grayscale(.1);}
-.pc-img-wrap{height:380px;overflow:hidden;position:relative;background:var(--dark);}
+.pc-img-wrap{height:340px;overflow:hidden;position:relative;background:var(--dark);border-radius:10px 10px 0 0;}
 .pc-img{
   width:100%;height:100%;object-fit:cover;
   filter:brightness(.65) grayscale(.2);
@@ -617,7 +658,7 @@ nav.scrolled{
 .pc-thumb:hover img{transform:scale(1.1);}
 
 /* SVG card bg */
-.pc-svg-wrap{height:380px;overflow:hidden;position:relative;background:#040810;}
+.pc-svg-wrap{height:340px;overflow:hidden;position:relative;background:#040810;border-radius:10px 10px 0 0;}
 .pc-svg{width:100%;height:100%;display:block;}
 
 /* Wide (span 2) */
@@ -626,9 +667,14 @@ nav.scrolled{
   cursor:pointer;overflow:hidden;
   background:var(--cream);
   grid-column:span 2;
+  border-radius:12px;
+  border:1px solid var(--ll);
+  margin-top:12px;
+  transition:box-shadow .25s;
 }
+.proj-wide:hover{ box-shadow:0 8px 40px rgba(12,11,9,.1); }
 .proj-wide:hover .pw-img{transform:scale(1.04);filter:brightness(.72) grayscale(.1);}
-.pw-img-wrap{height:440px;overflow:hidden;position:relative;background:var(--dark);}
+.pw-img-wrap{height:400px;overflow:hidden;position:relative;background:var(--dark);border-radius:10px 0 0 10px;}
 .pw-img{
   width:100%;height:100%;object-fit:cover;
   filter:brightness(.65) grayscale(.2);
@@ -992,6 +1038,8 @@ footer{
 ═══════════════════════════════════════════ */
 @media(max-width:1024px){
   .pj-full,.proj-wide{grid-template-columns:1fr;}
+  .pjf-vid-wrap,.pjf-img-wrap{border-radius:10px 10px 0 0;}
+  .pw-img-wrap{border-radius:10px 10px 0 0;}
   .pjf-body,.pw-body{border-left:none;border-top:1px solid var(--ll);}
   .tab-panel.active{grid-template-columns:1fr;}
   .tp-left{border-right:none;padding-right:0;border-bottom:1px solid var(--ld);padding-bottom:40px;margin-bottom:40px;}
@@ -1011,13 +1059,14 @@ footer{
   nav{padding:18px 24px;}
   nav.scrolled{padding:14px 24px;}
   .nav-links .nl:not(.nav-cta){display:none;}
-  .hero-bg-panel{display:none;}
+  .hero-circle-photo{width:clamp(140px,38vw,200px);right:4%;top:auto;bottom:30%;transform:none;}
   .wrap{padding:0 24px;}
   #hero{padding:0 24px;}
   .cta-inner{padding:80px 24px 0;}
-  .proj-2col{grid-template-columns:1fr;}
-  .proj-card{border-right:none;border-bottom:1px solid var(--ll);}
-  .proj-wide{grid-column:span 1;grid-template-columns:1fr;}
+  .proj-2col{grid-template-columns:1fr;gap:10px;}
+  .proj-card{border-right:none;}
+  .proj-wide{grid-column:span 1;grid-template-columns:1fr;margin-top:10px;}
+  .pw-img-wrap{border-radius:10px 10px 0 0;}
   .pw-body{border-left:none;border-top:1px solid var(--ll);}
   .tp-items{grid-template-columns:1fr;}
   .stats-row{grid-template-columns:1fr;}
@@ -1069,7 +1118,10 @@ footer{
 
 <!-- ════════════ NAV ════════════ -->
 <nav id="nav">
-  <a class="nav-logo" href="#hero">S. Mustafa Mohiuddin</a>
+  <a class="nav-logo" href="#hero">
+    <img class="nav-logo-img" src="Adobe Express - file.png" alt="SMM" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+    <span style="display:none;font-family:var(--ff-serif);font-size:1.2rem;color:var(--cream);">SMM</span>
+  </a>
   <div class="nav-links">
     <a href="#about" class="nl"><span><i>About</i><i>About</i></span></a>
     <a href="#work"  class="nl"><span><i>Work</i><i>Work</i></span></a>
@@ -1081,10 +1133,14 @@ footer{
 
 <!-- ════════════ HERO ════════════ -->
 <section id="hero">
-  <div class="hero-bg-panel">
-    <img src="IMG_0149.jpg" alt="Lab work" onerror="this.src='ew.png'"/>
-  </div>
+  <div class="hero-bg-panel" style="display:none;"></div>
   <div class="hero-grid"></div>
+
+  <!-- Circular portrait -->
+  <div class="hero-circle-photo">
+    <img src="IMG_3001-modified.png" alt="Syed Mustafa Mohiuddin"
+         onerror="this.src='IMG_0149.jpg'"/>
+  </div>
 
   <div class="hero-inner">
     <div class="hero-top-bar">
@@ -1094,9 +1150,9 @@ footer{
 
     <div class="hero-title-area">
       <h1 class="hero-title">
-        <div class="htl"><span>Engineering</span></div>
-        <div class="htl"><span>Systems</span></div>
-        <div class="htl"><span>Forward.</span></div>
+        <div class="htl"><span>Syed</span></div>
+        <div class="htl"><span>Mustafa</span></div>
+        <div class="htl"><span>Mohiuddin</span></div>
       </h1>
     </div>
 
@@ -1173,7 +1229,7 @@ footer{
   </div>
 
   <!-- P01 Full-width: Force Limitation -->
-  <div style="padding:0 48px">
+  <div style="padding:12px 48px 0">
     <div class="pj-full rv" onclick="openLb('exp2',0)">
       <div class="pjf-vid-wrap">
         <video class="pjf-vid" autoplay muted loop playsinline poster="ew.png">
@@ -1216,7 +1272,7 @@ footer{
   </div>
 
   <!-- 2-col: P02 + P03 -->
-  <div style="padding:0 48px;margin-top:1px">
+  <div style="padding:0 48px">
     <div class="proj-2col">
 
       <!-- P02 LiDAR -->
@@ -1273,7 +1329,7 @@ footer{
   </div>
 
   <!-- 2-col: P04 Digital Twin + P05 HIL (SVG cards) -->
-  <div style="padding:0 48px;margin-top:1px">
+  <div style="padding:0 48px">
     <div class="proj-2col">
 
       <!-- P04 Digital Twin SVG -->
@@ -1368,7 +1424,7 @@ footer{
   </div>
 
   <!-- P06 Wide: Production -->
-  <div style="padding:0 48px;margin-top:1px">
+  <div style="padding:0 48px 48px">
     <div class="proj-wide rv d1" onclick="openLb('exp5',0)">
       <div class="pw-img-wrap">
         <img class="pw-img" src="vsae.png" alt="Production Engineering"/>
